@@ -1,0 +1,23 @@
+{
+  "name": "camtoo_appserver",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/1e16miin/camtoo.git"
+  },
+  "author": "1e16miin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/1e16miin/camtoo/issues"
+  },
+  "homepage": "https://github.com/1e16miin/camtoo#readme"
+}
