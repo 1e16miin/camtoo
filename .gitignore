@@ -1,4 +1,6 @@
 dist/*
 *.log
 .vscode
-/node_modules
+node_modules
+.vscode-test
+package-lock.json

@@ -1,15 +1,36 @@
 {
   "name": "camtoo_appserver",
   "version": "1.0.0",
-  "description": "",
+  "description": "camtoo 안드로이드 앱 서버개발",
   "main": "app.js",
   "dependencies": {
-    "express": "^4.17.1"
+    "aws-cloudfront-sign": "^2.2.0",
+    "aws-sdk": "^2.1028.0",
+    "axios": "^0.24.0",
+    "crypto": "^1.0.1",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.1",
+    "mysql2": "^2.3.3",
+    "node-schedule": "^2.0.0",
+    "sequelize": "^6.9.0",
+    "typedi": "^0.10.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@babel/cli": "^7.16.0",
+    "@babel/core": "^7.16.0",
+    "@babel/preset-env": "^7.16.0",
+    "jest": "^27.3.1",
+    "nodemon": "^2.0.15"
+  },
+  "optionalDependencies": {
+    "fsevents": "*"
+  },
   "scripts": {
-    "test": "mocha"
+    "test": "jest"
   },
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/1e16miin/camtoo.git"
