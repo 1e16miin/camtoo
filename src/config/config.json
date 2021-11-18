@@ -1,0 +1,13 @@
+{
+  "development": {
+    "username": "camtoo",
+    "password": "Acamtooz",
+    "database": "camtoo-testdb",
+    "host": "camtoo-testdb.cv4ikpar3yay.ap-northeast-2.rds.amazonaws.com",
+    "dialect": "mysql",
+    "dialectOptions": {
+      "decimalNumbers": true
+    },
+    "logging": false
+  }
+}
