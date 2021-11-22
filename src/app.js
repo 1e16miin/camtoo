@@ -1,14 +1,28 @@
 import express from 'express'
 import path from 'path'
+import { sequelize } from './models';
 
-import authController from './api/controllers/AuthController';
-import friendController from "./api/controllers/FriendController";
-import geoFenceController from "./api/controllers/GeoFenceController";
-import userController from "./api/controllers/UserController";
+
+import authController from './api/controllers/AuthController.js';
+import friendController from "./api/controllers/FriendController.js";
+import geoFenceController from "./api/controllers/GeoFenceController.js";
+import userController from "./api/controllers/UserController.js";
+
 
 const app = express();
 
 app.set('port', process.env.PORT || 443);
+
+
+sequelize
+  .sync()
+  .then(() => {
+    console.log("데이터베이스 연결 성공");
+  })
+  .catch((err) => {
+    console.error(err);
+  });
+
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json())

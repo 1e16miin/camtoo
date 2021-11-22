@@ -2,7 +2,7 @@
   "name": "camtoo_appserver",
   "version": "1.0.0",
   "description": "camtoo 안드로이드 앱 서버개발",
-  "main": "app.js",
+  "main": "src/app.js",
   "dependencies": {
     "aws-cloudfront-sign": "^2.2.0",
     "aws-sdk": "^2.1028.0",
