@@ -1,10 +1,2 @@
-import { Service } from "typedi";
-import GeoFenceService from "../../services/GeoFenceService";
+const GeoFenceService = require("../../services/GeoFenceService");
 
-
-class GeoFenceController{
-
-}
-
-
-export default GeoFenceController;

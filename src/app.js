@@ -1,12 +1,13 @@
-import express from 'express'
-import path from 'path'
-import { sequelize } from './models';
+const express = require('express')
+const path = require('path')
+const { sequelize } = require ('./models');
 
 
-import authController from './api/controllers/AuthController.js';
-import friendController from "./api/controllers/FriendController.js";
-import geoFenceController from "./api/controllers/GeoFenceController.js";
-import userController from "./api/controllers/UserController.js";
+const authController = require('./api/controllers/AuthController');
+const friendController = require("./api/controllers/FriendController");
+const geoFenceController = require("./api/controllers/GeoFenceController");
+const userController = require("./api/controllers/UserController");
+
 
 
 const app = express();

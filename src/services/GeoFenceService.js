@@ -1,13 +1,6 @@
-class GeoFenceService{
-  constructor(universityId) {
-    this.universityId = universityId
-  }
-  get buildings() {
-    
-  }
+const GeoFenceService = () => {
 
-  
 }
 
 
-export default GeoFenceService;
+module.exports = GeoFenceService;
