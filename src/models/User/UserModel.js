@@ -7,9 +7,13 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         allowNull: false,
       },
-      profile_image: {
+      profile_id: {
         autoIncrement: true,
         type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: false,
+      },
+      profile_image_url: {
+        type: DataTypes.CHAR(36),
         allowNull: false,
       },
       nickname: {
@@ -44,10 +48,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.CHAR(1),
         allowNull: false,
       },
-      uuid: {
-        type: DataTypes.UUID,
-        allowNull: false,
-      },
       refresh_token: {
         type: DataTypes.STRING(255),
         allowNull: true,
@@ -65,6 +65,11 @@ module.exports = (sequelize, DataTypes) => {
           unique: true,
           using: "BTREE",
           fields: [{ name: "id" }],
+        },
+        {
+          name: "profile_id",
+          using: "BTREE",
+          fields: [{ name: "profile_id" }],
         },
       ],
     }

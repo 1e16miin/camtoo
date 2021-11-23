@@ -50,6 +50,8 @@ db.boundary = require("./University/BoundaryModel")(sequelize, Sequelize);
 db.user = require("./User/UserModel")(sequelize, Sequelize);
 db.friend = require("./Friend/FriendModel")(sequelize, Sequelize);
 db.communication = require("./Interaction/CommunicationModel")(sequelize, Sequelize);
+db.phone = require("./User/PhoneModel")(sequelize,Sequelize)
+
 
 db.university.hasMany(db.building, {
   foreignKey: "university_id",
