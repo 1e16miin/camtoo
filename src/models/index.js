@@ -1,6 +1,7 @@
 "use strict";
 
 const fs = require("fs");
+const { defaultFormat } = require("moment");
 const path = require("path");
 const Sequelize = require("sequelize");
 const basename = path.basename(__filename);
@@ -48,6 +49,73 @@ db.building = require("./University/BuildingModel")(sequelize, Sequelize);
 db.boundary = require("./University/BoundaryModel")(sequelize, Sequelize);
 db.user = require("./User/UserModel")(sequelize, Sequelize);
 db.friend = require("./Friend/FriendModel")(sequelize, Sequelize);
+db.communication = require("./Interaction/CommunicationModel")
+
+db.university.hasMany(db.building, { foreignKey: "university_id", sourceKey: "id" })
+db.building.belongsTo(db.university, {foreignKey: "university_id", targetKey: "id"})
+
+
+db.university.hasOne(db.user, {
+  foreignKey: "university_id",
+  sourceKey: "id",
+});
+db.user.belongsTo(db.university, {
+  foreignKey: "university_id",
+  targetKey: "id",
+});
+
+
+
+db.building.hasMany(db.boundary, {
+  foreignKey: "building_id",
+  sourceKey: "id",
+});
+db.boundary.belongsTo(db.building, {
+  foreignKey: "building_id",
+  targetKey: "id",
+});
+
+db.user.hasMany(db.friend, {
+  foreignKey: "followed_user_id",
+  sourceKey: "profile_id",
+});
+
+db.friend.belongsTo(db.user, {
+  foreignKey: "followed_user_id",
+  targetKey: "profile_id",
+});
+
+db.user.hasMany(db.friend, {
+  foreignKey: "following_user_id",
+  sourceKey: "profile_id",
+});
+
+db.friend.belongsTo(db.user, {
+  foreignKey: "following_user_id",
+  targetKey: "profile_id",
+});
+
+db.user.hasMany(db.communication, {
+  foreignKey: "sender_id",
+  sourceKey: "profile_id",
+});
+
+db.communication.belongsTo(db.user, {
+  foreignKey: "sender_id",
+  targetKey: "profile_id",
+});
+
+
+db.user.hasMany(db.communication, {
+  foreignKey: "receiver_id",
+  sourceKey: "profile_id",
+});
+
+db.communication.belongsTo(db.user, {
+  foreignKey: "receiver_id",
+  targetKey: "profile_id",
+});
+
 
 
 module.exports = db;

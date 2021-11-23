@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         references: {
           model: "user",
-          key: "id",
+          key: "profile_id",
         },
       },
       followed_user_id: {
@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         references: {
           model: "user",
-          key: "id",
+          key: "profile_id",
         },
       },
       status: {
@@ -41,6 +41,16 @@ module.exports = (sequelize, DataTypes) => {
           unique: true,
           using: "BTREE",
           fields: [{ name: "id" }],
+        },
+        {
+          name: "following_user_id",
+          using: "BTREE",
+          fields: [{ name: "following_user_id" }],
+        },
+        {
+          name: "followed_user_id",
+          using: "BTREE",
+          fields: [{ name: "followed_user_id" }],
         },
       ],
     }
