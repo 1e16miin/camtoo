@@ -5,7 +5,7 @@ const { sequelize } = require ('./models');
 
 const authController = require('./api/controllers/AuthController');
 const friendController = require("./api/controllers/FriendController");
-const geoFenceController = require("./api/controllers/GeoFenceController");
+const geoFenceController = require("./api/controllers/DiscoverController");
 const userController = require("./api/controllers/UserController");
 
 
