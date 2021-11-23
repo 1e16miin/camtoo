@@ -36,7 +36,7 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: true,
       paranoid: true,
       freezeTableName: true,
-      tableName: "auth",
+      tableName: "building",
       indexes: [
         {
           name: "PRIMARY",
