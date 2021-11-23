@@ -16,6 +16,14 @@ module.exports = (sequelize, DataTypes) => {
           key: "id",
         },
       },
+      profile_id: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: false,
+        references: {
+          model: "user",
+          key: "profile_id",
+        },
+      },
     },
     {
       sequelize,

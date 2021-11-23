@@ -109,6 +109,17 @@ db.friend.belongsTo(db.user, {
   targetKey: "profile_id",
 });
 
+db.user.hasMany(db.member, {
+  foreignKey: "profile_id",
+  sourceKey: "profile_id",
+});
+
+db.member.belongsTo(db.user, {
+  foreignKey: "profile_id",
+  targetKey: "profile_id",
+});
+
+
 db.user.hasMany(db.friend, {
   foreignKey: "following_user_id",
   sourceKey: "profile_id",
