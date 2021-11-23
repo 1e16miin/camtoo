@@ -1,8 +1,6 @@
-
-
 module.exports = (sequelize, DataTypes) => {
   return sequelize.define(
-    "building",
+    "area",
     {
       id: {
         type: DataTypes.INTEGER.UNSIGNED,
@@ -10,10 +8,7 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         allowNull: false,
       },
-      name: {
-        type: DataTypes.STRING(40),
-        allowNull: false,
-      },
+
       x: {
         type: DataTypes.DECIMAL(8, 6),
         allowNull: false,
@@ -36,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: true,
       paranoid: true,
       freezeTableName: true,
-      tableName: "building",
+      tableName: "area",
       indexes: [
         {
           name: "PRIMARY",

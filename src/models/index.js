@@ -50,13 +50,22 @@ db.user = require("./User/UserModel")(sequelize, Sequelize);
 db.friend = require("./Friend/FriendModel")(sequelize, Sequelize);
 db.communication = require("./Interaction/CommunicationModel")(sequelize, Sequelize);
 db.phone = require("./User/PhoneModel")(sequelize,Sequelize)
-
+db.area = require("./University/AreaModel")(sequelize,Sequelize)
 
 db.university.hasMany(db.building, {
   foreignKey: "university_id",
   sourceKey: "id",
 });
 db.building.belongsTo(db.university, {
+  foreignKey: "university_id",
+  targetKey: "id",
+});
+
+db.university.hasMany(db.area, {
+  foreignKey: "university_id",
+  sourceKey: "id",
+});
+db.area.belongsTo(db.university, {
   foreignKey: "university_id",
   targetKey: "id",
 });

@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       y: {
-        type: DataTypes.DECIMAL(8, 6),
+        type: DataTypes.DECIMAL(9, 6),
         allowNull: false,
       },
     },
