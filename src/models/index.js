@@ -43,16 +43,21 @@ Object.keys(db).forEach((modelName) => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-db.university = require('./University/UniversityModel')(sequelize, Sequelize)
+db.university = require("./University/UniversityModel")(sequelize, Sequelize);
 db.building = require("./University/BuildingModel")(sequelize, Sequelize);
 db.boundary = require("./University/BoundaryModel")(sequelize, Sequelize);
 db.user = require("./User/UserModel")(sequelize, Sequelize);
 db.friend = require("./Friend/FriendModel")(sequelize, Sequelize);
-db.communication = require("./Interaction/CommunicationModel")
+db.communication = require("./Interaction/CommunicationModel")(sequelize, Sequelize);
 
-db.university.hasMany(db.building, { foreignKey: "university_id", sourceKey: "id" })
-db.building.belongsTo(db.university, {foreignKey: "university_id", targetKey: "id"})
-
+db.university.hasMany(db.building, {
+  foreignKey: "university_id",
+  sourceKey: "id",
+});
+db.building.belongsTo(db.university, {
+  foreignKey: "university_id",
+  targetKey: "id",
+});
 
 db.university.hasOne(db.user, {
   foreignKey: "university_id",
@@ -62,8 +67,6 @@ db.user.belongsTo(db.university, {
   foreignKey: "university_id",
   targetKey: "id",
 });
-
-
 
 db.building.hasMany(db.boundary, {
   foreignKey: "building_id",
@@ -104,7 +107,6 @@ db.communication.belongsTo(db.user, {
   targetKey: "profile_id",
 });
 
-
 db.user.hasMany(db.communication, {
   foreignKey: "receiver_id",
   sourceKey: "profile_id",
@@ -114,7 +116,5 @@ db.communication.belongsTo(db.user, {
   foreignKey: "receiver_id",
   targetKey: "profile_id",
 });
-
-
 
 module.exports = db;
