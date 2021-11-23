@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       following_user_id: {
+        type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
         references: {
           model: "user",
@@ -16,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       followed_user_id: {
+        type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
         references: {
           model: "user",

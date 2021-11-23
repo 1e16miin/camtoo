@@ -1,5 +1,3 @@
-const { STRING } = require("sequelize/types");
-
 module.exports = (sequelize, DataTypes) => {
   return sequelize.define(
     "user",

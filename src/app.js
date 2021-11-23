@@ -20,7 +20,7 @@ sequelize
   .then(() => {
     console.log("데이터베이스 연결 성공");
   })
-  .catch((err) => {
+  .catch((err) => {``
     console.error(err);
   });
 
@@ -28,10 +28,10 @@ sequelize
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json())
 
-app.use('/auth', authController)
-app.use('/friend', friendController)
+// app.use('/auth', authController)
+// app.use('/friend', friendController)
 app.use('/main', geoFenceController)
-app.use('/profile', userController)
+// app.use('/profile', userController)
 
 
 app.get("/", function (req, res) {

@@ -1,5 +1,3 @@
-const { TINYINT } = require("sequelize/types");
-
 module.exports = (sequelize, DataTypes) => {
   return sequelize.define(
     "university",

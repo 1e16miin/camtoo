@@ -2,7 +2,7 @@
   "development": {
     "username": "camtoo",
     "password": "Acamtooz",
-    "database": "camtoo-testdb",
+    "database": "camtoo-maindb",
     "host": "camtoo-maindb.cv4ikpar3yay.ap-northeast-2.rds.amazonaws.com",
     "dialect": "mysql",
     "dialectOptions": {
@@ -18,10 +18,10 @@
     "dialect": "mysql"
   },
   "production": {
-    "username": "root",
-    "password": null,
-    "database": "camtoo-maindb.cv4ikpar3yay.ap-northeast-2.rds.amazonaws.com",
-    "host": "127.0.0.1",
+    "username": "camtoo",
+    "password": "Acamtooz",
+    "database": "camtoo-maindb",
+    "host": "camtoo-maindb.cv4ikpar3yay.ap-northeast-2.rds.amazonaws.com",
     "dialect": "mysql",
     "dialectOptions": {
       "decimalNumbers": true
