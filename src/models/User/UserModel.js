@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       profile_image_url: {
         type: DataTypes.CHAR(36),
-        allowNull: false,
+        allowNull: true
       },
       nickname: {
         type: DataTypes.STRING(20),
