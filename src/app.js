@@ -5,7 +5,7 @@ const { sequelize } = require ('./models');
 
 const authController = require('./api/controllers/AuthController');
 const friendController = require("./api/controllers/FriendController");
-const geoFenceController = require("./api/controllers/DiscoverController");
+const discoverController = require("./api/controllers/DiscoverController");
 const userController = require("./api/controllers/UserController");
 
 
@@ -31,12 +31,12 @@ app.use(express.urlencoded({ extended: false }));
 
 // app.use('/auth', authController)
 // app.use('/friend', friendController)
-app.use('/main', geoFenceController)
+app.use('/main', discoverController)
 // app.use('/profile', userController)
 
 
 app.get("/", function (req, res) {
-  res.status(200).send({ message: "hello world" });
+  res.status(200).send({ message: "hello camtoo" });
 });
 
 app.use("/", function (req, res) {
