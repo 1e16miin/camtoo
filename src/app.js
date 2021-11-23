@@ -12,7 +12,7 @@ const userController = require("./api/controllers/UserController");
 
 const app = express();
 
-app.set('port', process.env.PORT || 443);
+app.set('port', 3000);
 
 
 sequelize
