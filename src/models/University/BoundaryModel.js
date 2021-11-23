@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         allowNull: false,
       },
-      
+
       x: {
         type: DataTypes.DECIMAL(8, 6),
         allowNull: false,
@@ -33,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: true,
       paranoid: true,
       freezeTableName: true,
-      tableName: "auth",
+      tableName: "boundary",
       indexes: [
         {
           name: "PRIMARY",
