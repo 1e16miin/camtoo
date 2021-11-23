@@ -1,8 +1,6 @@
-const { TINYINT } = require("sequelize/types");
-
 module.exports = (sequelize, DataTypes) => {
   return sequelize.define(
-    "phone",
+    "auth",
     {
       id: {
         type: DataTypes.INTEGER.UNSIGNED,
@@ -10,7 +8,6 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         allowNull: false,
       },
-      
       phone_number: {
         type: DataTypes.STRING(20),
         allowNull: false,

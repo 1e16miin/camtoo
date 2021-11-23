@@ -12,7 +12,7 @@ const userController = require("./api/controllers/UserController");
 
 const app = express();
 
-app.set('port', 3000);
+app.set('port', process.env.PORT || 8000);
 
 
 sequelize
@@ -25,8 +25,9 @@ sequelize
   });
 
 
-app.use(express.static(path.join(__dirname, "public")));
+// app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json())
+app.use(express.urlencoded({ extended: false }));
 
 // app.use('/auth', authController)
 // app.use('/friend', friendController)

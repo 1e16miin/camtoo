@@ -3,14 +3,14 @@ module.exports = (sequelize, DataTypes) => {
     "user",
     {
       id: {
-        type: DataTypes.INTEGER.UNSIGNED,
-        autoIncrement: true,
+        type: DataTypes.UUID,
         primaryKey: true,
         allowNull: false,
       },
       profile_image: {
-        type: DataTypes.CHAR(36),
-        allowNull: true,
+        autoIncrement: true,
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: false,
       },
       nickname: {
         type: DataTypes.STRING(20),
