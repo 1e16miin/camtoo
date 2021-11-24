@@ -1,7 +1,7 @@
 const {
   boundary,
   building,
-  resident,
+  member,
   friend,
   user,
   sequelize,
@@ -53,7 +53,7 @@ const GeoFenceService = (universityId = 1, profileId = 1) => {
         //   attributes: ["x", "y"],
         //   where: { building_id: building.building_id },
         // });
-        const numberOfFriend = await resident.count({
+        const numberOfFriend = await member.count({
           // nest: true,
           // raw: true,
           // attributes: ["id"],
@@ -76,7 +76,7 @@ const GeoFenceService = (universityId = 1, profileId = 1) => {
 
   const getMembers = async (buildingId) => {
     const members = (
-      await resident.findAll({
+      await member.findAll({
         nest: true,
         raw: true,
         attributes: ["profile_id"],
@@ -148,7 +148,7 @@ const GeoFenceService = (universityId = 1, profileId = 1) => {
         building_id: buildingId,
         profile_id: profileId,
       };
-      await resident.create(enterData, { transaction });
+      await member.create(enterData, { transaction });
       await transaction.commit();
     } catch (err) {
       await transaction.rollback();
@@ -158,7 +158,7 @@ const GeoFenceService = (universityId = 1, profileId = 1) => {
   const exit = async (buildingId) => {
     let transaction = sequelize.transaction();
     try {
-      await resident.destroy({
+      await member.destroy({
         where: { building_id: buildingId, profile_id: profileId },
         transaction,
       });

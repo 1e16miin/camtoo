@@ -60,4 +60,7 @@ router.delete("/building/exit", async (req, res) => {
   }
 });
 
+
+router.post("/building/member/message/send")
+
 module.exports = router
