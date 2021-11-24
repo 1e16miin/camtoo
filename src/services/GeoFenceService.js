@@ -16,7 +16,7 @@ const GeoFenceService = (universityId = 1, profileId = 1) => {
         nest: true,
         raw: true,
         attributes: ["user.id"],
-        where: { status: "B" },
+        where: { status: "A" },
         include: [{ model: user, where: { profile_id: profileId } }],
       })
     ).map((element) => element.id);
@@ -59,13 +59,23 @@ const GeoFenceService = (universityId = 1, profileId = 1) => {
         where: { building_id: buildingId },
       })
     ).map((element) => element.profile_id);
-    
+    // const friendIds = await user.findAll({
+    //   nest: true,
+    //   raw: true,
+    //   where:{profile_id:profileId},
+    //   include: [
+    //     {
+    //       model: friend,
+    //       where:{status:"A"}
+    //     }
+    //   ]
+    // });
     const friendIds = 
       await friend.findAll({
         nest: true,
         raw: true,
-        attributes: ["user.id"],
-        where: { status: "B" },
+        // attributes:,
+        where: { status: "A" },
         include: [{ model: user, where: { profile_id: profileId } }],
       })
     console.log(friendIds)
