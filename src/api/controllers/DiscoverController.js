@@ -18,9 +18,9 @@ router.get('/geo-fence', async (req,res) => {
 })
 
 router.get("/building/member", async (req, res) => {
-  const {building_id} = req.query
+  const {profile_id, building_id} = req.query
   try {
-    const geoFenceInstance = GeoFenceService(1, 1);
+    const geoFenceInstance = GeoFenceService(1, profile_id);
     const result = await geoFenceInstance.getMembers(building_id);
     return res.status(200).send(result);
   } catch (err) {

@@ -87,7 +87,7 @@ const GeoFenceService = (universityId = 1, profileId = 1) => {
       ])
     ).flat().map(element=>element.profile_id);
       
-    console.log(friendIds, members)
+    // console.log(friendIds, members)
     const result = (await Promise.all(members.map(async profileId => {
       let result = {profile_id: profileId, isFriend:0}
       const userData = await user.findOne({
