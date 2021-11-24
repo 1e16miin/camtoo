@@ -1,6 +1,12 @@
-const { boundary, building, resident, friend, user, sequelize } = require("../models");
-const {Op} = require('sequelize')
-
+const {
+  boundary,
+  building,
+  resident,
+  friend,
+  user,
+  sequelize,
+} = require("../models");
+const { Op } = require("sequelize");
 
 const GeoFenceService = (universityId = 1, profileId = 1) => {
   const getBuildings = async () => {
@@ -103,41 +109,52 @@ const GeoFenceService = (universityId = 1, profileId = 1) => {
           where: { status: "A", followed_user_id: profileId },
         }),
       ])
-    ).flat().map(element=>element.profile_id);
-      
+    )
+      .flat()
+      .map((element) => element.profile_id);
+
     // console.log(friendIds, members)
-    const result = (await Promise.all(members.map(async profileId => {
-      let result = {profile_id: profileId, isFriend:0}
-      const userData = await user.findOne({
-        nest: true,
-        raw: true,
-        attributes:["open_type"],
-        where: { profile_id: profileId },
+    const result = (
+      await Promise.all(
+        members.map(async (profileId) => {
+          let result = { profile_id: profileId, isFriend: 0 };
+          const userData = await user.findOne({
+            nest: true,
+            raw: true,
+            attributes: ["open_type"],
+            where: { profile_id: profileId },
+          });
+
+          if (friendIds.includes(profileId)) {
+            result.isFriend = 1;
+          } else if (userData.open_type !== "A") {
+            return null;
+          }
+          return result;
+        })
+      )
+    )
+      .filter(Boolean)
+      .sort(function (a, b) {
+        return a.isFriend < b.isFriend ? -1 : a.isFriend > b.isFriend ? 1 : 0;
       });
-      if (friendIds.includes(profileId)) {
-        result.isFriend = 1
-      } else if (userData.open_type !== "A") {
-        return null
-      }
-      return result
-    }))).filter(Boolean)
-    return result
+    return result;
   };
 
   const entrance = async (buildingId) => {
     let transaction = sequelize.transaction();
     try {
       const enterData = {
-      building_id: buildingId,
-      profile_id: profileId
-    }
+        building_id: buildingId,
+        profile_id: profileId,
+      };
       await resident.create(enterData, { transaction });
-      await transaction.commit()
+      await transaction.commit();
     } catch (err) {
-      await transaction.rollback()
-      throw err
+      await transaction.rollback();
+      throw err;
     }
-  }
+  };
   const exit = async (buildingId) => {
     let transaction = sequelize.transaction();
     try {
@@ -149,8 +166,8 @@ const GeoFenceService = (universityId = 1, profileId = 1) => {
     } catch (err) {
       await transaction.rollback();
       throw err;
-    }  
-  }
+    }
+  };
 
   return { getBuildings, getMembers, entrance, exit };
 };
