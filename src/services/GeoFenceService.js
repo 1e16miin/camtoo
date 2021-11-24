@@ -22,7 +22,7 @@ const GeoFenceService = (universityId = 1, profileId = 1) => {
     ).map((element) => element.id);
 
     buildingData = await Promise.all(
-      buildingIdList.map(async (building) => {
+      buildingData.map(async (building) => {
         const boundaryData = await boundary.findAll({
           nest: true,
           raw: true,
