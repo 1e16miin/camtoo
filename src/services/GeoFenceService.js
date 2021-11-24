@@ -69,7 +69,7 @@ const GeoFenceService = (universityId = 1, profileId = 1) => {
         include: [{ model: user, where: { profile_id: profileId } }],
       })
     ).map((element) => element.id);
-
+    console.log(friendIds)
     const result = (await Promise.all(members.map(async profileId => {
       let result = {profile_id: profileId, isFriend:0}
       const userData = await user.findOne({
