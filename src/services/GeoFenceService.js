@@ -136,7 +136,7 @@ const GeoFenceService = (universityId = 1, profileId = 1) => {
     )
       .filter(Boolean)
       .sort(function (a, b) {
-        return a.isFriend < b.isFriend ? -1 : a.isFriend > b.isFriend ? 1 : 0;
+        return a.isFriend > b.isFriend ? -1 : a.isFriend < b.isFriend ? 1 : 0;
       });
     return result;
   };
