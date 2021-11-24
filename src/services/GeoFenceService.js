@@ -41,24 +41,24 @@ const GeoFenceService = (universityId = 1, profileId = 1) => {
 
     buildingData = await Promise.all(
       buildingData.map(async (building) => {
-        const boundaryData = await boundary.findAll({
-          nest: true,
-          raw: true,
-          attributes: ["x", "y"],
-          where: { building_id: building.building_id },
-        });
-        const isIn = await resident.findAll({
-          nest: true,
-          raw: true,
-          attributes: ["id"],
+        // const boundaryData = await boundary.findAll({
+        //   nest: true,
+        //   raw: true,
+        //   attributes: ["x", "y"],
+        //   where: { building_id: building.building_id },
+        // });
+        const numberOfFriend = await resident.count({
+          // nest: true,
+          // raw: true,
+          // attributes: ["id"],
           where: { profile_id: friendIds, building_id: building.building_id },
           // include: [{ model: friend, attributes: [], required: true, where: { status: "A" },include:[{model:user, where:{profile_id:profileId}}] }],
         });
 
-        building.boundaries = boundaryData;
+        // building.boundaries = boundaryData;
         const marker = { x: building.x, y: building.y };
         building.marker = marker;
-        building.isEmpty = isIn ? 1 : 0;
+        building.isEmpty = numberOfFriend === 0 ? 1 : 0;
         delete building.x;
         delete building.y;
         return building;
