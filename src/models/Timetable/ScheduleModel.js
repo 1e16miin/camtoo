@@ -8,12 +8,16 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         allowNull: false,
       },
-      day_week: {
+      class_name: {
+        type: DataTypes.STRING(20),
+        allowNull: false,
+      },
+      day_of_the_week: {
         type: DataTypes.CHAR(1),
         allowNull: false,
       },
-      type: {
-        type: DataTypes.CHAR(1),
+      class_type: {
+        type: DataTypes.BOOLEAN,
         allowNull: false,
       },
       start_time: {

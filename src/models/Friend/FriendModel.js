@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
         primaryKey: true,
       },
-      following_user_id: {
+      follower: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
         references: {
@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
           key: "profile_id",
         },
       },
-      followed_user_id: {
+      followee: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
         references: {
@@ -42,14 +42,14 @@ module.exports = (sequelize, DataTypes) => {
           fields: [{ name: "id" }],
         },
         {
-          name: "following_user_id",
+          name: "follower",
           using: "BTREE",
-          fields: [{ name: "following_user_id" }],
+          fields: [{ name: "follower" }],
         },
         {
-          name: "followed_user_id",
+          name: "followee",
           using: "BTREE",
-          fields: [{ name: "followed_user_id" }],
+          fields: [{ name: "followee" }],
         },
       ],
     }

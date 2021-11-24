@@ -8,13 +8,13 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       profile_id: {
-        // autoIncrement: true,
+        autoIncrement: true,
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
       },
       profile_image_url: {
         type: DataTypes.CHAR(36),
-        allowNull: true
+        allowNull: true,
       },
       nickname: {
         type: DataTypes.STRING(20),
@@ -27,6 +27,18 @@ module.exports = (sequelize, DataTypes) => {
       status_message: {
         type: DataTypes.STRING(100),
         allowNull: true,
+      },
+      latitude: {
+        type: DataTypes.DECIMAL(8, 6),
+        allowNull: false,
+      },
+      longitude: {
+        type: DataTypes.DECIMAL(9, 6),
+        allowNull: false,
+      },
+      is_building: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
       },
       university_id: {
         type: DataTypes.INTEGER.UNSIGNED,

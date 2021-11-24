@@ -7,43 +7,63 @@ const {
   sequelize,
 } = require("../models");
 const { Op } = require("sequelize");
+const FriendService = require("./FriendService");
+const UserService = require("./UserService");
 
 const GeoFenceService = (universityId = 1, profileId = 1) => {
+  const friendInstance = FriendService(profileId);
+  
+  // const userInstance = UserService()
+  
+  
+
+  const findAllInSchoolUserId = async () => {
+    const inSchoolUsers = await user.findAll({ raw: true, nest: true, where: { in_school: 1 } })
+    const result = inSchoolUsers.map(user => user.profile_id)
+    return result
+  };
+
+  const getInSchoolUsers = async () => {
+    const friendIdList = await friendInstance.findById(profileId);
+    const inSchoolUsersId = await findAllInSchoolUserId()
+    const inSchoolUsers = (await Promise.all(inSchoolUsersId.map(id => {
+      let isFriend = false
+      if (friendIdList.includes(id)) {
+        isFriend = true
+      }
+      
+      const userData = await UserService(id).getUserData();
+      // publicProfileMode: public_profile_mode,
+      if (userData.publicProfileMode === 0 && !isFriend) {
+        return null
+      }
+      const result = {
+        user: userData,
+        isFriend: isFriend
+      }
+      return result
+    }))).filter(Boolean);
+
+    const result = {
+      userInSchool: inSchoolUsers,
+    };
+    return result
+  }
+
+  const getBuildingInFriends = async () => {
+
+  }
+
   const getBuildings = async () => {
     let buildingData = await building.findAll({
       nest: true,
       raw: true,
       where: { university_id: universityId },
-      attributes: [["id", "building_id"], "x", "y"],
+      attributes: [["id", "building_id"], "latitude", "longitude"],
     });
 
-    const friendIds = (
-      await Promise.all([
-        await friend.findAll({
-          nest: true,
-          raw: true,
-          attributes: [["followed_user_id", "profile_id"]],
-          where: { status: "A", following_user_id: profileId },
-        }),
-        await friend.findAll({
-          nest: true,
-          raw: true,
-          attributes: [["following_user_id", "profile_id"]],
-          where: { status: "A", followed_user_id: profileId },
-        }),
-      ])
-    )
-      .flat()
-      .map((element) => element.profile_id);
-    // const friendIds = (
-    //   await friend.findAll({
-    //     nest: true,
-    //     raw: true,
-    //     attributes: ["user.id"],
-    //     where: { status: "A" },
-    //     include: [{ model: user, where: { profile_id: profileId } }],
-    //   })
-    // ).map((element) => element.id);
+   
+   
 
     buildingData = await Promise.all(
       buildingData.map(async (building) => {
@@ -62,7 +82,10 @@ const GeoFenceService = (universityId = 1, profileId = 1) => {
         });
 
         // building.boundaries = boundaryData;
-        const marker = { x: building.x, y: building.y };
+        const marker = {
+          latitude: building.latitude,
+          longitude: building.longitude,
+        };
         building.marker = marker;
         building.isEmpty = numberOfFriend === 0 ? 1 : 0;
         delete building.x;
@@ -83,17 +106,7 @@ const GeoFenceService = (universityId = 1, profileId = 1) => {
         where: { building_id: buildingId },
       })
     ).map((element) => element.profile_id);
-    // const friendIds = await user.findAll({
-    //   nest: true,
-    //   raw: true,
-    //   where:{profile_id:profileId},
-    //   include: [
-    //     {
-    //       model: friend,
-    //       where:{status:"A"}
-    //     }
-    //   ]
-    // });
+
     const friendIds = (
       await Promise.all([
         await friend.findAll({
@@ -149,6 +162,7 @@ const GeoFenceService = (universityId = 1, profileId = 1) => {
         profile_id: profileId,
       };
       await member.create(enterData, { transaction });
+      await user.update({in_building:1},{where:{id:profileId}, transaction})
       await transaction.commit();
     } catch (err) {
       await transaction.rollback();
@@ -162,6 +176,10 @@ const GeoFenceService = (universityId = 1, profileId = 1) => {
         where: { building_id: buildingId, profile_id: profileId },
         transaction,
       });
+      await user.update(
+        { in_building: 0 },
+        { where: { id: profileId }, transaction }
+      );
       await transaction.commit();
     } catch (err) {
       await transaction.rollback();

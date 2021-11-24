@@ -12,11 +12,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(40),
         allowNull: false,
       },
-      x: {
+      latitude: {
         type: DataTypes.DECIMAL(8, 6),
         allowNull: false,
       },
-      y: {
+      longitude: {
         type: DataTypes.DECIMAL(9, 6),
         allowNull: false,
       },

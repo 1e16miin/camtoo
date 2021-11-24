@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         allowNull: false,
       },
-      sender_id: {
+      sender: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
         references: {
@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
           key: "profile_id",
         },
       },
-      receiver_id: {
+      receiver: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
         references: {
@@ -43,14 +43,14 @@ module.exports = (sequelize, DataTypes) => {
           fields: [{ name: "id" }],
         },
         {
-          name: "sender_id",
+          name: "sender",
           using: "BTREE",
-          fields: [{ name: "sender_id" }],
+          fields: [{ name: "sender" }],
         },
         {
-          name: "receiver_id",
+          name: "receiver",
           using: "BTREE",
-          fields: [{ name: "receiver_id" }],
+          fields: [{ name: "receiver" }],
         },
       ],
     }
