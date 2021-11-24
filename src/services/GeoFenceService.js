@@ -1,4 +1,4 @@
-const { boundary, building, member, friend, user } = require("../models");
+const { boundary, building, resident, friend, user } = require("../models");
 const {Op} = require('sequelize')
 
 
@@ -29,7 +29,7 @@ const GeoFenceService = (universityId = 1, profileId = 1) => {
           attributes: ["x", "y"],
           where: { building_id: building.building_id },
         });
-        const isIn = await member.findAll({
+        const isIn = await resident.findAll({
           nest: true,
           raw: true,
           attributes: ["id"],
@@ -50,13 +50,16 @@ const GeoFenceService = (universityId = 1, profileId = 1) => {
     return buildingData;
   };
 
-  const getMembers = async((buildingId) => {
-    const members = (await member.findAll({
-      nest: true,
-      raw: true,
-      attributes: ["profile_id"],
-      where: { building_id: building.building_id}
-    })).map(element => element.profile_id)
+  const getMembers = async (buildingId) => {
+    const members = (
+      await resident.findAll({
+        nest: true,
+        raw: true,
+        attributes: ["profile_id"],
+        where: { building_id: buildingId },
+      })
+    ).map((element) => element.profile_id);
+    
     const friendIds = (
       await friend.findAll({
         nest: true,
@@ -67,7 +70,7 @@ const GeoFenceService = (universityId = 1, profileId = 1) => {
       })
     ).map((element) => element.id);
 
-    const result = (await Promise.all(members.map(profileId => {
+    const result = (await Promise.all(members.map(async profileId => {
       let result = {profile_id: profileId, isFriend:0}
       const userData = await user.findOne({
         nest: true,
@@ -83,7 +86,7 @@ const GeoFenceService = (universityId = 1, profileId = 1) => {
       return result
     }))).filter(Boolean)
     return result
-  });
+  };
 
   return { getBuildings, getMembers };
 };

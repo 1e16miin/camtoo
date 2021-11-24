@@ -51,7 +51,7 @@ db.friend = require("./Friend/FriendModel")(sequelize, Sequelize);
 db.communication = require("./Interaction/CommunicationModel")(sequelize, Sequelize);
 db.phone = require("./User/PhoneModel")(sequelize,Sequelize)
 db.area = require("./University/AreaModel")(sequelize,Sequelize)
-db.member = require("./University/MemberModel")(sequelize, Sequelize)
+db.resident = require("./University/MemberModel")(sequelize, Sequelize)
 
 
 db.university.hasMany(db.building, {
@@ -90,11 +90,11 @@ db.boundary.belongsTo(db.building, {
   targetKey: "id",
 });
 
-db.building.hasMany(db.member, {
+db.building.hasMany(db.resident, {
   foreignKey: "building_id",
   sourceKey: "id",
 });
-db.member.belongsTo(db.building, {
+db.resident.belongsTo(db.building, {
   foreignKey: "building_id",
   targetKey: "id",
 });
@@ -109,12 +109,12 @@ db.friend.belongsTo(db.user, {
   targetKey: "profile_id",
 });
 
-db.user.hasMany(db.member, {
+db.user.hasMany(db.resident, {
   foreignKey: "profile_id",
   sourceKey: "profile_id",
 });
 
-db.member.belongsTo(db.user, {
+db.resident.belongsTo(db.user, {
   foreignKey: "profile_id",
   targetKey: "profile_id",
 });
