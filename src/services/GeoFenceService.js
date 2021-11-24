@@ -60,7 +60,7 @@ const GeoFenceService = (universityId = 1, profileId = 1) => {
       })
     ).map((element) => element.profile_id);
     
-    const friendIds = (
+    const friendIds = 
       await friend.findAll({
         nest: true,
         raw: true,
@@ -68,7 +68,6 @@ const GeoFenceService = (universityId = 1, profileId = 1) => {
         where: { status: "B" },
         include: [{ model: user, where: { profile_id: profileId } }],
       })
-    ).map((element) => element.id);
     console.log(friendIds)
     const result = (await Promise.all(members.map(async profileId => {
       let result = {profile_id: profileId, isFriend:0}
