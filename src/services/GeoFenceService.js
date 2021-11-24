@@ -70,14 +70,23 @@ const GeoFenceService = (universityId = 1, profileId = 1) => {
     //     }
     //   ]
     // });
-    const friendIds = 
-      await friend.findAll({
-        nest: true,
-        raw: true,
-        // attributes:,
-        where: { status: "A" },
-        include: [{ model: user, where: { profile_id: profileId } }],
-      })
+    const friendIds = (
+      await Promise.all([
+        await friend.findAll({
+          nest: true,
+          raw: true,
+          attributes: [["followed_user_id", "profile_id"]],
+          where: { status: "A", following_user_id: profileId },
+        }),
+        await friend.findAll({
+          nest: true,
+          raw: true,
+          attributes: [["following_user_id", "profile_id"]],
+          where: { status: "A", followed_user_id: profileId },
+        }),
+      ])
+    ).flat();
+      
     console.log(friendIds)
     const result = (await Promise.all(members.map(async profileId => {
       let result = {profile_id: profileId, isFriend:0}
