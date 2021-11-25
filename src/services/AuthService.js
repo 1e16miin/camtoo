@@ -27,6 +27,7 @@ const AuthService = () => {
     let transaction = await sequelize.transaction();
     try {
       const { id, universityId, name, timeTableClasses } = signUpData;
+      console.log(name)
       const userData = {
         id:id,
         university_id: universityId,
