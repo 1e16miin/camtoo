@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
       },
       follower: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
         references: {
           model: "user",
@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       followee: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
         references: {
           model: "user",

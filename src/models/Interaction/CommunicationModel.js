@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       sender: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
         references: {
           model: "user",
@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       receiver: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
         references: {
           model: "user",
