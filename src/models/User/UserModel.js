@@ -63,11 +63,6 @@ module.exports = (sequelize, DataTypes) => {
         },
         allowNull: false,
       },
-      open_type: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false,
-        allowNull: false,
-      },
       refresh_token: {
         type: DataTypes.STRING(255),
         allowNull: true,
