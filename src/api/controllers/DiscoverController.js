@@ -15,7 +15,7 @@ router.get('/building', checkAccessTokens ,async (req,res) => {
     return res.status(200).send(result)
   } catch (err) {
     console.log(err)
-    res.status(400).send({error:"데이터를 찾는 과정에 오류가 발생하였습니다."})
+    res.status(400).send({message:"데이터를 찾는 과정에 오류가 발생하였습니다."})
   }
 })
 
@@ -30,7 +30,7 @@ router.get("/road", checkAccessTokens, async (req, res) => {
     console.log(err);
     res
       .status(400)
-      .send({ error: "데이터를 찾는 과정에 오류가 발생하였습니다." });
+      .send({ message: "데이터를 찾는 과정에 오류가 발생하였습니다." });
   }
 });
 
@@ -47,7 +47,7 @@ router.get("/university",checkAccessTokens, async (req, res) => {
     console.log(err);
     res
       .status(400)
-      .send({ error: "데이터를 찾는 과정에 오류가 발생하였습니다." });
+      .send({ message: "데이터를 찾는 과정에 오류가 발생하였습니다." });
   }
 });
 
@@ -64,7 +64,7 @@ router.post("/building/enter", checkAccessTokens,async (req, res) => {
     console.log(err);
     res
       .status(400)
-      .send({ error: "데이터를 생성하는 과정에 오류가 발생하였습니다." });
+      .send({ message: "데이터를 생성하는 과정에 오류가 발생하였습니다." });
   }
 })
 
@@ -82,7 +82,7 @@ router.delete("/building/exit", checkAccessTokens ,async (req, res) => {
     console.log(err);
     res
       .status(400)
-      .send({ error: "데이터를 생성하는 과정에 오류가 발생하였습니다." });
+      .send({ message: "데이터를 생성하는 과정에 오류가 발생하였습니다." });
   }
 });
 

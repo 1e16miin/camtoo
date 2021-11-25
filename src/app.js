@@ -30,9 +30,9 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }));
 
 app.use('/auth', authController)
-// app.use('/friend', friendController)
-// app.use('/main', discoverController)
-// app.use('/profile', userController)
+app.use('/friend', friendController)
+app.use('/main', discoverController)
+app.use('/user', userController)
 
 
 app.get("/", function (req, res) {
