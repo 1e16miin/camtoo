@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 
-const { secretKey } = require("../config/key");
+const { jwtSecretKey } = require("../config/key");
 
 //토큰을 header, payload, signature로 풀어주는 친구
 
@@ -9,7 +9,7 @@ module.exports = {
     console.log(token)
     try {
       if (token) {
-        return {token_data: jwt.verify(token, secretKey)};
+        return { token_data: jwt.verify(token, jwtSecretKey) };
       }
       else {
         return { token_data: { type: "N" } };
