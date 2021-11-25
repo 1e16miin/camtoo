@@ -5,6 +5,7 @@ const {
   friend,
   user,
   sequelize,
+  university,
 } = require("../models");
 const { Op } = require("sequelize");
 const FriendService = require("./FriendService");
@@ -26,7 +27,7 @@ const GeoFenceService = (userId) => {
   const getInSchoolUsers = async () => {
     const friendIdList = await friendInstance.findById(userId);
     const inSchoolUsersId = await findAllInSchoolUserId()
-    const inSchoolUsers = (await Promise.all(inSchoolUsersId.map(async id => {
+    const inSchoolUsers = await Promise.all(inSchoolUsersId.map(async id => {
       let isFriend = false
       if (friendIdList.includes(id)) {
         isFriend = true
@@ -42,152 +43,50 @@ const GeoFenceService = (userId) => {
         isFriend: isFriend
       }
       return result
-    }))).filter(Boolean);
+    }))
 
-    const result = {
-      userInSchool: inSchoolUsers,
-    };
+    const result = inSchoolUsers.filter(Boolean);
+    
     return result
   }
 
-  const getBuildingInFriends = async () => {
-
+  const getUniversityData = async (universityId=1) => {
+    const buildingIdList = (await building.findAll({raw:true, nest:true, where:{university_id:universityId}})).map(data=>data.id)
+    const result = await Promise.all(
+      buildingIdList.map(async (buildingId) => await getBuildingData(buildingId))
+    );
+    return result
   }
 
-  const getBuildings = async () => {
-    let buildingData = await building.findAll({
+  const getBuildingData = async (buildingId) => {
+    let entries = await getInSchoolUsers();
+    const people = entries.filter((userData) => {
+      userData.user.buildingId === buildingId;
+    });
+    if (!buildingId) {
+      return people;
+    }
+    const buildingData = await building.findOne({
       nest: true,
       raw: true,
-      where: { university_id: universityId },
-      attributes: [["id", "building_id"], "latitude", "longitude"],
+      where: { id: buildingId },
+      attributes: ["latitude", "longitude", "name"],
     });
+    const { latitude, longitude, name } = buildingData;
+    
+    const result = {
+      buildingId: buildingId,
+      name: name,
+      coordinate: { latitude: latitude, longitude: longitude },
+      people:people
+    }
 
-   
-   
-
-    buildingData = await Promise.all(
-      buildingData.map(async (building) => {
-        // const boundaryData = await boundary.findAll({
-        //   nest: true,
-        //   raw: true,
-        //   attributes: ["x", "y"],
-        //   where: { building_id: building.building_id },
-        // });
-        const numberOfFriend = await member.count({
-          // nest: true,
-          // raw: true,
-          // attributes: ["id"],
-          where: { profile_id: friendIds, building_id: building.building_id },
-          // include: [{ model: friend, attributes: [], required: true, where: { status: "A" },include:[{model:user, where:{profile_id:profileId}}] }],
-        });
-
-        // building.boundaries = boundaryData;
-        const marker = {
-          latitude: building.latitude,
-          longitude: building.longitude,
-        };
-        building.marker = marker;
-        building.isEmpty = numberOfFriend === 0 ? 1 : 0;
-        delete building.x;
-        delete building.y;
-        return building;
-      })
-    );
-
-    return buildingData;
-  };
-
-  const getMembers = async (buildingId) => {
-    const members = (
-      await member.findAll({
-        nest: true,
-        raw: true,
-        attributes: ["profile_id"],
-        where: { building_id: buildingId },
-      })
-    ).map((element) => element.profile_id);
-
-    const friendIds = (
-      await Promise.all([
-        await friend.findAll({
-          nest: true,
-          raw: true,
-          attributes: [["followed_user_id", "profile_id"]],
-          where: { status: "A", following_user_id: userId },
-        }),
-        await friend.findAll({
-          nest: true,
-          raw: true,
-          attributes: [["following_user_id", "profile_id"]],
-          where: { status: "A", followed_user_id: userId },
-        }),
-      ])
-    )
-      .flat()
-      .map((element) => element.profile_id);
-
-    // console.log(friendIds, members)
-    const result = (
-      await Promise.all(
-        members.map(async (profileId) => {
-          let result = { profile_id: profileId, isFriend: 0 };
-          const userData = await user.findOne({
-            nest: true,
-            raw: true,
-            attributes: ["open_type"],
-            where: { profile_id: profileId },
-          });
-
-          if (friendIds.includes(profileId)) {
-            result.isFriend = 1;
-          } else if (userData.open_type !== "A") {
-            return null;
-          }
-          return result;
-        })
-      )
-    )
-      .filter(Boolean)
-      .sort(function (a, b) {
-        return a.isFriend > b.isFriend ? -1 : a.isFriend < b.isFriend ? 1 : 0;
-      });
     return result;
   };
 
-  const entrance = async (buildingId) => {
-    let transaction = sequelize.transaction();
-    try {
-      const enterData = {
-        building_id: buildingId,
-        profile_id: userId,
-      };
-      await member.create(enterData, { transaction });
-      await user.update({in_building:1},{where:{id:userId}, transaction})
-      await transaction.commit();
-    } catch (err) {
-      await transaction.rollback();
-      throw err;
-    }
-  };
-  const exit = async (buildingId) => {
-    let transaction = sequelize.transaction();
-    try {
-      await member.destroy({
-        where: { building_id: buildingId, profile_id: userId },
-        transaction,
-      });
-      await user.update(
-        { in_building: 0 },
-        { where: { id: userId }, transaction }
-      );
-      await transaction.commit();
-    } catch (err) {
-      await transaction.rollback();
-      throw err;
-    }
-  };
+ 
 
-  return { getBuildings, getMembers, entrance, exit };
+  return {getUniversityData,  getBuildingData, entrance, exit };
 };
 
 module.exports = GeoFenceService;
