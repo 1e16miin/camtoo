@@ -5,12 +5,17 @@ const moment = require("moment-timezone");
 const { sequelize, communication } = require("../models");
 moment().tz("Asia/Seoul");
 
-const NotificationService = (sender) => {
-  const accessKey = SENS_PUSH.accessKey;
-  const serviceId = SENS_PUSH.serviceId;
-  const secretKey = SENS_PUSH.secretKey;
+const NotificationService = (sender = null) => {
+  const pushAccessKey = SENS_PUSH.accessKey;
+  const pushServiceId = SENS_PUSH.serviceId;
+  const pushSecretKey = SENS_PUSH.secretKey;
 
-  const makeSignature = (url, timestamp, method) => {
+  const smsAccessKey = SENS_SMS.accessKey;
+  const smsServiceId = SENS_SMS.serviceId;
+  const smsSecretKey = SENS_SMS.secretKey;
+  const smsSender = SENS_SMS.sender;
+
+  const makeSignature = (url, timestamp, method, secretKey, accessKey) => {
     const space = " "; // one space
     const newLine = "\n"; // new line
 
@@ -34,10 +39,16 @@ const NotificationService = (sender) => {
 
     const method = "POST";
 
-    const uri = `https://sens.apigw.ntruss.com/push/v2/services/${serviceId}/users`;
-    const url = `/push/v2/services/${serviceId}/users`;
+    const uri = `https://sens.apigw.ntruss.com/push/v2/services/${pushServiceId}/users`;
+    const url = `/push/v2/services/${pushServiceId}/users`;
 
-    const signature = makeSignature(url, timestamp, method);
+    const signature = makeSignature(
+      url,
+      timestamp,
+      method,
+      pushSecretKey,
+      pushAccessKey
+    );
 
     const body = {
       userId: sender,
@@ -52,7 +63,7 @@ const NotificationService = (sender) => {
     const options = {
       headers: {
         "Content-Type": "application/json; charset=utf-8",
-        "x-ncp-iam-access-key": accessKey,
+        "x-ncp-iam-access-key": pushAccessKey,
         "x-ncp-apigw-timestamp": timestamp,
         "x-ncp-apigw-signature-v2": signature.toString(),
       },
@@ -75,9 +86,16 @@ const NotificationService = (sender) => {
     try {
       const timestamp = Date.now().toString(); // current timestamp (epoch)
 
-      const uri = `https://sens.apigw.ntruss.com/push/v2/services/${serviceId}/messages`;
-
-      const signature = makeSignature(uri, timestamp, "POST");
+      const uri = `https://sens.apigw.ntruss.com/push/v2/services/${pushServiceId}/messages`;
+      const url = `/push/v2/services/${pushServiceId}/users`;
+      const method = "POST";
+      const signature = makeSignature(
+        url,
+        timestamp,
+        method,
+        pushSecretKey,
+        pushAccessKey
+      );
       let resultCode = 400;
 
       const body = {
@@ -101,7 +119,7 @@ const NotificationService = (sender) => {
       const options = {
         headers: {
           "Content-Type": "application/json; charset=utf-8",
-          "x-ncp-iam-access-key": accessKey,
+          "x-ncp-iam-access-key": pushAccessKey,
           "x-ncp-apigw-timestamp": timestamp,
           "x-ncp-apigw-signature-v2": signature,
         },
@@ -111,7 +129,7 @@ const NotificationService = (sender) => {
         receiver: receiver,
         message: payload,
       };
-      await communication.create(communicationData, {transaction});
+      await communication.create(communicationData, { transaction });
 
       await axios
         .post(uri, body, options)
@@ -130,11 +148,42 @@ const NotificationService = (sender) => {
       throw new Error("푸쉬를 보내는 과정에서 에러가 발생하였습니다.");
     }
   };
-  const sendSMS = async (payload) => {
-    
-  };
+  // const sendSMS = async (payload) => {
+  //   const timestamp = Date.now().toString(); // current timestamp (epoch)
+
+  //   const uri = `https://sens.apigw.ntruss.com/sms/v2/services/${smsServiceID}/messages`;
+  //   const url = `/sms/v2/services/${smsServiceID}/messages`;
+  //   const method = "POST";
+  //   const signature = makeSignature(
+  //     url,
+  //     timestamp,
+  //     method,
+  //     smsSecretKey,
+  //     smsAccessKey
+  //   );
+  //   const options = {
+  //     headers: {
+  //       "Content-Type": "application/json; charset=utf-8",
+  //       "x-ncp-iam-access-key": smsAccessKey,
+  //       "x-ncp-apigw-timestamp": timestamp,
+  //       "x-ncp-apigw-signature-v2": signature,
+  //     },
+  //   };
+  //   const body = {
+  //     type: "SMS",
+  //     contentType: "COMM",
+  //     countryCode: "82",
+  //     from: smsSender,
+  //     content: `[피오픽] 인증번호 [${number}]를\n입력해주세요.`,
+  //     messages: [
+  //       {
+  //         to: `${phoneNumber}`,
+  //       },
+  //     ],
+  //   };
+  // };
   // const
-  return { postDeviceToken, sendPush, sendSMS };
+  return { postDeviceToken, sendPush };
 };
 
 module.exports = NotificationService;

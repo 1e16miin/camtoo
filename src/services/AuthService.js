@@ -2,9 +2,15 @@ const { sequelize, user } = require("../models")
 const { jwtSecretKey } = require("../config/key")
 const jwt = require('jsonwebtoken')
 const TimeTableService = require("./TimeTableService")
-
+const cache = require("memory-cache");
 
 const AuthService = () => {
+
+  const requestVerifyCode = (phoneNumber) => {
+    const notificationServiceInstance=NotificationService()
+
+  }
+
   const issueTokens = (id) => {
 
     const accessToken = jwt.sign(
