@@ -1,8 +1,9 @@
 const express = require("express");
+const { jwtSecretKey } = require("../../config/key");
 const AuthService = require("../../services/AuthService");
 const NotificationService = require("../../services/NotificationService");
 const UserService = require("../../services/UserService");
-const { checkATokens } = require("../middlewares/verifyToken");
+const { checkAccessTokens } = require("../middlewares/verifyToken");
 const router = express();
 
 
@@ -18,7 +19,7 @@ router.post("/sign-up", async (req, res) => {
   }
 })
 
-router.post("/register/device-token", checkATokens, async (req, res) => {
+router.post("/register/device-token", checkAccessTokens, async (req, res) => {
   try {
     const id = req.id
 
@@ -36,9 +37,19 @@ router.post("/register/device-token", checkATokens, async (req, res) => {
   }
 });
 
-router.get("/refreshToken", checkATokens, async (req, res) => {
-  
-})
+router.get("/refreshToken", checkRefreshToken, async (req, res) => {
+   const id = req.id;
+   const newAccessToken = jwt.sign(
+     { userId: id, type: "A" },
+     jwtSecretKey,
+     { expiresIn: 60 * 60 * 24 * 30 * 6 }
+   );
+
+   return res.status(200).send({ code: 1, AccessToken: newAccessToken });
+
+});
+
+
 
 
 module.exports=router

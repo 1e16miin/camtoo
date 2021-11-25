@@ -2,7 +2,7 @@ const { verifyToken } = require("../../lib/jwt");
 const { user } = require("../../models");
 
 module.exports = {
-  async checkATokens(req, res, next) {
+  async checkAccessToken(req, res, next) {
 
     const { authorization } = req.headers;
 
@@ -37,32 +37,32 @@ module.exports = {
       }
     }
   },
-  async checkRTokens(req, res, next) {
+  async checkRefreshToken(req, res, next) {
     const { authorization } = req.headers;
 
-    const token_replaced = authorization.replace("Bearer ", "");
+    const credentials = authorization.replace("Bearer ", "");
 
-    const userId = verifyToken(token_replaced);
+    const tokenData = verifyToken(credentials);
 
-    const token_censor = userId.tokenData.type;
+    const tokenType = tokenData.type;
 
-    if (token_censor === "E" || token_censor === "N") {
+    if (tokenType === "E" || tokenType === "N") {
       return res.status(403).send({ error: "접근이 불가능합니다." });
     }
 
     else {
-      const parse_userId =
-        token_censor !== "R" ? "1" : parse(userId.tokenData.userId);
-      const bufferOne = token_censor !== "R" ? "1" : Buffer.from(parse_userId);
+      const userId =
+        tokenType !== "R" ? null : tokenData.userId;
+      const bufferOne = tokenType !== "R" ? null : Buffer.from(userId);
 
-      if (token_censor === "R") {
-        const rtokencensor = async () => {
-          return user.findOne({ where: { user_id: bufferOne } }).then(
+      if (tokenType === "R") {
+        const checkToken = async () => {
+          return user.findOne({nest:true, raw:true, where: { user_id: bufferOne } }).then(
             (data) => {
               if (!data) {
                 return false;
               } else {
-                if (data.dataValues.refreshtoken === token_replaced) {
+                if (data.refresh_token === credentials) {
                   return true;
                 } else {
                   return false;
@@ -71,11 +71,11 @@ module.exports = {
             }
           );
         };
-        const issamertoken = await rtokencensor();
+        const isSame = await checkToken();
 
-        console.log(issamertoken);
+        console.log(isSame);
 
-        if (issamertoken) {
+        if (isSame) {
           req.id = bufferOne;
           next();
         } else {
@@ -86,7 +86,7 @@ module.exports = {
         }
       }
       //엑세스 토큰이 유효하지 않을 때
-      else if (token_censor === "P") {
+      else if (tokenType === "P") {
         return res
           .status(401)
           .send({ code: 3, message: "로그인이 필요합니다." });
