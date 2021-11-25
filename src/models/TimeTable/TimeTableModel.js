@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       class_name: {
         type: DataTypes.STRING(20),
-        allowNull: false,
+        allowNull: true,
       },
       day_of_the_week: {
         type: DataTypes.CHAR(1),
