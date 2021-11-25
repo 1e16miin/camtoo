@@ -8,6 +8,7 @@ module.exports = {
   verifyToken(token) {
     try {
       if (token) {
+        console.log(jwt.verify(token, jwtSecretKey));
         return jwt.verify(token, jwtSecretKey);
       }
       else {
