@@ -2,6 +2,7 @@ const { sequelize, user } = require("../models")
 const { jwtSecretKey } = require("../config/key")
 const jwt = require('jsonwebtoken')
 const TimeTableService = require("./TimeTableService")
+const { v4: uuidv4, parse, stringify } = require("uuid");
 
 const AuthService = () => {
   const issueTokens = (id) => {
