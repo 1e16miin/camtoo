@@ -13,7 +13,7 @@ module.exports = {
     const tokenType = tokenData.type;
 
     const id = tokenType !== "A" ? "1" : tokenData.id;
-
+    
     const bufferOne = tokenType !== "A" ? "1" : Buffer.from(id);
 
     if (credentials === "null") {

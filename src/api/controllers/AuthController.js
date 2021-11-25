@@ -39,7 +39,7 @@ router.post("/register/device-token", checkAccessTokens, async (req, res) => {
 
 router.get("/issue/access-token", checkRefreshTokens, async (req, res) => {
   const id = req.id;
-  const newAccessToken = jwt.sign({ userId: id, type: "A" }, jwtSecretKey, {
+  const newAccessToken = jwt.sign({ id: id, type: "A" }, jwtSecretKey, {
     expiresIn: 60 * 60 * 24 * 30 * 6,
   });
 
