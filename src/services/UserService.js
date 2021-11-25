@@ -1,9 +1,7 @@
-const { user } = require("../models");
+const { user, entry } = require("../models");
 const TimeTableService = require("./TimeTableService");
 
 const UserService = async (id) => {
-  const getUniversityId = (userId) => { };
-  
   const getUserId = async () => {
     const userId = await user.findOne({
       nest: true,
@@ -15,12 +13,13 @@ const UserService = async (id) => {
     return result;
   }
   const getUserData = async (userId) => {
-    const timeTableClasses = await TimeTableService(userId).getAllSchedules();
+    const schedules = await TimeTableService(userId).getAllSchedules();
     const userData = await user.findOne({
       nest: true,
       raw: true,
       where: { profile_id: userId },
     });
+    const buildingId = (await entry.findOne({raw:true, nest:true, where:{user_id:userId}})).building_id
     const {
       profile_id,
       name,
@@ -28,7 +27,6 @@ const UserService = async (id) => {
       promise_refusal_mode,
       public_profile_mode,
       in_school,
-      in_building,
       status_message,
       profile_image_url,
     } = userData;
@@ -41,10 +39,10 @@ const UserService = async (id) => {
       publicProfileMode: public_profile_mode,
       statusMessage: status_message,
       imageUrl: profile_image_url,
-      timeTableClasses: timeTableClasses,
+      schedule: schedules,
       coordinate: { latitude: latitude, longitude: longitude },
       inSchool: in_school,
-      inBuilding: in_building,
+      buildingId: building_id,
     };
     return result;
   };
