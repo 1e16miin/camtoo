@@ -8,28 +8,28 @@ module.exports = {
 
     const credentials = authorization.replace("Bearer ", "");
 
-    const userId = verifyToken(credentials);
-    console.log(userId)
-    const token_censor = userId.token_data.type;
+    const tokenData = verifyToken(credentials);
 
-    const parse_userId = token_censor !== "A" ? "1" : userId.token_data.userId;
+    const tokenType = tokenData.type;
 
-    const bufferOne = token_censor !== "A" ? "1" : Buffer.from(parse_userId);
+    const userId = tokenType !== "A" ? null : tokenData.userId;
+
+    const bufferOne = tokenType !== "A" ? null : Buffer.from(userId);
 
     if (credentials === "null") {
       req.id = null;
       next();
     } else {
-      if (token_censor === "E" || token_censor === "N") {
+      if (tokenType === "E" || tokenType === "N") {
         return res.status(403).send({ error: "접근이 불가능합니다." });
         
       } else {
-        if (token_censor === "A") {
+        if (tokenType === "A") {
           req.id = bufferOne;
           next();
         }
 
-        else if (token_censor === "P") {
+        else if (tokenType === "P") {
           return res
             .status(401)
             .send({ code: 2, error: "access 토큰이 만료되었습니다." });
@@ -44,7 +44,7 @@ module.exports = {
 
     const userId = verifyToken(token_replaced);
 
-    const token_censor = userId.token_data.type;
+    const token_censor = userId.tokenData.type;
 
     if (token_censor === "E" || token_censor === "N") {
       return res.status(403).send({ error: "접근이 불가능합니다." });
@@ -52,7 +52,7 @@ module.exports = {
 
     else {
       const parse_userId =
-        token_censor !== "R" ? "1" : parse(userId.token_data.userId);
+        token_censor !== "R" ? "1" : parse(userId.tokenData.userId);
       const bufferOne = token_censor !== "R" ? "1" : Buffer.from(parse_userId);
 
       if (token_censor === "R") {

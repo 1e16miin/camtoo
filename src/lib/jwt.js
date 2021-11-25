@@ -6,22 +6,19 @@ const { jwtSecretKey } = require("../config/key");
 
 module.exports = {
   verifyToken(token) {
-    console.log(token)
     try {
       if (token) {
-        return { token_data: jwt.verify(token, jwtSecretKey) };
+        return jwt.verify(token, jwtSecretKey);
       }
       else {
-        return { token_data: { type: "N" } };
+        return { type: "N" } ;
       }
     } catch (err) {
-
-
       if (err.message === "jwt expired") {
-        return { token_data: { type: "P" } };
+        return { type: "P" } ;
       } else {
 
-        return { token_data: { type: "E" } };
+        return { type: "E" };
       }
     }
   },

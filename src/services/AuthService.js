@@ -6,7 +6,7 @@ const TimeTableService = require("./TimeTableService")
 
 const AuthService = () => {
   const issueTokens = (id) => {
-    console.log(id)
+
     const accessToken = jwt.sign(
       { userId: id, type: "A" },
       jwtSecretKey,
