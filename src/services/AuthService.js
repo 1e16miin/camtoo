@@ -6,16 +6,19 @@ const { v4: uuidv4, parse, stringify } = require("uuid");
 
 const AuthService = () => {
   const issueTokens = (id) => {
+    console.log(id)
     const accessToken = jwt.sign(
       { userId: stringify(id), type: "A" },
       jwtSecretKey,
       { expiresIn: 60 * 60 * 24 * 7 }
     );
+    console.log(accessToken);
     const refreshToken = jwt.sign(
       { userId: stringify(id), type: "R" },
       jwtSecretKey,
       { expiresIn: 60 * 60 * 24 * 30 * 6 }
     );
+    console.log(refreshToken)
     const result = { accessToken: accessToken, refreshToken: refreshToken };
     return result;
   }
