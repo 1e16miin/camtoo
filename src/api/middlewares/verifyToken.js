@@ -1,6 +1,5 @@
 const { verifyToken } = require("../../lib/jwt");
 
-const { parse } = require("uuid");
 
 
 
@@ -17,12 +16,12 @@ module.exports = {
     const userId = verifyToken(token_replaced);
 
     const token_censor = userId.token_data.type;
-
+    console.log(userId);
     const parse_userId =
-      token_censor !== "A" ? "1" : parse(userId.token_data.userId);
-
+      token_censor !== "A" ? "1" : userId.token_data.userId;
+    console.log(parse_userId);
     const bufferOne = token_censor !== "A" ? "1" : Buffer.from(parse_userId);
-
+    console.log(bufferOne);
     // 엑세스 토큰이 없을 때
     // 유효하지 않은 접근
     // 기간이 만료된 토큰을 갖고 있어도 null로 반환하지는 않음.
