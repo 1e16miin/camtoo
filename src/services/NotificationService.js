@@ -36,6 +36,7 @@ const NotificationService = (userId) => {
     const url = `/push/v2/services/${serviceId}/users`;
 
     const signature = makeSignature(url, timestamp, method);
+    
     const body = {
       userId: userId,
       channelName: "default",

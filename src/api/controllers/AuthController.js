@@ -21,10 +21,10 @@ router.post("/sign-up", async (req, res) => {
 router.post("/register/device-token", checkATokens, async (req, res) => {
   try {
     const id = req.id
-    console.log(req.id)
+
     const deviceToken = req.body.deviceToken
     const userId = await (await UserService(id)).userId
-    console.log(userId);
+
     const notificationInstance = NotificationService(userId);
     const result = await notificationInstance.postDeviceToken(deviceToken);
     if (result === 400) {
@@ -35,6 +35,10 @@ router.post("/register/device-token", checkATokens, async (req, res) => {
     return res.status(400).send(err.message);
   }
 });
+
+router.get("/refreshToken", checkATokens, async (req, res) => {
+  
+})
 
 
 module.exports=router
