@@ -2,7 +2,7 @@ const { verifyToken } = require("../../lib/jwt");
 const { user } = require("../../models");
 
 module.exports = {
-  async checkAccessToken(req, res, next) {
+  async checkAccessTokens(req, res, next) {
 
     const { authorization } = req.headers;
 
@@ -12,9 +12,9 @@ module.exports = {
 
     const tokenType = tokenData.type;
 
-    const userId = tokenType !== "A" ? null : tokenData.userId;
+    const id = tokenType !== "A" ? "1" : tokenData.id;
 
-    const bufferOne = tokenType !== "A" ? null : Buffer.from(userId);
+    const bufferOne = tokenType !== "A" ? "1" : Buffer.from(id);
 
     if (credentials === "null") {
       req.id = null;
@@ -37,7 +37,7 @@ module.exports = {
       }
     }
   },
-  async checkRefreshToken(req, res, next) {
+  async checkRefreshTokens(req, res, next) {
     const { authorization } = req.headers;
 
     const credentials = authorization.replace("Bearer ", "");
@@ -51,9 +51,9 @@ module.exports = {
     }
 
     else {
-      const userId =
-        tokenType !== "R" ? null : tokenData.userId;
-      const bufferOne = tokenType !== "R" ? null : Buffer.from(userId);
+      const id =
+        tokenType !== "R" ? "1" : tokenData.id;
+      const bufferOne = tokenType !== "R" ? "1" : Buffer.from(id);
 
       if (tokenType === "R") {
         const checkToken = async () => {
