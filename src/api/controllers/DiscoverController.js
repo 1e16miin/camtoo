@@ -10,7 +10,6 @@ router.get('/building', checkAccessTokens ,async (req,res) => {
     const id = req.id
     const buildingId = req.query.buildingId
     const userId = await (await UserService(id)).userId;
-
     const geoFenceInstance = GeoFenceService(userId);
     const result = await geoFenceInstance.getBuildingData(buildingId);
     return res.status(200).send(result)
@@ -35,7 +34,7 @@ router.get("/road", checkAccessTokens, async (req, res) => {
   }
 });
 
-router.get("/buildings",checkAccessTokens, async (req, res) => {
+router.get("/university",checkAccessTokens, async (req, res) => {
   
   try {
     const id = req.id;
@@ -74,8 +73,9 @@ router.delete("/building/exit", checkAccessTokens ,async (req, res) => {
   
   try {
     const id = req.id
-    const buildingId = req.query.buildingId
-    const geoFenceInstance = GeoFenceService(id);
+    const buildingId = req.body.buildingId;
+    const userId = await (await UserService(id)).userId;
+    const geoFenceInstance = GeoFenceService(userId);
     await geoFenceInstance.exit(buildingId);
     return res.status(200).send("ok");
   } catch (err) {
@@ -87,18 +87,18 @@ router.delete("/building/exit", checkAccessTokens ,async (req, res) => {
 });
 
 
-router.post("/building/member/message/send", checkAccessTokens, async (req, res) => {
-  try {
-    const id = req.id
-    const { receiver, payload } = req.body
+// router.post("/building/member/message/send", checkAccessTokens, async (req, res) => {
+//   try {
+//     const id = req.id
+//     const { receiver, payload } = req.body
     
-  } catch (err) {
-    console.log(err)
+//   } catch (err) {
+//     console.log(err)
 
-  }
+//   }
   
 
 
-})
+// })
 
 module.exports = router
