@@ -6,7 +6,7 @@ const { secretKey } = require("../config/key");
 
 module.exports = {
   verifyToken(token) {
-
+    console.log(token)
     try {
       if (token) {
         return {token_data: jwt.verify(token, secretKey)};
