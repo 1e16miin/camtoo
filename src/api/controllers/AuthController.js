@@ -23,12 +23,13 @@ router.post("/register/device-token", checkATokens, async (req, res) => {
     const id = req.id
     const deviceToken = req.body.deviceToken
     const userId = await (await UserService(id)).userId
+    console.log(userId);
     const notificationInstance = NotificationService(userId);
     const result = await notificationInstance.postDeviceToken(deviceToken);
     if (result === 400) {
       throw new Error("디바이스 토큰 등록중 에러가 발생했습니다.")
     }
-    return res.send(200).send("success")
+    return res.status(200).send("success")
   } catch (err) {
     return res.status(400).send(err.message);
   }
