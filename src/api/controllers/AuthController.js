@@ -21,6 +21,7 @@ router.post("/sign-up", async (req, res) => {
 router.post("/register/device-token", checkATokens, async (req, res) => {
   try {
     const id = req.id
+    console.log(req.id)
     const deviceToken = req.body.deviceToken
     const userId = await (await UserService(id)).userId
     console.log(userId);

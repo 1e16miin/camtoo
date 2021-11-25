@@ -13,9 +13,9 @@ module.exports = {
     const userId = verifyToken(token_replaced);
 
     const token_censor = userId.token_data.type;
-    console.log(userId);
+    // console.log(userId);
     const parse_userId = token_censor !== "A" ? "1" : userId.token_data.userId;
-    console.log(parse_userId);
+    // console.log(parse_userId);
     const bufferOne = token_censor !== "A" ? "1" : Buffer.from(parse_userId);
     console.log(bufferOne);
     // 엑세스 토큰이 없을 때
