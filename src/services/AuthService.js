@@ -35,6 +35,7 @@ const AuthService = () => {
       const createdUserData = await user.create(userData, {transaction});
       const userId = createdUserData.dataValues.user_id
       const timeTableInstance = TimeTableService(userId);
+      console.log(timeTableClasses);
       transaction = await timeTableInstance.create(timeTableClasses, transaction);
       const result = issueTokens(id)
       await createdUserData.update({ refresh_token: result.refreshToken}, {transaction});
