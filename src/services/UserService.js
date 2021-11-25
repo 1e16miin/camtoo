@@ -1,15 +1,25 @@
 const { user } = require("../models");
 const TimeTableService = require("./TimeTableService");
 
-const UserService = (profileId) => {
-  const getUniversityId = () => {};
-
-  const getUserData = async () => {
-    const timeTableClasses = await TimeTableService(profileId).getAllSchedules();
+const UserService = async (id) => {
+  const getUniversityId = (userId) => { };
+  
+  const getUserId = async () => {
+    const userId = await user.findOne({
+      nest: true,
+      raw: true,
+      attributes: ["user_id"],
+      where: { id: id },
+    });
+    const result = userId.user_id;
+    return result;
+  }
+  const getUserData = async (userId) => {
+    const timeTableClasses = await TimeTableService(userId).getAllSchedules();
     const userData = await user.findOne({
       nest: true,
       raw: true,
-      where: { profile_id: profileId },
+      where: { profile_id: userId },
     });
     const {
       profile_id,
@@ -39,9 +49,10 @@ const UserService = (profileId) => {
     return result;
   };
   
+  const userId = await getUserId()
   // const userData = await getUserData()
-
-  return { getUserData };
+  
+  return { getUserData, userId };
 };
 
 module.exports = UserService

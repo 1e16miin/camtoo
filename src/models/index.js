@@ -43,16 +43,14 @@ Object.keys(db).forEach((modelName) => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-db.university = require("./University/UniversityModel")(sequelize, Sequelize);
-db.building = require("./University/BuildingModel")(sequelize, Sequelize);
-db.boundary = require("./University/BoundaryModel")(sequelize, Sequelize);
+db.university = require("./Location/UniversityModel")(sequelize, Sequelize);
+db.building = require("./Location/BuildingModel")(sequelize, Sequelize);
 db.user = require("./User/UserModel")(sequelize, Sequelize);
 db.friend = require("./Friend/FriendModel")(sequelize, Sequelize);
 db.communication = require("./Interaction/CommunicationModel")(sequelize, Sequelize);
-db.phone = require("./User/PhoneModel")(sequelize,Sequelize)
-db.area = require("./University/AreaModel")(sequelize,Sequelize)
-db.member = require("./University/MemberModel")(sequelize, Sequelize)
-db.schedule = require("./Timetable/ScheduleModel")(sequelize, Sequelize)
+db.timeTable = require("./TimeTable/TimeTableModel")(sequelize, Sequelize)
+db.entry = require("./Location/EntryModel")(sequelize,Sequelize)
+
 
 db.university.hasMany(db.building, {
   foreignKey: "university_id",
@@ -63,14 +61,6 @@ db.building.belongsTo(db.university, {
   targetKey: "id",
 });
 
-db.university.hasMany(db.area, {
-  foreignKey: "university_id",
-  sourceKey: "id",
-});
-db.area.belongsTo(db.university, {
-  foreignKey: "university_id",
-  targetKey: "id",
-});
 
 db.university.hasOne(db.user, {
   foreignKey: "university_id",
@@ -81,85 +71,87 @@ db.user.belongsTo(db.university, {
   targetKey: "id",
 });
 
-
-
-db.building.hasMany(db.boundary, {
+db.building.hasMany(db.entry, {
   foreignKey: "building_id",
   sourceKey: "id",
 });
-db.boundary.belongsTo(db.building, {
-  foreignKey: "building_id",
-  targetKey: "id",
-});
-
-db.building.hasMany(db.member, {
-  foreignKey: "building_id",
-  sourceKey: "id",
-});
-db.member.belongsTo(db.building, {
+db.entry.belongsTo(db.building, {
   foreignKey: "building_id",
   targetKey: "id",
 });
 
 db.user.hasMany(db.friend, {
   foreignKey: "followed_user_id",
-  sourceKey: "profile_id",
+  sourceKey: "user_id",
 });
 
 db.friend.belongsTo(db.user, {
   foreignKey: "followed_user_id",
-  targetKey: "profile_id",
-});
-
-db.user.hasMany(db.member, {
-  foreignKey: "profile_id",
-  sourceKey: "profile_id",
-});
-
-db.member.belongsTo(db.user, {
-  foreignKey: "profile_id",
-  targetKey: "profile_id",
+  targetKey: "user_id",
 });
 
 
-db.user.hasMany(db.schedule, {
-  foreignKey: "profile_id",
-  sourceKey: "profile_id",
+db.user.hasMany(db.timeTable, {
+  foreignKey: "user_id",
+  sourceKey: "user_id",
 });
 
-db.schedule.belongsTo(db.user, {
-  foreignKey: "profile_id",
-  targetKey: "profile_id",
+db.timeTable.belongsTo(db.user, {
+  foreignKey: "user_id",
+  targetKey: "user_id",
+});
+
+db.user.hasMany(db.entry, {
+  foreignKey: "user_id",
+  sourceKey: "user_id",
+});
+
+db.entry.belongsTo(db.user, {
+  foreignKey: "user_id",
+  targetKey: "user_id",
 });
 
 db.user.hasMany(db.friend, {
-  foreignKey: "following_user_id",
-  sourceKey: "profile_id",
+  foreignKey: "followee",
+  sourceKey: "user_id",
 });
 
 db.friend.belongsTo(db.user, {
-  foreignKey: "following_user_id",
-  targetKey: "profile_id",
+  foreignKey: "followee",
+  targetKey: "user_id",
 });
 
+db.user.hasMany(db.friend, {
+  foreignKey: "follower",
+  sourceKey: "user_id",
+});
+
+db.friend.belongsTo(db.user, {
+  foreignKey: "follower",
+  targetKey: "user_id",
+});
+
+
 db.user.hasMany(db.communication, {
-  foreignKey: "sender_id",
-  sourceKey: "profile_id",
+  foreignKey: "sender",
+  sourceKey: "user_id",
 });
 
 db.communication.belongsTo(db.user, {
-  foreignKey: "sender_id",
-  targetKey: "profile_id",
+  foreignKey: "sender",
+  targetKey: "user_id",
 });
 
 db.user.hasMany(db.communication, {
-  foreignKey: "receiver_id",
-  sourceKey: "profile_id",
+  foreignKey: "receiver",
+  sourceKey: "user_id",
 });
 
 db.communication.belongsTo(db.user, {
-  foreignKey: "receiver_id",
-  targetKey: "profile_id",
+  foreignKey: "receiver",
+  targetKey: "user_id",
 });
+
+
 
 module.exports = db;

@@ -9,19 +9,19 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       sender: {
-        type: DataTypes.INTEGER.UNSIGNED,
+        type: DataTypes.STRING,
         allowNull: false,
         references: {
           model: "user",
-          key: "profile_id",
+          key: "user_id",
         },
       },
       receiver: {
-        type: DataTypes.INTEGER.UNSIGNED,
+        type: DataTypes.STRING,
         allowNull: false,
         references: {
           model: "user",
-          key: "profile_id",
+          key: "user_id",
         },
       },
       message: {

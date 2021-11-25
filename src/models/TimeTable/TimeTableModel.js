@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
   return sequelize.define(
-    "boundary",
+    "time_table",
     {
       id: {
         type: DataTypes.INTEGER.UNSIGNED,
@@ -8,21 +8,32 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         allowNull: false,
       },
-
-      latitude: {
-        type: DataTypes.DECIMAL(8, 6),
+      class_name: {
+        type: DataTypes.STRING(20),
         allowNull: false,
       },
-      longitude: {
-        type: DataTypes.DECIMAL(9, 6),
+      day_of_the_week: {
+        type: DataTypes.CHAR(1),
         allowNull: false,
       },
-      building_id: {
+      class_type: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+      },
+      start_time: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
+      end_time: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
+      user_id: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
         references: {
-          model: "building",
-          key: "id",
+          model: "user",
+          key: "user_id",
         },
       },
     },
@@ -31,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: true,
       paranoid: true,
       freezeTableName: true,
-      tableName: "boundary",
+      tableName: "time_table",
       indexes: [
         {
           name: "PRIMARY",

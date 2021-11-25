@@ -8,19 +8,19 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
       },
       follower: {
-        type: DataTypes.INTEGER.UNSIGNED,
+        type: DataTypes.STRING,
         allowNull: false,
         references: {
           model: "user",
-          key: "profile_id",
+          key: "user_id",
         },
       },
       followee: {
-        type: DataTypes.INTEGER.UNSIGNED,
+        type: DataTypes.STRING,
         allowNull: false,
         references: {
           model: "user",
-          key: "profile_id",
+          key: "user_id",
         },
       },
       status: {

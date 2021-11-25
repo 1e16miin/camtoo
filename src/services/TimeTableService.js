@@ -1,8 +1,8 @@
-const { schedule } = require("../models");
+const { timeTable } = require("../models");
 
-const TimeTableService = (profileId) => {
+const TimeTableService = (userId) => {
   const getAllSchedules = async () => {
-    return await schedule.findAll({
+    return await timeTable.findAll({
       nest: true,
       raw: true,
       attributes: [
@@ -12,12 +12,23 @@ const TimeTableService = (profileId) => {
         ["end_time", "endTime"],
         ["class_type", "classType"],
       ],
-      where: { profile_id: profileId },
+      where: { user_id: userId },
     });
   };
   
-  const create = async () => {
-
+  const create = async (timeTableClasses, transaction) => {
+    await Promise.all(timeTableClasses.map(async (schedule) => {
+      const {dayOfTheWeek, startTime, endTime, classType} = schedule
+      const input = {
+        user_id:userId,
+        day_of_the_week: dayOfTheWeek,
+        start_time: startTime,
+        end_time: endTime,
+        class_type: classType
+      }
+      await timeTable.create(input, { transaction })
+    }))
+    return transaction
   }
 
   const update = async () => {

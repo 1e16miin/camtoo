@@ -1,0 +1,38 @@
+const express = require("express");
+const AuthService = require("../../services/AuthService");
+const NotificationService = require("../../services/NotificationService");
+const UserService = require("../../services/UserService");
+const { checkATokens } = require("../middlewares/verifyToken");
+const router = express();
+
+
+router.get("/signup", async (req, res) => {
+  try {
+    const signUpData = req.body
+    const authInstance = AuthService()
+    const result = await authInstance.createNewUser(signUpData)
+    return res.status(200).send(result)
+  } catch (err) {
+    console.log(err)
+    return res.status(400).send(err.message)
+  }
+})
+
+router.post("/register/device-token", checkATokens, async (req, res) => {
+  try {
+    const id = req.id
+    const deviceToken = req.body.deviceToken
+    const userId = await (await UserService(id)).userId
+    const notificationInstance = NotificationService(userId);
+    const result = await notificationInstance.postDeviceToken(deviceToken);
+    if (result === 400) {
+      throw new Error("디바이스 토큰 등록중 에러가 발생했습니다.")
+    }
+    return res.send(200).send("success")
+  } catch (err) {
+    return res.status(400).send(err.message);
+  }
+});
+
+
+module.exports=router

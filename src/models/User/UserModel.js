@@ -2,14 +2,13 @@ module.exports = (sequelize, DataTypes) => {
   return sequelize.define(
     "user",
     {
-      id: {
-        type: DataTypes.UUID,
-        primaryKey: true,
-        allowNull: false,
-      },
-      profile_id: {
-        autoIncrement: true,
+      user_id: {
         type: DataTypes.INTEGER.UNSIGNED,
+        autoIncrement: true,
+        primaryKey: true,
+      },
+      id: {
+        type: DataTypes.STRING,
         allowNull: false,
       },
       profile_image_url: {
@@ -24,20 +23,36 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(10),
         allowNull: false,
       },
+      status: {
+        type: DataTypes.CHAR(1),
+        defaultValue: "C",
+        allowNull: false,
+      },
+      promise_refusal_mode: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+        allowNull: false,
+      },
+      public_profile_mode: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+        allowNull: false,
+      },
       status_message: {
         type: DataTypes.STRING(100),
         allowNull: true,
       },
       latitude: {
         type: DataTypes.DECIMAL(8, 6),
-        allowNull: false,
+        allowNull: true,
       },
       longitude: {
         type: DataTypes.DECIMAL(9, 6),
-        allowNull: false,
+        allowNull: true,
       },
-      is_building: {
+      in_school: {
         type: DataTypes.BOOLEAN,
+        defaultValue: false,
         allowNull: false,
       },
       university_id: {
@@ -48,16 +63,9 @@ module.exports = (sequelize, DataTypes) => {
         },
         allowNull: false,
       },
-      phone_id: {
-        type: DataTypes.INTEGER.UNSIGNED,
-        references: {
-          model: "phone",
-          key: "id",
-        },
-        allowNull: false,
-      },
       open_type: {
-        type: DataTypes.CHAR(1),
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
         allowNull: false,
       },
       refresh_token: {
@@ -76,12 +84,7 @@ module.exports = (sequelize, DataTypes) => {
           name: "PRIMARY",
           unique: true,
           using: "BTREE",
-          fields: [{ name: "id" }],
-        },
-        {
-          name: "profile_id",
-          using: "BTREE",
-          fields: [{ name: "profile_id" }],
+          fields: [{ name: "user_id" }],
         },
       ],
     }

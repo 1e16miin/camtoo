@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
   return sequelize.define(
-    "phone",
+    "entry",
     {
       id: {
         type: DataTypes.INTEGER.UNSIGNED,
@@ -8,9 +8,21 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         allowNull: false,
       },
-      phone_number: {
-        type: DataTypes.STRING(20),
+      building_id: {
+        type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
+        references: {
+          model: "building",
+          key: "id",
+        },
+      },
+      user_id: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: false,
+        references: {
+          model: "user",
+          key: "user_id",
+        },
       },
     },
     {
@@ -18,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: true,
       paranoid: true,
       freezeTableName: true,
-      tableName: "phone",
+      tableName: "entry",
       indexes: [
         {
           name: "PRIMARY",
