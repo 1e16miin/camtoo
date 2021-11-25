@@ -80,16 +80,6 @@ db.entry.belongsTo(db.building, {
   targetKey: "id",
 });
 
-db.user.hasMany(db.friend, {
-  foreignKey: "followed_user_id",
-  sourceKey: "user_id",
-});
-
-db.friend.belongsTo(db.user, {
-  foreignKey: "followed_user_id",
-  targetKey: "user_id",
-});
-
 
 db.user.hasMany(db.timeTable, {
   foreignKey: "user_id",
