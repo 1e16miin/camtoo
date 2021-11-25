@@ -6,7 +6,7 @@ const { checkATokens } = require("../middlewares/verifyToken");
 const router = express();
 
 
-router.post("/signup", async (req, res) => {
+router.post("/sign-up", async (req, res) => {
   try {
     const signUpData = req.body
     const authInstance = AuthService()
