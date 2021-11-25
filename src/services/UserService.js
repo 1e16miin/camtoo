@@ -19,7 +19,7 @@ const UserService = async (id) => {
       raw: true,
       where: { profile_id: userId },
     });
-    const buildingId = (await entry.findOne({raw:true, nest:true, where:{user_id:userId}})).building_id
+    const buildingObject = (await entry.findOne({raw:true, nest:true, attributes:["building_id"],where:{user_id:userId}, order:[["createdAt", "DESC"]]}))
     const {
       profile_id,
       name,
@@ -42,7 +42,7 @@ const UserService = async (id) => {
       schedule: schedules,
       coordinate: { latitude: latitude, longitude: longitude },
       inSchool: in_school,
-      buildingId: building_id,
+      buildingId: buildingObject ? buildingObject.building_id : null,
     };
     return result;
   };

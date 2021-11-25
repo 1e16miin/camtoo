@@ -5,11 +5,13 @@ const moment = require("moment-timezone");
 moment().tz("Asia/Seoul");
 
 const NotificationService = (userId) => {
+  const accessKey = SENS_PUSH.accessKey;
+  const serviceId = SENS_PUSH.serviceId;
+  const secretKey = SENS_PUSH.secretKey;
   const makeSignature = (url, timestamp, method) => {
     const space = " "; // one space
     const newLine = "\n"; // new line
-    const accessKey = SENS_PUSH.accessKey;
-    const secretKey = SENS_PUSH.secretKey;
+    
     let message = [];
     let hmac = crypto.createHmac("sha256", secretKey);
 
@@ -27,8 +29,7 @@ const NotificationService = (userId) => {
   const postDeviceToken = async (deviceToken) => {
     let resultCode = 400;
     const timestamp = Date.now().toString();
-    const accessKey = SENS_PUSH.accessKey;
-    const serviceId = SENS_PUSH.serviceId;
+    
 
     const method = "POST";
 
@@ -67,9 +68,76 @@ const NotificationService = (userId) => {
 
     return resultCode;
   };
-  const send = async (payload) => {};
+  // const sendPermissionPush = async (profileId, permissionStatus) => {
+  // // User.findOne({where: {profile_id: followeeProfileId}}).then()
+  // const timestamp = Date.now().toString(); // current timestamp (epoch)
+  // const NCP_serviceID = sens_push_test.serviceID;
+  // const NCP_accessKey = sens_push_test.AccessKey;
+  // const NCP_secretKey = sens_push_test.secretKey;
+  // const uri = `https://sens.apigw.ntruss.com/push/v2/services/${NCP_serviceID}/messages`;
+
+  // const signature = makeSignature();
+  // const message = `업로드된 영상이 ${permissionStatus === "A" ? "승인대기" : permissionStatus === "B" ? "승인" : "반려"} 되었습니다.`;
+  // let resultCode = 400;
+  // const alarm_count = await Alarm_app.count({
+  //   where: { profile_id: profileId, iswatched: false },
+  // });
+
+  // const body = {
+  //   messageType: "NOTIF",
+  //   target: {
+  //     type: "USER",
+  //     deviceType: null,
+  //     to: [`${profileId}`],
+  //     // country: ["string", "string"],
+  //   },
+  //   message: {
+  //     default: {},
+  //   },
+  //   message: {
+  //     default: {},
+  //     apns: {
+  //       content: message,
+  //       option: {
+  //         "aps.badge": alarm_count,
+  //         "aps.sound": "default",
+  //       },
+  //       // content: message,
+  //     },
+  //     fcm: {
+  //       content: message,
+  //       // options: {
+  //       //   "message": message,
+  //       //   "channelId": "com.uaround.piopik",
+  //       //   "sound": null,
+  //       // },
+  //     },
+  //   },
+  // };
+  // const options = {
+  //   headers: {
+  //     "Content-Type": "application/json; charset=utf-8",
+  //     "x-ncp-iam-access-key": NCP_accessKey,
+  //     "x-ncp-apigw-timestamp": timestamp,
+  //     "x-ncp-apigw-signature-v2": signature,
+  //   },
+  // };
+  // // console.log(signature)
+  // await axios
+  //   .post(uri, body, options)
+  //   .then(async (res) => {
+  //     resultCode = 200;
+  //     // console.log(res)
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //   });
+
+  //   return resultCode;
+  // } 
+  const sendSMS = async (payload) => {};
   // const
-  return {postDeviceToken, send}
+  return { postDeviceToken, sendPush, sendSMS };
 };
 
 module.exports = NotificationService
