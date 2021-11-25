@@ -1,4 +1,4 @@
-const { user, entry } = require("../models");
+const { user, entry, sequelize } = require("../models");
 const TimeTableService = require("./TimeTableService");
 
 const UserService = async (id) => {
@@ -12,16 +12,19 @@ const UserService = async (id) => {
     const result = userId.user_id;
     return result;
   }
-  const getUserData = async (userId) => {
+
+  const userId = await getUserId();
+
+  const getUserData = async () => {
     const schedules = await TimeTableService(userId).getAllSchedules();
     const userData = await user.findOne({
       nest: true,
       raw: true,
-      where: { profile_id: userId },
+      where: { user_id: userId },
     });
     const buildingObject = (await entry.findOne({raw:true, nest:true, attributes:["building_id"],where:{user_id:userId}, order:[["createdAt", "DESC"]]}))
     const {
-      profile_id,
+      id,
       name,
       status,
       promise_refusal_mode,
@@ -32,25 +35,60 @@ const UserService = async (id) => {
     } = userData;
     // timeTableClasses
     const result = {
-      id: profile_id,
+      id: id,
       name: name,
       status: status,
       promiseRefusalMode: promise_refusal_mode,
       publicProfileMode: public_profile_mode,
       statusMessage: status_message,
       imageUrl: profile_image_url,
-      schedule: schedules,
+      timeTableClasses: schedules,
       coordinate: { latitude: latitude, longitude: longitude },
       inSchool: in_school,
       buildingId: buildingObject ? buildingObject.building_id : null,
     };
     return result;
   };
+
   
-  const userId = await getUserId()
-  // const userData = await getUserData()
   
-  return { getUserData, userId };
+  const update = async (userData) => {
+    let transaction = sequelize.transaction()
+    const timeTableInstance = TimeTableService(userId)
+    try {
+      const {
+        name,
+        promiseRefusalMode,
+        publicProfileMode,
+        statusMessage,
+        imageUrl,
+        coordinate,
+        inSchool,
+        timeTableClasses,
+      } = userData;
+
+      const updatedUserData = {
+        name: name,
+        promise_refusal_mode: promiseRefusalMode,
+        public_profile_mode: publicProfileMode,
+        status_message: statusMessage,
+        profile_image_url: imageUrl,
+        latitude: coordinate.latitude,
+        longitude: coordinate.longitude,
+        in_school: inSchool,
+      };
+
+      await user.update(updatedUserData, { where: { id: id }, transaction });
+      transaction = await timeTableInstance.update(timeTableClasses)
+      transaction.commit()
+      return "success"
+    } catch (err) {
+      await transaction.rollback()
+      console.log(err)
+      throw new Error("유저 정보를 업데이트 하는 도중 에러가 발생하였습니다.")
+    }
+  }
+  return { getUserData, userId, update };
 };
 
 module.exports = UserService

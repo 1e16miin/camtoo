@@ -32,9 +32,11 @@ const TimeTableService = (userId) => {
     return transaction
   }
 
-  const update = async () => {
-
-  }
+  const update = async (timeTableClasses, transaction) => {
+    await timeTable.destroy({ where: { user_id: userId }, transaction });
+    await create(timeTableClasses, transaction);
+    return transaction
+  };
 
   return { getAllSchedules, create, update };
 };
