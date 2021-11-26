@@ -82,7 +82,7 @@ const UserService = async (id) => {
         longitude: coordinate.longitude,
         in_school: inSchool,
       };
-      // console.log(1)
+      console.log(userData)
       await user.update(updatedUserData, { where: { id: id }, transaction });
       // console.log(updatedUserData);
       transaction = await timeTableInstance.update(timeTableClasses, transaction)
