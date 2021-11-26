@@ -10,10 +10,12 @@ const {
 const { Op } = require("sequelize");
 const FriendService = require("./FriendService");
 const UserService = require("./UserService");
+const distance = require("../utils/distance");
+const isInRange = require("../utils/distance");
 
 const GeoFenceService = (userId) => {
   const friendInstance = FriendService(userId);
- 
+  
 
   const findAllInSchoolUserId = async () => {
     const inSchoolUsers = await user.findAll({ raw: true, nest: true, where: { in_school: 1 } })
@@ -24,6 +26,7 @@ const GeoFenceService = (userId) => {
   const getInSchoolUsers = async () => {
     const friendIdList = await friendInstance.findById();
     const inSchoolUsersId = await findAllInSchoolUserId()
+    const coordinate1 = await user.findOne({ raw: true, nest: true ,attributes:["latitude", "longitude"], where:{user_id:userId}});
     const inSchoolUsers = await Promise.all(inSchoolUsersId.map(async id => {
       let isFriend = false
       if (friendIdList.includes(id)) {
@@ -31,8 +34,14 @@ const GeoFenceService = (userId) => {
       }
       
       const userData = await (await UserService(id)).getUserData();
-      if (userData.publicProfileMode === 0 && !isFriend) {
-        return null
+      if (!isFriend) {
+        if (userData.publicProfileMode === 0) return null;
+        else {
+          const coordinate2 = userData.coordinate
+          if (!isInRange(coordinate1, coordinate2)) {
+            return null;
+          }
+        }
       }
       const result = {
         user: userData,
