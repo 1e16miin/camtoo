@@ -50,7 +50,7 @@ const NotificationService = (senderId = null) => {
       pushSecretKey,
       pushAccessKey
     );
-
+    console.log(senderId)
     const body = {
       userId: senderId,
       channelName: "default",
