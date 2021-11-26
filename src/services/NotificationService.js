@@ -3,9 +3,10 @@ const { default: axios } = require("axios");
 const { SENS_SMS, SENS_PUSH } = require("../config/key");
 const moment = require("moment-timezone");
 const { sequelize, communication } = require("../models");
+const UserService = require("./UserService");
 moment().tz("Asia/Seoul");
 
-const NotificationService = (sender = null) => {
+const NotificationService = (senderId = null) => {
   const pushAccessKey = SENS_PUSH.accessKey;
   const pushServiceId = SENS_PUSH.serviceId;
   const pushSecretKey = SENS_PUSH.secretKey;
@@ -51,7 +52,7 @@ const NotificationService = (sender = null) => {
     );
 
     const body = {
-      userId: sender,
+      userId: senderId,
       channelName: "default",
       deviceType: "GCM",
       deviceToken: deviceToken,
@@ -79,11 +80,11 @@ const NotificationService = (sender = null) => {
        console.log(err.response.data);
       throw new Error("디바이스 토큰 등록 중 에러 발생")
       });
-    console.log(resultCode, sender)
+    console.log(resultCode, senderId)
     return resultCode;
   };
-  const sendPush = async (receiver, payload) => {
-    // User.findOne({where: {profile_id: followeeProfileId}}).then()
+  const sendPush = async (receiverId, senderName, payload) => {
+    
     let transaction = await sequelize.transaction();
     try {
       const timestamp = Date.now().toString(); // current timestamp (epoch)
@@ -104,14 +105,14 @@ const NotificationService = (sender = null) => {
         messageType: "NOTIF",
         target: {
           type: "USER",
-          deviceType:"GCM",
-          to: [`${receiver}`],
+          deviceType: "GCM",
+          to: [`${receiverId}`],
         },
         message: {
           default: {},
 
           fcm: {
-            content: payload,
+            content: `[${senderName}]: ${payload}`,
           },
         },
       };
@@ -123,7 +124,8 @@ const NotificationService = (sender = null) => {
           "x-ncp-apigw-signature-v2": signature,
         },
       };
-
+      const sender = await (await UserService(senderId)).userId
+      const receiver = await(await UserService(receiverId)).userId
       const communicationData = {
         sender: sender,
         receiver: receiver,
