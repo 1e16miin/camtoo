@@ -82,7 +82,7 @@ const NotificationService = (sender = null) => {
   };
   const sendPush = async (receiver, payload) => {
     // User.findOne({where: {profile_id: followeeProfileId}}).then()
-    let transaction = sequelize.transaction();
+    let transaction = await sequelize.transaction();
     try {
       const timestamp = Date.now().toString(); // current timestamp (epoch)
 
