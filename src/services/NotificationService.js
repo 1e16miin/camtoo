@@ -83,10 +83,13 @@ const NotificationService = (senderId = null) => {
     console.log(resultCode, senderId)
     return resultCode;
   };
+
   const sendPush = async (receiverId, senderName, payload) => {
-    
     let transaction = await sequelize.transaction();
     try {
+      const sender = await (await UserService(senderId)).userId;
+      const receiver = await (await UserService(receiverId)).userId;
+
       const timestamp = Date.now().toString(); // current timestamp (epoch)
 
       const uri = `https://sens.apigw.ntruss.com/push/v2/services/${pushServiceId}/messages`;
@@ -124,8 +127,7 @@ const NotificationService = (senderId = null) => {
           "x-ncp-apigw-signature-v2": signature,
         },
       };
-      const sender = await (await UserService(senderId)).userId
-      const receiver = await(await UserService(receiverId)).userId
+
       const communicationData = {
         sender: sender,
         receiver: receiver,
@@ -139,7 +141,7 @@ const NotificationService = (senderId = null) => {
           resultCode = 200;
         })
         .catch((err) => {
-          console.log(err)
+          console.log(err);
           console.log(err.response.data);
         });
       if (resultCode === 400) {
