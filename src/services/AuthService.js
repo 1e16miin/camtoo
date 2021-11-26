@@ -77,12 +77,12 @@ const AuthService = () => {
         timeTableClasses,
         transaction
       );
-      
+      const result = issueTokens(id);
       await createdUserData.update(
         { refresh_token: result.refreshToken },
         { transaction }
       );
-      const result = issueTokens(id);
+      
       await transaction.commit();
       return result;
     } catch (err) {

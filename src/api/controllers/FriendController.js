@@ -1,9 +1,17 @@
 const express = require("express");
 const NotificationService = require("../../services/NotificationService");
+const UserService = require("../../services/UserService");
 const { checkAccessTokens } = require("../middlewares/verifyToken");
 const router = express();
 
-router.post("/add", checkAccessTokens, async (req, res) => {});
+router.post("/add", checkAccessTokens, async (req, res) => {
+  const id = req.id
+  const sender = await (await UserService(id)).userId
+  const friendInstance = FriendService(sender);
+  
+
+
+});
 router.put("/approval", checkAccessTokens, async (req, res) => {});
 
 router.post("/invite", checkAccessTokens, async (req, res) => {});
