@@ -177,7 +177,7 @@ const NotificationService = (sender = null) => {
         type: "SMS",
         contentType: "COMM",
         countryCode: "82",
-        from: smsSender,
+        from: "01051795955",
         content: `[본인 확인] 인증번호 [${verifyCode}]를 입력해주세요.`,
         messages: [
           {
