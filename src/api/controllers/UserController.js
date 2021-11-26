@@ -43,7 +43,7 @@ router.put("/update", checkAccessTokens, async (req, res) => {
     console.log(err);
     return res
       .status(400)
-      .send({ message: "유저 정보를 조회하는 중에 에러가 발생하였습니다." });
+      .send({ message: "유저 정보를 업데이트 하는 중에 에러가 발생하였습니다." });
   }
 });
 

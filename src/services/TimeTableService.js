@@ -20,13 +20,13 @@ const TimeTableService = (userId) => {
     await Promise.all(timeTableClasses.map(async (schedule) => {
       const {dayOfTheWeek, startTime, endTime, scheduleType, scheduleName} = schedule
       const input = {
-        user_id:userId,
+        user_id: userId,
         day_of_the_week: dayOfTheWeek,
         start_time: startTime,
         end_time: endTime,
         class_type: scheduleType,
-        class_name: scheduleName
-      }
+        class_name: scheduleName ? "" : scheduleName,
+      };
       await timeTable.create(input, { transaction })
     }))
     return transaction
