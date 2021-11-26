@@ -3,14 +3,14 @@ const NotificationService = require("../../services/NotificationService");
 const { checkAccessTokens } = require("../middlewares/verifyToken");
 const router = express();
 
-router.post("/add", checkAccessTokens, (req, res) => {});
-router.put("/approval", checkAccessTokens, (req, res) => {});
+router.post("/add", checkAccessTokens, async (req, res) => {});
+router.put("/approval", checkAccessTokens, async (req, res) => {});
 
-router.post("/invite", checkAccessTokens, (req, res) => {});
+router.post("/invite", checkAccessTokens, async (req, res) => {});
 
-router.get("/list", checkAccessTokens, (req, res) => {});
+router.get("/list", checkAccessTokens, async (req, res) => {});
 
-router.post("/message/send", checkAccessTokens, (req, res) => {
+router.post("/message/send", checkAccessTokens, async (req, res) => {
   try {
     const id = req.id;
     const { receiver, payload } = req.body;

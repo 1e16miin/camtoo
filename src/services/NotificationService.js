@@ -150,7 +150,7 @@ const NotificationService = (sender = null) => {
       throw err;
     }
   };
-  const sendSMS = async (payload) => {
+  const sendSMS = async (receiver, verifyCode) => {
     try {
       let resultCode = 400;
       const timestamp = Date.now().toString(); // current timestamp (epoch)
@@ -178,10 +178,10 @@ const NotificationService = (sender = null) => {
         contentType: "COMM",
         countryCode: "82",
         from: smsSender,
-        content: payload,
+        content: `[본인 확인] 인증번호 [${verifyCode}]를 입력해주세요.`,
         messages: [
           {
-            to: `${phoneNumber}`,
+            to: `${receiver}`,
           },
         ],
       };

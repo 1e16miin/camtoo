@@ -43,10 +43,25 @@ router.get("/issue/access-token", checkRefreshTokens, async (req, res) => {
     expiresIn: 60 * 60 * 24 * 30 * 6,
   });
 
-  return res.status(200).send({ code: 1, AccessToken: newAccessToken });
+  return res.status(200).send({ accessToken: newAccessToken });
 });
 
 
+router.post("/", async (req, res) => {
+  try {
+    const phoneNumber = req.body.phoneNumber
+    const authInstance = AuthService()
+    const result = await authInstance.sendVerifyCode(phoneNumber);
+    return res.status(200).send(result)
+    
+  } catch (err) {
+    console.log(err)
+    return res.status(400).send({ message: "본인인증 문자 발송 실패" });
+  }
+  
+  
+
+})
 
 
 module.exports=router
