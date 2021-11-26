@@ -2,15 +2,12 @@ const { sequelize, user } = require("../models");
 const { jwtSecretKey } = require("../config/key");
 const jwt = require("jsonwebtoken");
 const TimeTableService = require("./TimeTableService");
-
+const cache = require("memory-cache-ttl")
 const NotificationService = require("./NotificationService");
 
 const AuthService = () => {
   
- 
-  
-
-  const createVerifyCode = (n = 4) => {
+ const createVerifyCode = (n = 4) => {
     let str = "";
     for (let i = 0; i < n; i++) {
       str += Math.floor(Math.random() * 10);
@@ -24,10 +21,10 @@ const AuthService = () => {
       const verifyCode = createVerifyCode();
       const notificationInstance = NotificationService();
       
-      cache.set(receiver, verifyCode)
+      cache.set(receiver, verifyCode, 180)
       const result = await notificationInstance.sendSMS(receiver, verifyCode);
       console.log(cache);
-      return cache;
+      return result;
     } catch (err) {
       cache.del(receiver)
       console.log(err);
@@ -35,7 +32,7 @@ const AuthService = () => {
     }
   }; 
   
-  const confirmVerifyCode = async (authData, cache) => {
+  const confirmVerifyCode = async (authData) => {
     const {phoneNumber, verifyCode} = authData
     const cacheData = cache.get(phoneNumber);
     console.log(cache);
