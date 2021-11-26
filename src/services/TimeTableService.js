@@ -6,7 +6,7 @@ const TimeTableService = (userId) => {
       nest: true,
       raw: true,
       attributes: [
-        ["class_name", "className"],
+        ["class_name", "scheduleName"],
         ["day_of_the_week", "dayOfTheWeek"],
         ["start_time", "startTime"],
         ["end_time", "endTime"],
