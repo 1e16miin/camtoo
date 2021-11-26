@@ -15,7 +15,7 @@ const AuthService = () => {
     return str;
   };
 
-  const sendVerifyCode = async (receiver, cache) => {
+  const sendVerifyCode = async (receiver) => {
     
     try {
       const verifyCode = createVerifyCode();
