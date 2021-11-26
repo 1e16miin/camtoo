@@ -79,7 +79,7 @@ const NotificationService = (sender = null) => {
        console.log(err.response.data);
       throw new Error("디바이스 토큰 등록 중 에러 발생")
       });
-    console.log(resultCode)
+    console.log(resultCode, sender)
     return resultCode;
   };
   const sendPush = async (receiver, payload) => {
