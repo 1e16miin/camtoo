@@ -25,7 +25,7 @@ const GeoFenceService = (userId) => {
   };
 
   const getInSchoolUsers = async () => {
-    const friendIdList = await friendInstance.findById(userId);
+    const friendIdList = await friendInstance.findById();
     const inSchoolUsersId = await findAllInSchoolUserId()
     const inSchoolUsers = await Promise.all(inSchoolUsersId.map(async id => {
       let isFriend = false
@@ -34,7 +34,6 @@ const GeoFenceService = (userId) => {
       }
       
       const userData = await (await UserService(id)).getUserData();
-      // publicProfileMode: public_profile_mode,
       if (userData.publicProfileMode === 0 && !isFriend) {
         return null
       }

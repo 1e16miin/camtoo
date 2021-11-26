@@ -5,7 +5,7 @@ const {
 } = require("../models");
 const { Op } = require("sequelize");
 
-const FriendService = (profileId) => {
+const FriendService = (userId) => {
   const add = async (followee) => {};
   const confirm = async () => {};
 
@@ -16,17 +16,17 @@ const FriendService = (profileId) => {
       await friend.findAll({
         nest: true,
         raw: true,
-        attributes: [["followed_user_id", "profile_id"]],
-        where: { status: "A", following_user_id: profileId },
+        attributes: [["followee", "userId"]],
+        where: { status: "A", follower: userId },
       }),
       await friend.findAll({
         nest: true,
         raw: true,
-        attributes: [["following_user_id", "profile_id"]],
-        where: { status: "A", followed_user_id: profileId },
+        attributes: [["follower", "userId"]],
+        where: { status: "A", followee: userId },
       }),
     ]);
-    const result = friendIds.flat().map((element) => element.profile_id);
+    const result = friendIds.flat().map((element) => element.userId);
     return result;
   };
   return { findById, add, confirm, remove };
