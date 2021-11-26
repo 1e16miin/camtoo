@@ -137,6 +137,7 @@ const NotificationService = (sender = null) => {
           resultCode = 200;
         })
         .catch((err) => {
+          console.log(err)
           console.log(err.response.data);
         });
       if (resultCode === 400) {
