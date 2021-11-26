@@ -25,7 +25,7 @@ router.post("/invite", checkAccessTokens, async (req, res) => {});
 
 router.get("/list", checkAccessTokens, async (req, res) => {
   const id = req.id
-  
+
 
 });
 
@@ -34,6 +34,7 @@ router.post("/message/send", checkAccessTokens, async (req, res) => {
     const senderId = req.id;
     const { receiver, senderName, payload } = req.body;
     const notificationInstance = NotificationService(senderId);
+    console.log(receiver)
     const result = await notificationInstance.sendPush(
       receiver.id,
       senderName,
