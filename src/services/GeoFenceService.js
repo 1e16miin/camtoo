@@ -1,17 +1,11 @@
 const {
-  boundary,
   building,
-  member,
-  friend,
   user,
-  sequelize,
-  university,
 } = require("../models");
 const { Op } = require("sequelize");
 const FriendService = require("./FriendService");
 const UserService = require("./UserService");
-const distance = require("../utils/distance");
-const isInRange = require("../utils/distance");
+const isInRange = require("../utils/isInRange");
 
 const GeoFenceService = (userId) => {
   const friendInstance = FriendService(userId);
