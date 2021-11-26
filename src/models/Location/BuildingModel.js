@@ -20,6 +20,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DECIMAL(9, 6),
         allowNull: false,
       },
+      radius: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: false,
+      },
       university_id: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
