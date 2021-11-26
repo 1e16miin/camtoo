@@ -7,7 +7,7 @@ const cache = require("memory-cache");
 const AuthService = () => {
 
   const requestVerifyCode = (phoneNumber) => {
-    const notificationServiceInstance=NotificationService()
+    const notificationInstance=NotificationService()
 
   }
 

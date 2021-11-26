@@ -13,10 +13,7 @@ const UserService = require("./UserService");
 
 const GeoFenceService = (userId) => {
   const friendInstance = FriendService(userId);
-  
-  // const userInstance = UserService()
-  
-  
+ 
 
   const findAllInSchoolUserId = async () => {
     const inSchoolUsers = await user.findAll({ raw: true, nest: true, where: { in_school: 1 } })

@@ -139,51 +139,72 @@ const NotificationService = (sender = null) => {
         .catch((err) => {
           console.log(err);
         });
-
+      if (resultCode === 400) {
+        throw new Error("푸쉬를 보내는 과정에서 에러가 발생하였습니다.");
+      }
       await transaction.commit();
-      return resultCode;
+      return "success";
     } catch (err) {
       await transaction.rollback();
       console.log(err);
-      throw new Error("푸쉬를 보내는 과정에서 에러가 발생하였습니다.");
+      throw err;
     }
   };
-  // const sendSMS = async (payload) => {
-  //   const timestamp = Date.now().toString(); // current timestamp (epoch)
+  const sendSMS = async (payload) => {
+    try {
+      let resultCode = 400;
+      const timestamp = Date.now().toString(); // current timestamp (epoch)
 
-  //   const uri = `https://sens.apigw.ntruss.com/sms/v2/services/${smsServiceID}/messages`;
-  //   const url = `/sms/v2/services/${smsServiceID}/messages`;
-  //   const method = "POST";
-  //   const signature = makeSignature(
-  //     url,
-  //     timestamp,
-  //     method,
-  //     smsSecretKey,
-  //     smsAccessKey
-  //   );
-  //   const options = {
-  //     headers: {
-  //       "Content-Type": "application/json; charset=utf-8",
-  //       "x-ncp-iam-access-key": smsAccessKey,
-  //       "x-ncp-apigw-timestamp": timestamp,
-  //       "x-ncp-apigw-signature-v2": signature,
-  //     },
-  //   };
-  //   const body = {
-  //     type: "SMS",
-  //     contentType: "COMM",
-  //     countryCode: "82",
-  //     from: smsSender,
-  //     content: `[피오픽] 인증번호 [${number}]를\n입력해주세요.`,
-  //     messages: [
-  //       {
-  //         to: `${phoneNumber}`,
-  //       },
-  //     ],
-  //   };
-  // };
-  // const
-  return { postDeviceToken, sendPush };
+      const uri = `https://sens.apigw.ntruss.com/sms/v2/services/${smsServiceId}/messages`;
+      const url = `/sms/v2/services/${smsServiceId}/messages`;
+      const method = "POST";
+      const signature = makeSignature(
+        url,
+        timestamp,
+        method,
+        smsSecretKey,
+        smsAccessKey
+      );
+      const options = {
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          "x-ncp-iam-access-key": smsAccessKey,
+          "x-ncp-apigw-timestamp": timestamp,
+          "x-ncp-apigw-signature-v2": signature,
+        },
+      };
+      const body = {
+        type: "SMS",
+        contentType: "COMM",
+        countryCode: "82",
+        from: smsSender,
+        content: payload,
+        messages: [
+          {
+            to: `${phoneNumber}`,
+          },
+        ],
+      };
+      axios
+        .post(uri, body, options)
+        .then((res) => {
+          console.log(res.data);
+          resultCode = 200;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      if (resultCode === 400) {
+        throw new Error("푸쉬를 보내는 과정에서 에러가 발생하였습니다.");
+      }
+      return "success";
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  };
+
+  return { postDeviceToken, sendPush, sendSMS };
 };
 
 module.exports = NotificationService;
