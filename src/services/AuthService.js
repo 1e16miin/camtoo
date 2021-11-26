@@ -40,7 +40,7 @@ const AuthService = () => {
     }
   }; 
   
-  const confirmVerifyCode = (authData) => {
+  const confirmVerifyCode = async (authData) => {
     const {phoneNumber, verifyCode} = authData
     const cacheData = cache.get(phoneNumber);
     if (!cacheData) {

@@ -64,7 +64,7 @@ router.post("/confirm", async (req, res) => {
   try {
     const authData = req.body
     const authInstance = AuthService();
-    const result = authInstance.confirmVerifyCode(authData);
+    const result = await authInstance.confirmVerifyCode(authData);
     return res.status(200).send(result)
   } catch (err) {
     console.log(err)
