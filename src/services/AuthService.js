@@ -31,7 +31,7 @@ const AuthService = () => {
       
       cache.set(receiver, verifyCode)
       const result = await notificationInstance.sendSMS(receiver, verifyCode);
-    
+      console.log(cache);
       return result;
     } catch (err) {
       cache.del(receiver)
@@ -43,6 +43,7 @@ const AuthService = () => {
   const confirmVerifyCode = async (authData) => {
     const {phoneNumber, verifyCode} = authData
     const cacheData = cache.get(phoneNumber);
+    console.log(cache);
     if (!cacheData) {
       return new Error("제한 시간이 초과하였습니다")
     }
