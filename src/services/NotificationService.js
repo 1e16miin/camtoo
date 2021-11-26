@@ -70,7 +70,8 @@ const NotificationService = (sender = null) => {
     };
     await axios
       .post(uri, body, options)
-      .then(async (res) => {
+      .then((res) => {
+        console.log(res)
         resultCode = 200;
       })
       .catch((err) => {
