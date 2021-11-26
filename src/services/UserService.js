@@ -82,10 +82,11 @@ const UserService = async (id) => {
         longitude: coordinate.longitude,
         in_school: inSchool,
       };
-
+      // console.log(1)
       await user.update(updatedUserData, { where: { id: id }, transaction });
-      transaction = await timeTableInstance.update(timeTableClasses)
-      transaction.commit()
+      // console.log(updatedUserData);
+      transaction = await timeTableInstance.update(timeTableClasses, transaction)
+      await transaction.commit()
       return "success"
     } catch (err) {
       await transaction.rollback()
