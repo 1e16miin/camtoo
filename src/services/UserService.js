@@ -40,13 +40,13 @@ const UserService = async (id) => {
       id: id,
       name: name,
       status: status,
-      promiseRefusalMode: promise_refusal_mode,
-      publicProfileMode: public_profile_mode,
+      promiseRefusalMode: promise_refusal_mode === 1 ? true : false,
+      publicProfileMode: public_profile_mode === 1 ? true : false,
       statusMessage: status_message,
       imageUrl: profile_image_url,
       timeTableClasses: schedules,
       coordinate: { latitude: latitude, longitude: longitude },
-      inSchool: in_school,
+      inSchool: in_school === 1 ? true : false,
       buildingId: buildingObject ? buildingObject.building_id : null,
     };
     return result;
