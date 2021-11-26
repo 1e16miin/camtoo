@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       class_type: {
-        type: DataTypes.BOOLEAN,
+        type: DataTypes.CHAR(1),
         allowNull: false,
       },
       start_time: {
