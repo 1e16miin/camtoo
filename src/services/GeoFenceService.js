@@ -75,14 +75,15 @@ const GeoFenceService = (userId) => {
       nest: true,
       raw: true,
       where: { id: buildingId },
-      attributes: ["latitude", "longitude", "name"],
+      attributes: ["latitude", "longitude", "name", "radius"],
     });
-    const { latitude, longitude, name } = buildingData;
+    const { latitude, longitude, name, radius } = buildingData;
     
     const result = {
       buildingId: buildingId,
       name: name,
       coordinate: { latitude: latitude, longitude: longitude },
+      radius: radius,
       people:people
     }
 
