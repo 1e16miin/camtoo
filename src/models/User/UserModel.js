@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       status: {
         type: DataTypes.CHAR(1),
-        defaultValue: "C",
+        defaultValue: "2",
         allowNull: false,
       },
       promise_refusal_mode: {
