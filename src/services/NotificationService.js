@@ -13,7 +13,7 @@ const NotificationService = (sender = null) => {
   const smsAccessKey = SENS_SMS.accessKey;
   const smsServiceId = SENS_SMS.serviceId;
   const smsSecretKey = SENS_SMS.secretKey;
-  const smsSender = SENS_SMS.sender;
+  // const smsSender = SENS_SMS.sender;
 
   const makeSignature = (url, timestamp, method, secretKey, accessKey) => {
     const space = " "; // one space
@@ -89,7 +89,7 @@ const NotificationService = (sender = null) => {
       const timestamp = Date.now().toString(); // current timestamp (epoch)
 
       const uri = `https://sens.apigw.ntruss.com/push/v2/services/${pushServiceId}/messages`;
-      const url = `/push/v2/services/${pushServiceId}/users`;
+      const url = `/push/v2/services/${pushServiceId}/message`;
       const method = "POST";
       const signature = makeSignature(
         url,
@@ -123,6 +123,7 @@ const NotificationService = (sender = null) => {
           "x-ncp-apigw-signature-v2": signature,
         },
       };
+
       const communicationData = {
         sender: sender,
         receiver: receiver,
