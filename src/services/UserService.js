@@ -31,6 +31,8 @@ const UserService = async (id) => {
       public_profile_mode,
       in_school,
       status_message,
+      latitude,
+      longitude,
       profile_image_url,
     } = userData;
     // timeTableClasses
