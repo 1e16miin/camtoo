@@ -2,18 +2,13 @@ const { sequelize, user } = require("../models");
 const { jwtSecretKey } = require("../config/key");
 const jwt = require("jsonwebtoken");
 const TimeTableService = require("./TimeTableService");
-const LRU = require("lru-cache");
+
 const NotificationService = require("./NotificationService");
 
 const AuthService = () => {
   
-  const options = {
-    max:11,
-    maxAge: 180,
-    length: function (n, key) { return n.length },
-    dispose: function (key, n) {console.log(key)}
-  }
-  const cache = new LRU(options)
+ 
+  
 
   const createVerifyCode = (n = 4) => {
     let str = "";
@@ -23,7 +18,7 @@ const AuthService = () => {
     return str;
   };
 
-  const sendVerifyCode = async (receiver) => {
+  const sendVerifyCode = async (receiver, cache) => {
     
     try {
       const verifyCode = createVerifyCode();
@@ -32,7 +27,7 @@ const AuthService = () => {
       cache.set(receiver, verifyCode)
       const result = await notificationInstance.sendSMS(receiver, verifyCode);
       console.log(cache);
-      return result;
+      return cache;
     } catch (err) {
       cache.del(receiver)
       console.log(err);
@@ -40,7 +35,7 @@ const AuthService = () => {
     }
   }; 
   
-  const confirmVerifyCode = async (authData) => {
+  const confirmVerifyCode = async (authData, cache) => {
     const {phoneNumber, verifyCode} = authData
     const cacheData = cache.get(phoneNumber);
     console.log(cache);

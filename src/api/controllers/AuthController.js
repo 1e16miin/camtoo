@@ -5,6 +5,20 @@ const NotificationService = require("../../services/NotificationService");
 const UserService = require("../../services/UserService");
 const { checkAccessTokens, checkRefreshTokens } = require("../middlewares/verifyToken");
 const router = express();
+const LRU = require("lru-cache");
+
+ const options = {
+   max: 11,
+   maxAge: 180,
+   length: function (n, key) {
+     return n.length;
+   },
+   dispose: function (key, n) {
+     console.log(key);
+   },
+};
+ 
+const cache = new LRU(options);
 
 
 router.post("/sign-up", async (req, res) => {
@@ -51,7 +65,7 @@ router.post("/", async (req, res) => {
   try {
     const phoneNumber = req.body.phoneNumber
     const authInstance = AuthService()
-    const result = await authInstance.sendVerifyCode(phoneNumber);
+    const result = await authInstance.sendVerifyCode(phoneNumber, cache);
     return res.status(200).send(result)
     
   } catch (err) {
@@ -65,7 +79,7 @@ router.post("/confirm", async (req, res) => {
     const authData = req.body
     console.log(authData)
     const authInstance = AuthService();
-    const result = await authInstance.confirmVerifyCode(authData);
+    const result = await authInstance.confirmVerifyCode(authData, cache);
     return res.status(200).send(result)
   } catch (err) {
     console.log(err)
