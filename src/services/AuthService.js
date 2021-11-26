@@ -23,7 +23,7 @@ const AuthService = () => {
       
       cache.set(receiver, verifyCode, 180)
       const result = await notificationInstance.sendSMS(receiver, verifyCode);
-      console.log(cache);
+      // console.log(cache);
       return result;
     } catch (err) {
       cache.del(receiver)
@@ -35,11 +35,11 @@ const AuthService = () => {
   const confirmVerifyCode = async (authData) => {
     const {phoneNumber, verifyCode} = authData
     const cacheData = cache.get(phoneNumber);
-    console.log(cache);
+    // console.log(cache);
     if (!cacheData) {
       return new Error("제한 시간이 초과하였습니다")
     }
-    console.log(cacheData)
+    console.log(cacheData, verifyCode);
     if (cacheData !== verifyCode) {
       return new Error("인증 번호가 맞지 않습니다.")
     }
