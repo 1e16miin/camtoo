@@ -10,7 +10,7 @@ const TimeTableService = (userId) => {
         ["day_of_the_week", "dayOfTheWeek"],
         ["start_time", "startTime"],
         ["end_time", "endTime"],
-        ["class_type", "classType"],
+        ["class_type", "scheduleType"],
       ],
       where: { user_id: userId },
     });
