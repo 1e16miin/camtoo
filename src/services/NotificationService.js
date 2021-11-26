@@ -65,7 +65,7 @@ const NotificationService = (sender = null) => {
         "Content-Type": "application/json; charset=utf-8",
         "x-ncp-iam-access-key": pushAccessKey,
         "x-ncp-apigw-timestamp": timestamp,
-        "x-ncp-apigw-signature-v2": signature.toString(),
+        "x-ncp-apigw-signature-v2": signature,
       },
     };
     await axios
@@ -120,7 +120,7 @@ const NotificationService = (sender = null) => {
           "Content-Type": "application/json; charset=utf-8",
           "x-ncp-iam-access-key": pushAccessKey,
           "x-ncp-apigw-timestamp": timestamp,
-          "x-ncp-apigw-signature-v2": signature.toString(),
+          "x-ncp-apigw-signature-v2": signature,
         },
       };
       const communicationData = {
