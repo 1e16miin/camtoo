@@ -104,11 +104,8 @@ const NotificationService = (sender = null) => {
         messageType: "NOTIF",
         target: {
           type: "USER",
-          deviceType: null,
+          deviceType:"GCM",
           to: [`${receiver}`],
-        },
-        message: {
-          default: {},
         },
         message: {
           default: {},
@@ -123,7 +120,7 @@ const NotificationService = (sender = null) => {
           "Content-Type": "application/json; charset=utf-8",
           "x-ncp-iam-access-key": pushAccessKey,
           "x-ncp-apigw-timestamp": timestamp,
-          "x-ncp-apigw-signature-v2": signature,
+          "x-ncp-apigw-signature-v2": signature.toString(),
         },
       };
       const communicationData = {
