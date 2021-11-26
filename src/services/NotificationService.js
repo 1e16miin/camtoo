@@ -89,7 +89,7 @@ const NotificationService = (sender = null) => {
       const timestamp = Date.now().toString(); // current timestamp (epoch)
 
       const uri = `https://sens.apigw.ntruss.com/push/v2/services/${pushServiceId}/messages`;
-      const url = `/push/v2/services/${pushServiceId}/message`;
+      const url = `/push/v2/services/${pushServiceId}/messages`;
       const method = "POST";
       const signature = makeSignature(
         url,
