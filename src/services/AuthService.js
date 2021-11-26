@@ -2,7 +2,7 @@ const { sequelize, user } = require("../models");
 const { jwtSecretKey } = require("../config/key");
 const jwt = require("jsonwebtoken");
 const TimeTableService = require("./TimeTableService");
-const nodeCache = require("node-cache");
+const LRU = require("lru-cache");
 const NotificationService = require("./NotificationService");
 
 const AuthService = () => {
@@ -19,8 +19,7 @@ const AuthService = () => {
       const verifyCode = createVerifyCode();
       const notificationInstance = NotificationService();
       const result = await notificationInstance.sendSMS(receiver, verifyCode);
-      nodeCache.del(receiver);
-      cache.put(receiver, verifyCode);
+    
       return result;
     } catch (err) {
       console.log(err);
@@ -30,11 +29,11 @@ const AuthService = () => {
 
   const issueTokens = (id) => {
     const accessToken = jwt.sign({ id: id, type: "A" }, jwtSecretKey, {
-      expiresIn: 60 * 60 * 24 * 7,
+      expiresIn: 60 * 60 * 2,
     });
 
     const refreshToken = jwt.sign({ id: id, type: "R" }, jwtSecretKey, {
-      expiresIn: 60 * 60 * 24 * 30 * 6,
+      expiresIn: 60 * 60 * 24 * 14,
     });
 
     const result = { accessToken: accessToken, refreshToken: refreshToken };
