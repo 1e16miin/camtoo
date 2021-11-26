@@ -42,7 +42,7 @@ const UserService = async (id) => {
       status: status,
       promiseRefusalMode: promise_refusal_mode === 1 ? true : false,
       publicProfileMode: public_profile_mode === 1 ? true : false,
-      statusMessage: status_message ? "" : status_message,
+      statusMessage: status_message ? status_message : "",
       imageUrl: profile_image_url,
       timeTableClasses: schedules,
       coordinate: { latitude: latitude, longitude: longitude },

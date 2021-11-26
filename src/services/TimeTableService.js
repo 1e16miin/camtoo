@@ -25,7 +25,7 @@ const TimeTableService = (userId) => {
         start_time: startTime,
         end_time: endTime,
         class_type: scheduleType,
-        class_name: scheduleName ? "" : scheduleName,
+        class_name: scheduleName ? scheduleName : "",
       };
       await timeTable.create(input, { transaction })
     }))
