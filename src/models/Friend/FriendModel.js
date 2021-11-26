@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       status: {
-        type: DataTypes.BOOLEAN,
+        type: DataTypes.CHAR(1),
         allowNull: false,
       },
     },

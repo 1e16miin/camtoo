@@ -28,13 +28,13 @@ const GeoFenceService = (userId) => {
     const inSchoolUsersId = await findAllInSchoolUserId()
     const coordinate1 = await user.findOne({ raw: true, nest: true ,attributes:["latitude", "longitude"], where:{user_id:userId}});
     const inSchoolUsers = await Promise.all(inSchoolUsersId.map(async id => {
-      let isFriend = false
+      let friendStatus = 0
       if (friendIdList.includes(id)) {
-        isFriend = true
+        friendStatus = 2
       }
       
       const userData = await (await UserService(id)).getUserData();
-      if (!isFriend) {
+      if (friendStatus===0) {
         if (userData.publicProfileMode === 0) return null;
         else {
           const coordinate2 = userData.coordinate
@@ -45,7 +45,7 @@ const GeoFenceService = (userId) => {
       }
       const result = {
         user: userData,
-        isFriend: isFriend
+        friendStatus: friendStatus
       }
       return result
     }))

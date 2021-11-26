@@ -17,13 +17,13 @@ const FriendService = (userId) => {
         nest: true,
         raw: true,
         attributes: [["followee", "userId"]],
-        where: { status: "A", follower: userId },
+        where: { status: 2, follower: userId },
       }),
       await friend.findAll({
         nest: true,
         raw: true,
         attributes: [["follower", "userId"]],
-        where: { status: "A", followee: userId },
+        where: { status: 2, followee: userId },
       }),
     ]);
     const result = friendIds.flat().map((element) => element.userId);
