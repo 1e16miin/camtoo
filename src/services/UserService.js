@@ -46,8 +46,8 @@ const UserService = async (id) => {
       imageUrl: profile_image_url ? profile_image_url : "",
       timeTableClasses: schedules,
       coordinate: {
-        latitude: latitude ? latitude : "",
-        longitude: longitude ? longitude : "",
+        latitude: latitude ? latitude : 0.0,
+        longitude: longitude ? longitude : 0.0,
       },
       inSchool: in_school === 1 ? true : false,
       buildingId: buildingObject ? buildingObject.building_id : null,
