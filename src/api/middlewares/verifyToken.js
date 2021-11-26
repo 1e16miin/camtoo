@@ -9,11 +9,11 @@ module.exports = {
     const credentials = authorization.replace("Bearer ", "");
     console.log(credentials);
     const tokenData = verifyToken(credentials);
-    
+
     const tokenType = tokenData.type;
 
-    const id = tokenType !== "A" ? "1" : tokenData.userId;
-    console.log(id, tokenType);
+    const id = tokenType !== "A" ? "1" : tokenData.id;
+    // console.log(id, tokenType);
     const bufferOne = tokenType !== "A" ? "1" : Buffer.from(id);
 
     if (credentials === "null") {
@@ -51,7 +51,7 @@ module.exports = {
     }
 
     else {
-      const id = tokenType !== "R" ? "1" : tokenData.userId;
+      const id = tokenType !== "R" ? "1" : tokenData.id;
       const bufferOne = tokenType !== "R" ? "1" : Buffer.from(id);
 
       if (tokenType === "R") {
