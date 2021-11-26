@@ -58,7 +58,7 @@ const UserService = async (id) => {
   
   
   const update = async (userData) => {
-    let transaction = sequelize.transaction()
+    let transaction = await sequelize.transaction()
     const timeTableInstance = TimeTableService(userId)
     try {
       const {
