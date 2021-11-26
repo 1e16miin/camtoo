@@ -60,5 +60,16 @@ router.post("/", async (req, res) => {
   }
 })
 
+router.post("/confirm", async (req, res) => {
+  try {
+    const authData = req.body
+    const authInstance = AuthService();
+    const result = authInstance.confirmVerifyCode(authData);
+    return res.status(200).send(result)
+  } catch (err) {
+    console.log(err)
+    return res.status(400).send({message:err.message})
+  }
+})
 
 module.exports=router

@@ -6,6 +6,15 @@ const LRU = require("lru-cache");
 const NotificationService = require("./NotificationService");
 
 const AuthService = () => {
+  
+  const options = {
+    max:11,
+    maxAge: 180,
+    length: function (n, key) { return n.length },
+    dispose: function (key, n) {console.log(key)}
+  }
+  const cache = new LRU(options)
+
   const createVerifyCode = (n = 4) => {
     let str = "";
     for (let i = 0; i < n; i++) {
@@ -15,17 +24,36 @@ const AuthService = () => {
   };
 
   const sendVerifyCode = async (receiver) => {
+    
     try {
       const verifyCode = createVerifyCode();
       const notificationInstance = NotificationService();
+      
+      cache.set(receiver, verifyCode)
       const result = await notificationInstance.sendSMS(receiver, verifyCode);
     
       return result;
     } catch (err) {
+      cache.del(receiver)
       console.log(err);
       throw err;
     }
-  };
+  }; 
+  
+  const confirmVerifyCode = (authData) => {
+    const {phoneNumber, verifyCode} = authData
+    const cacheData = cache.get(phoneNumber);
+    if (!cacheData) {
+      return new Error("제한 시간이 초과하였습니다")
+    }
+    console.log(cacheData)
+    if (cacheData !== verifyCode) {
+      return new Error("인증 번호가 맞지 않습니다.")
+    }
+
+    cache.del(phoneNumber);
+    return "success"
+  }
 
   const issueTokens = (id) => {
     const accessToken = jwt.sign({ id: id, type: "A" }, jwtSecretKey, {
@@ -71,7 +99,7 @@ const AuthService = () => {
     }
   };
 
-  return { sendVerifyCode, createNewUser };
+  return { sendVerifyCode, createNewUser, confirmVerifyCode };
 };
 
 module.exports = AuthService;
