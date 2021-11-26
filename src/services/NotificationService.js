@@ -85,10 +85,10 @@ const NotificationService = (senderId = null) => {
   };
 
   const sendPush = async (receiverId, senderName, payload) => {
-    let transaction = await sequelize.transaction();
+    // let transaction = await sequelize.transaction();
     try {
-      const sender = await (await UserService(senderId)).userId;
-      const receiver = await (await UserService(receiverId)).userId;
+      // const sender = await (await UserService(senderId)).userId;
+      // const receiver = await (await UserService(receiverId)).userId;
 
       const timestamp = Date.now().toString(); // current timestamp (epoch)
 
@@ -128,12 +128,12 @@ const NotificationService = (senderId = null) => {
         },
       };
 
-      const communicationData = {
-        sender: sender,
-        receiver: receiver,
-        message: payload,
-      };
-      await communication.create(communicationData, { transaction });
+      // const communicationData = {
+      //   sender: sender,
+      //   receiver: receiver,
+      //   message: payload,
+      // };
+      // await communication.create(communicationData, { transaction });
 
       await axios
         .post(uri, body, options)
@@ -147,10 +147,10 @@ const NotificationService = (senderId = null) => {
       if (resultCode === 400) {
         throw new Error("푸쉬를 보내는 과정에서 에러가 발생하였습니다.");
       }
-      await transaction.commit();
+      // await transaction.commit();
       return "success";
     } catch (err) {
-      await transaction.rollback();
+      // await transaction.rollback();
       console.log(err);
       throw err;
     }

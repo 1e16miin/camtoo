@@ -36,7 +36,7 @@ router.post("/message/send", checkAccessTokens, async (req, res) => {
     const notificationInstance = NotificationService(senderId);
     console.log(receiver)
     const result = await notificationInstance.sendPush(
-      receiver.id,
+      receiver,
       senderName,
       payload
     );
