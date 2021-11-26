@@ -71,8 +71,6 @@ module.exports = {
         };
         const isSame = await checkToken();
 
-        console.log(isSame);
-
         if (isSame) {
           req.id = bufferOne;
           next();

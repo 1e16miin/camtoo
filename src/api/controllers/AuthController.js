@@ -58,9 +58,6 @@ router.post("/", async (req, res) => {
     console.log(err)
     return res.status(400).send({ message: "본인인증 문자 발송 실패" });
   }
-  
-  
-
 })
 
 
