@@ -185,7 +185,7 @@ const NotificationService = (sender = null) => {
           },
         ],
       };
-      axios
+      await axios
         .post(uri, body, options)
         .then((res) => {
           console.log(res.data);
@@ -195,7 +195,7 @@ const NotificationService = (sender = null) => {
           console.log(err);
         });
       if (resultCode === 400) {
-        throw new Error("푸쉬를 보내는 과정에서 에러가 발생하였습니다.");
+        throw new Error("sms를 보내는 과정에서 에러가 발생하였습니다.");
       }
       return "success";
     } catch (err) {
