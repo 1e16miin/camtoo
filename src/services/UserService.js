@@ -61,6 +61,7 @@ const UserService = async (id) => {
  
   
   const updateLocation = async (coordinate) => {
+    console.l
     let transaction = await sequelize.transaction();
     try {
       await user.update(coordinate, { where: { id: id }, transaction });
