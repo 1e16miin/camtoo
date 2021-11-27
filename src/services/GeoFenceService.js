@@ -102,7 +102,7 @@ const GeoFenceService = (userId) => {
     const { latitude, longitude, name, radius } = buildingData;
     
     const result = {
-      buildingId: buildingId,
+      id: buildingId,
       name: name,
       coordinate: { latitude: latitude, longitude: longitude },
       radius: radius,

@@ -50,7 +50,6 @@ const NotificationService = (sender = null) => {
       pushSecretKey,
       pushAccessKey
     );
-    console.log(sender)
     const body = {
       userId: sender,
       channelName: "default",
@@ -72,7 +71,6 @@ const NotificationService = (sender = null) => {
     await axios
       .post(uri, body, options)
       .then((res) => {
-        console.log(res)
         resultCode = 200;
       })
       .catch((err) => {
@@ -80,7 +78,6 @@ const NotificationService = (sender = null) => {
        console.log(err.response.data);
       throw new Error("디바이스 토큰 등록 중 에러 발생")
       });
-    console.log(resultCode, sender)
     return resultCode;
   };
 
@@ -153,7 +150,7 @@ const NotificationService = (sender = null) => {
     }
   };
 
-  
+
   const sendSMS = async (receiver, verifyCode) => {
     try {
       let resultCode = 400;

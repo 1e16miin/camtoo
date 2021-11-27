@@ -21,13 +21,16 @@ router.post("/add", checkAccessTokens, async (req, res) => {
 });
 
 
-router.put("/confirm", checkAccessTokens, async (req, res) => {});
+router.put("/confirm", checkAccessTokens, async (req, res) => {
+  const id = req.id
+});
 
 router.get("/search", checkAccessTokens, async (req, res) => {
   
 })
 
-router.post("/invite", checkAccessTokens, async (req, res) => {});
+router.post("/invite", checkAccessTokens, async (req, res) => {
+});
 
 router.post("/list", checkAccessTokens, async (req, res) => {
   try {

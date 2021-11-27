@@ -27,6 +27,14 @@ const FriendService = (userId) => {
     }
   };
 
+  const invite = async (phoneNumber) => {
+  
+    const downloadUrl = "https://vt.tiktok.com/ZSeSEyotJ/"
+    const notificationInstance = NotificationService(userId)
+    const message = `캠투 다운로드 링크: ${downloadUrl}`;
+    const result = await notificationInstance.sendSMS(phoneNumber, message);
+    return result
+  }
   const add = async (followeeDto) => {
     let transaction = await sequelize.transaction();
     try {
@@ -141,7 +149,7 @@ const FriendService = (userId) => {
 
   }
 
-  return { findById, add, confirm, remove, send, findAll };
+  return { findById, add, confirm, remove, send, findAll, invite };
 };
 
 module.exports = FriendService;
