@@ -84,7 +84,7 @@ const NotificationService = (sender = null) => {
     return resultCode;
   };
 
-  const sendPush = async (receiver, payload) => {
+  const sendPush = async (receiver, message) => {
     // let transaction = await sequelize.transaction();
     try {
       // const sender = await (await UserService(senderId)).userId;
@@ -123,7 +123,7 @@ const NotificationService = (sender = null) => {
           default: {},
 
           fcm: {
-            content: `[${senderName}]: ${payload}`,
+            content: `[${senderName}]${message}`,
           },
         },
       };
