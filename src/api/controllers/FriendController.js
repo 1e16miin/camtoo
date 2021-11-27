@@ -40,9 +40,10 @@ router.post("/message/send", checkAccessTokens, async (req, res) => {
   try {
     const id = req.id;
     const { receiver, payload } = req.body;
-    // const userInstance = await UserService(id)
+    const userInstance = await UserService(id)
+    const userId = userInstance.userId
     // const userName = userInstance.userData.name
-    const friendInstance = FriendService(id);
+    const friendInstance = FriendService(userId);
     const result = await friendInstance.send(receiver, payload);
 
     return res.status(200).send(result);
