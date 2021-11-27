@@ -6,7 +6,10 @@ const {
 const { Op } = require("sequelize");
 
 const FriendService = (userId) => {
-  const add = async (followee) => {};
+  const send = async (senderDto) => {
+
+  }
+  const add = async (followeeDto) => {};
   const confirm = async () => {};
 
   const remove = async () => {};
@@ -29,7 +32,7 @@ const FriendService = (userId) => {
     const result = friendIds.flat().map((element) => element.userId);
     return result;
   };
-  return { findById, add, confirm, remove };
+  return { findById, add, confirm, remove, send };
 };
 
 module.exports = FriendService;

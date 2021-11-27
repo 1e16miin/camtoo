@@ -6,7 +6,7 @@ const { sequelize, communication } = require("../models");
 const UserService = require("./UserService");
 moment().tz("Asia/Seoul");
 
-const NotificationService = (senderId = null) => {
+const NotificationService = (sender = null) => {
   const pushAccessKey = SENS_PUSH.accessKey;
   const pushServiceId = SENS_PUSH.serviceId;
   const pushSecretKey = SENS_PUSH.secretKey;
@@ -50,9 +50,9 @@ const NotificationService = (senderId = null) => {
       pushSecretKey,
       pushAccessKey
     );
-    console.log(senderId)
+    console.log(sender)
     const body = {
-      userId: senderId,
+      userId: sender,
       channelName: "default",
       deviceType: "GCM",
       deviceToken: deviceToken,
@@ -80,11 +80,11 @@ const NotificationService = (senderId = null) => {
        console.log(err.response.data);
       throw new Error("디바이스 토큰 등록 중 에러 발생")
       });
-    console.log(resultCode, senderId)
+    console.log(resultCode, sender)
     return resultCode;
   };
 
-  const sendPush = async (receiverId, senderName, payload) => {
+  const sendPush = async (receiver, senderName, payload) => {
     // let transaction = await sequelize.transaction();
     try {
       // const sender = await (await UserService(senderId)).userId;
@@ -109,7 +109,7 @@ const NotificationService = (senderId = null) => {
         target: {
           type: "USER",
           deviceType: "GCM",
-          to: [`${receiverId}`],
+          to: [`${receiver}`],
         },
         message: {
           default: {},

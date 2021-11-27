@@ -1,4 +1,5 @@
 const express = require("express");
+const FriendService = require("../../services/FriendService");
 const NotificationService = require("../../services/NotificationService");
 const UserService = require("../../services/UserService");
 const { checkAccessTokens } = require("../middlewares/verifyToken");
@@ -6,13 +7,10 @@ const router = express();
 
 router.post("/add", checkAccessTokens, async (req, res) => {
   try {
-    const followerId = req.id;
-    const { followee, followerName } = req.body;
-    const notificationInstance = NotificationService(followerId);
-    const result = await notificationInstance.sendPush(
-      followee.id,
-      followerName
-    );
+    const id = req.id;
+    const { followee } = req.body;
+    const friendInstance = FriendService(id);
+    const result = await friendInstance.add(followee)
     return res.status(200).send(result);
   } catch (err) {
     console.log(err);
@@ -31,15 +29,12 @@ router.get("/list", checkAccessTokens, async (req, res) => {
 
 router.post("/message/send", checkAccessTokens, async (req, res) => {
   try {
-    const senderId = req.id;
-    const { receiver, senderName, payload } = req.body;
-    const notificationInstance = NotificationService(senderId);
-    console.log(receiver)
-    const result = await notificationInstance.sendPush(
-      receiver,
-      senderName,
-      payload
-    );
+    const id = req.id;
+    const { receiver, payload } = req.body;
+
+    const friendInstance = FriendService(id);
+    const result = await friendInstance.send(receiver, payload)
+
     return res.status(200).send(result);
   } catch (err) {
     console.log(err);
