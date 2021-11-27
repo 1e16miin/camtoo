@@ -22,7 +22,7 @@ router.post("/sign-up", async (req, res) => {
 router.post("/register/device-token", checkAccessTokens, async (req, res) => {
   try {
     const id = req.id
-
+    console.log(body)
     const deviceToken = req.body.deviceToken
     const userId = (await UserService(id)).userId
 

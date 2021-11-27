@@ -1,6 +1,8 @@
 const { user, entry, sequelize } = require("../models");
 const TimeTableService = require("./TimeTableService");
 
+
+
 const UserService = async (id) => {
   const getUserId = async () => {
     const userId = await user.findOne({
@@ -54,8 +56,10 @@ const UserService = async (id) => {
     return result;
   };
 
-  const userId = await getUserId();
-  const userData = await getUserData();
+  const updateStatus = async () => {
+
+  }
+ 
   
   const updateLocation = async (coordinate) => {
     let transaction = await sequelize.transaction();
@@ -106,6 +110,10 @@ const UserService = async (id) => {
       throw new Error("유저 정보를 업데이트 하는 도중 에러가 발생하였습니다.")
     }
   }
+
+   const userId = await getUserId();
+   const userData = await getUserData();
+
   return { userData, userId, update, updateLocation };
 };
 

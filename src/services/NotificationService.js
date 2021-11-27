@@ -2,8 +2,8 @@ const crypto = require("crypto");
 const { default: axios } = require("axios");
 const { SENS_SMS, SENS_PUSH } = require("../config/key");
 const moment = require("moment-timezone");
-const { sequelize, communication, user } = require("../models");
-const UserService = require("./UserService");
+const { user } = require("../models");
+
 moment().tz("Asia/Seoul");
 
 const NotificationService = (sender = null) => {
@@ -85,10 +85,7 @@ const NotificationService = (sender = null) => {
   };
 
   const sendPush = async (receiver, message) => {
-    // let transaction = await sequelize.transaction();
     try {
-      // const sender = await (await UserService(senderId)).userId;
-      // const receiver = await (await UserService(receiverId)).userId;
       console.log(sender)
       const senderName = (
         await user.findOne({
@@ -136,13 +133,6 @@ const NotificationService = (sender = null) => {
         },
       };
 
-      // const communicationData = {
-      //   sender: sender,
-      //   receiver: receiver,
-      //   message: payload,
-      // };
-      // await communication.create(communicationData, { transaction });
-
       await axios
         .post(uri, body, options)
         .then(async (res) => {
@@ -155,14 +145,15 @@ const NotificationService = (sender = null) => {
       if (resultCode === 400) {
         throw new Error("푸쉬를 보내는 과정에서 에러가 발생하였습니다.");
       }
-      // await transaction.commit();
+
       return "success";
     } catch (err) {
-      // await transaction.rollback();
       console.log(err);
       throw err;
     }
   };
+
+  
   const sendSMS = async (receiver, verifyCode) => {
     try {
       let resultCode = 400;

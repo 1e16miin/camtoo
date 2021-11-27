@@ -48,7 +48,31 @@ const FriendService = (userId) => {
   };
 
   const confirm = async (followerDto, response) => {
-    const userInstance = await UserService()
+    let transaction = await sequelize.transaction();
+    try {
+      const userInstance = await UserService(followerDto.id);
+      const follower = userInstance.userId;
+      let connection = await friend.findOne({
+        where: { follower: userId, followee: follower },
+      });
+      if (!connection) {
+        connection= await friend.findOne({
+          where: { follower: follower, followee: userId },
+        });
+      }
+      if (!connection) {
+        throw new Error("connection is not exist")
+      }
+      else {
+        if (response) await connection.update({ status: 1 }, { transaction });
+        else await connection.destroy({transaction});
+      }
+      await transaction.commit()
+      return "success"
+    } catch (err) {
+      await transaction.rollback()
+      throw err
+    }
   };
 
   const remove = async () => {};
@@ -111,6 +135,12 @@ const FriendService = (userId) => {
     const result = Object.fromEntries(friendEntries);
     return result;
   };
+
+  
+  const messageLog = () => {
+
+  }
+
   return { findById, add, confirm, remove, send, findAll };
 };
 
