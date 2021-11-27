@@ -94,7 +94,7 @@ const NotificationService = (sender = null) => {
           nest: true,
           raw: true,
           attributes: ["name"],
-          where: { user_id: userId },
+          where: { user_id: sender },
         })
       ).name;
       const timestamp = Date.now().toString(); // current timestamp (epoch)

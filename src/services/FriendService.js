@@ -6,7 +6,9 @@ const UserService = require("./UserService");
 const FriendService = (userId) => {
   const send = async (receiverDto, payload) => {
     try {
+      
       const receiver = (await UserService(receiverDto.id)).userId;
+      console.log(receiver)
       const notificationInstance = NotificationService(userId);
       const result = await notificationInstance.sendPush(receiver, payload);
       return result;
