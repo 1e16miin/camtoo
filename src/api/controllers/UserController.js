@@ -50,7 +50,7 @@ router.put("/update", checkAccessTokens, async (req, res) => {
 router.put("/location", checkAccessTokens, async (req, res) => {
   try {
     const id = req.id;
-    const coordinate = req.body.coordinate;
+    const coordinate = req.body;
     console.log(coordinate)
     const userInstance = await UserService(id);
     const result = await userInstance.updateLocation(coordinate);
