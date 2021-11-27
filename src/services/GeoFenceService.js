@@ -1,6 +1,7 @@
 const {
   building,
   user,
+  sequelize,
 } = require("../models");
 const { Op } = require("sequelize");
 const FriendService = require("./FriendService");
@@ -49,6 +50,32 @@ const GeoFenceService = (userId) => {
     return result
   }
 
+  const entrance = async (buildingId) => {
+    let transaction = await sequelize.transaction()
+    try {
+      const entranceData = { building_id: buildingId, user_id: userId }
+      await building.create(entranceData, { transaction });
+      await transaction.commit()
+      return "success"
+    } catch (err) {
+      await transaction.rollback()
+      throw err
+    }
+  }
+
+   const exit = async (buildingId) => {
+     let transaction = await sequelize.transaction();
+     try {
+      //  const entranceData = { building_id: buildingId, user_id: userId };
+       await building.destroy({ where:{ building_id: buildingId, user_id: userId } ,transaction});
+       await transaction.commit();
+       return "success";
+     } catch (err) {
+       await transaction.rollback();
+       throw err;
+     }
+   };
+
   const getUniversityData = async (universityId=1) => {
     const buildingIdList = (await building.findAll({raw:true, nest:true, where:{university_id:universityId}})).map(data=>data.id)
     const result = await Promise.all(
@@ -86,7 +113,7 @@ const GeoFenceService = (userId) => {
 
  
 
-  return {getUniversityData,  getBuildingData };
+  return {getUniversityData,  getBuildingData, entrance, exit };
 };
 
 module.exports = GeoFenceService;
