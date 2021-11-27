@@ -60,8 +60,8 @@ router.post("/building/enter", checkAccessTokens,async (req, res) => {
     console.log(buildingId)
     const userId = (await UserService(id)).userId;
     const geoFenceInstance = GeoFenceService(userId);
-    await geoFenceInstance.entrance(buildingId);
-    return res.status(200).send("ok");
+    const result = await geoFenceInstance.entrance(buildingId);
+    return res.status(200).send(result);
   } catch (err) {
     console.log(err);
     res
@@ -79,8 +79,8 @@ router.delete("/building/exit", checkAccessTokens ,async (req, res) => {
     console.log(buildingId);
     const userId = (await UserService(id)).userId;
     const geoFenceInstance = GeoFenceService(userId);
-    await geoFenceInstance.exit(buildingId);
-    return res.status(200).send("ok");
+    const result = await geoFenceInstance.exit(buildingId);
+    return res.status(200).send(result);
   } catch (err) {
     console.log(err);
     res
