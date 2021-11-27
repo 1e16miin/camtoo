@@ -1,6 +1,7 @@
 const GeoFenceService = require("../../services/GeoFenceService");
 const express = require('express');
 const { checkAccessTokens } = require("../middlewares/verifyToken");
+const UserService = require("../../services/UserService");
 const router = express()
 
 
