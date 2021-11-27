@@ -9,7 +9,7 @@ router.get('/building', checkAccessTokens ,async (req,res) => {
   try {
     const id = req.id
     const buildingId = req.query.buildingId
-    const userId = await (await UserService(id)).userId;
+    const userId = (await UserService(id)).userId;
     const geoFenceInstance = GeoFenceService(userId);
     const result = await geoFenceInstance.getBuildingData(buildingId);
     return res.status(200).send(result)
@@ -22,7 +22,7 @@ router.get('/building', checkAccessTokens ,async (req,res) => {
 router.get("/road", checkAccessTokens, async (req, res) => {
   try {
     const id = req.id;
-    const userId = await (await UserService(id)).userId;
+    const userId = (await UserService(id)).userId;
     const geoFenceInstance = GeoFenceService(userId);
     const result = await geoFenceInstance.getBuildingData(null);
     return res.status(200).send(result);
@@ -39,7 +39,7 @@ router.get("/university",checkAccessTokens, async (req, res) => {
   try {
     const id = req.id;
     const universityId = req.query.universityId;
-    const userId = await (await UserService(id)).userId;
+    const userId = (await UserService(id)).userId;
     const geoFenceInstance = GeoFenceService(userId);
     const result = await geoFenceInstance.getUniversityData(universityId);
     return res.status(200).send(result);
@@ -56,7 +56,7 @@ router.post("/building/enter", checkAccessTokens,async (req, res) => {
   try {
     const id = req.id
     const buildingId = req.body.buildingId
-    const userId = await (await UserService(id)).userId;
+    const userId = (await UserService(id)).userId;
     const geoFenceInstance = GeoFenceService(userId);
     await geoFenceInstance.entrance(buildingId);
     return res.status(200).send("ok");
@@ -74,7 +74,7 @@ router.delete("/building/exit", checkAccessTokens ,async (req, res) => {
   try {
     const id = req.id
     const buildingId = req.body.buildingId;
-    const userId = await (await UserService(id)).userId;
+    const userId = (await UserService(id)).userId;
     const geoFenceInstance = GeoFenceService(userId);
     await geoFenceInstance.exit(buildingId);
     return res.status(200).send("ok");

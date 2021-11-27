@@ -2,7 +2,7 @@ const crypto = require("crypto");
 const { default: axios } = require("axios");
 const { SENS_SMS, SENS_PUSH } = require("../config/key");
 const moment = require("moment-timezone");
-const { sequelize, communication } = require("../models");
+const { sequelize, communication, user } = require("../models");
 const UserService = require("./UserService");
 moment().tz("Asia/Seoul");
 
@@ -84,12 +84,19 @@ const NotificationService = (sender = null) => {
     return resultCode;
   };
 
-  const sendPush = async (receiver, senderName, payload) => {
+  const sendPush = async (receiver, payload) => {
     // let transaction = await sequelize.transaction();
     try {
       // const sender = await (await UserService(senderId)).userId;
       // const receiver = await (await UserService(receiverId)).userId;
-
+      const senderName = (
+        await user.findOne({
+          nest: true,
+          raw: true,
+          attributes: ["name"],
+          where: { user_id: userId },
+        })
+      ).name;
       const timestamp = Date.now().toString(); // current timestamp (epoch)
 
       const uri = `https://sens.apigw.ntruss.com/push/v2/services/${pushServiceId}/messages`;

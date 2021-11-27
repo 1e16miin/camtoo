@@ -8,7 +8,7 @@ router.get("/information", checkAccessTokens, async (req, res) => {
   try {
     const id = req.query.id;
     const userInstance = await UserService(id);
-    const result = await userInstance.getUserData();
+    const result = userInstance.userData
     return res.status(200).send(result)
   } catch (err) {
     console.log(err)
@@ -22,7 +22,7 @@ router.get("/my-profile", checkAccessTokens, async (req, res) => {
   try {
     const id = req.id;
     const userInstance = await UserService(id);
-    const result = await userInstance.getUserData();
+    const result = userInstance.userData
     return res.status(200).send(result);
   } catch (err) {
     console.log(err)

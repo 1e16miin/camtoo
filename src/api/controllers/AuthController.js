@@ -24,7 +24,7 @@ router.post("/register/device-token", checkAccessTokens, async (req, res) => {
     const id = req.id
 
     const deviceToken = req.body.deviceToken
-    const userId = await (await UserService(id)).userId
+    const userId = (await UserService(id)).userId
 
     const notificationInstance = NotificationService(userId);
     const result = await notificationInstance.postDeviceToken(deviceToken);
