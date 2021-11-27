@@ -2,7 +2,6 @@ const { user, entry, sequelize } = require("../models");
 const TimeTableService = require("./TimeTableService");
 
 
-
 const UserService = async (id) => {
   const getUserId = async () => {
     const userId = await user.findOne({
@@ -57,7 +56,7 @@ const UserService = async (id) => {
   };
 
   const updateStatus = async () => {
-
+    
   }
  
   

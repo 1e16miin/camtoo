@@ -1,3 +1,5 @@
+const { s3 } = require("../../config/key");
+
 module.exports = (sequelize, DataTypes) => {
   return sequelize.define(
     "user",
@@ -13,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       profile_image_url: {
         type: DataTypes.CHAR(36),
+        defaultValue: s3.defaultUrl,
         allowNull: true,
       },
       nickname: {
