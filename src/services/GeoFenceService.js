@@ -8,9 +8,6 @@ const UserService = require("./UserService");
 const isInRange = require("../utils/isInRange");
 
 const GeoFenceService = (userId) => {
-  const friendInstance = FriendService(userId);
-  
-
   const findAllInSchoolUserId = async () => {
     const inSchoolUsers = await user.findAll({ raw: true, nest: true, where: { in_school: 1 } })
     const result = inSchoolUsers.map((userData) => userData.user_id);
@@ -19,7 +16,9 @@ const GeoFenceService = (userId) => {
 
   const getInSchoolUsers = async () => {
     const option = 2
-    const friendIdList = await friendInstance.findById(option);
+    const friendInstance = FriendService(userId);
+    const friendObject = await friendInstance.findById(option);
+    const friendIdList = Object.keys(friendObject);
     const inSchoolUsersId = await findAllInSchoolUserId()
     const coordinate1 = await user.findOne({ raw: true, nest: true ,attributes:["latitude", "longitude"], where:{user_id:userId}});
     const inSchoolUsers = await Promise.all(inSchoolUsersId.map(async id => {

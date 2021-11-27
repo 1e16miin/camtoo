@@ -14,14 +14,14 @@ const FriendService = (userId) => {
       const communicationData = {
         sender: userId,
         receiver: receiver,
-        message: message
+        message: message,
       };
-      await communication.create(communicationData,{transaction});
+      await communication.create(communicationData, { transaction });
       const result = await notificationInstance.sendPush(receiver, message);
-      await transaction.commit()
+      await transaction.commit();
       return result;
     } catch (err) {
-      await transaction.rollback()
+      await transaction.rollback();
       console.log(err);
       throw err;
     }
@@ -36,10 +36,10 @@ const FriendService = (userId) => {
       const connectionData = {
         follower: userId,
         followee: followee,
-      }
-      await friend.create(connectionData, {transaction});
+      };
+      await friend.create(connectionData, { transaction });
       const result = await notificationInstance.sendPush(followee, message);
-      await transaction.commit()
+      await transaction.commit();
       return result;
     } catch (err) {
       await transaction.rollback();
@@ -47,32 +47,68 @@ const FriendService = (userId) => {
     }
   };
 
-  const confirm = async () => {};
+  const confirm = async (followerDto, response) => {
+    const userInstance = await UserService()
+  };
 
   const remove = async () => {};
 
-  const findAll = async () => {
+  const findAll = async (idList) => {
+    const signedFriendIdListInPhoneBook = (
+      await user.findAll({
+        nest: true,
+        raw: true,
+        attributes: [["user_id", "userId"]],
+        where: { id: idList },
+      })
+    ).map((foundUser) => foundUser.id);
     const option = { [Op.ne]: 0 };
-    const friendIdList = await findById(option);
-    const allFriend = await Promise.all()
+    const friendObject = await findById(option);
+    const friendIdList = Object.keys(friendObject);
+    const result = await Promise.all(
+      signedFriendIdListInPhoneBook.map(async (signedUserId) => {
+        const userInstance = await UserService(signedUserId);
+        const signedUserData = userInstance.userData;
+        let friendStatus = 0;
+        if (friendIdList.includes(signedUserId)) {
+          friendStatus = friendObject.signedUserId;
+        }
+        const result = {
+          user: signedUserData,
+          friendStatus: friendStatus,
+        };
+        return result;
+      })
+    );
+    return result;
   };
 
   const findById = async (option) => {
-    const friendIds = await Promise.all([
+    const friendObjectList = await Promise.all([
       await friend.findAll({
         nest: true,
         raw: true,
-        attributes: [["followee", "userId"]],
+        attributes: [
+          ["followee", "userId"],
+          ["status", "friendStatus"],
+        ],
         where: { status: 2, follower: userId },
       }),
       await friend.findAll({
         nest: true,
         raw: true,
-        attributes: [["follower", "userId"]],
+        attributes: [
+          ["follower", "userId"],
+          ["status", "friendStatus"],
+        ],
         where: { status: option, followee: userId },
       }),
     ]);
-    const result = friendIds.flat().map((element) => element.userId);
+    const friendList = friendObjectList
+      .flat()
+      .map((friendObject) => [friendObject.userID, friendObject.friendStatus]);
+    const friendEntries = new Map([friendList]);
+    const result = Object.fromEntries(friendEntries);
     return result;
   };
   return { findById, add, confirm, remove, send, findAll };

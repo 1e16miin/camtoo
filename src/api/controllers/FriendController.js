@@ -21,7 +21,7 @@ router.post("/add", checkAccessTokens, async (req, res) => {
 });
 
 
-router.put("/approval", checkAccessTokens, async (req, res) => {});
+router.put("/confirm", checkAccessTokens, async (req, res) => {});
 
 router.get("/search", checkAccessTokens, async (req, res) => {
   
@@ -29,12 +29,13 @@ router.get("/search", checkAccessTokens, async (req, res) => {
 
 router.post("/invite", checkAccessTokens, async (req, res) => {});
 
-router.get("/list", checkAccessTokens, async (req, res) => {
+router.post("/list", checkAccessTokens, async (req, res) => {
   try {
     const id = req.id;
+    const idList = req.body.idList
     const userId = (await UserService(id)).userId;
     const friendInstance = FriendService(userId);
-    const result = await friendInstance.findAll();
+    const result = await friendInstance.findAll(idList);
     return res.status(200).send(result);
   } catch (err) {
     console.log(err);
