@@ -2,6 +2,7 @@ const {
   building,
   user,
   sequelize,
+  entry,
 } = require("../models");
 const { Op } = require("sequelize");
 const FriendService = require("./FriendService");
@@ -54,7 +55,7 @@ const GeoFenceService = (userId) => {
     let transaction = await sequelize.transaction()
     try {
       const entranceData = { building_id: buildingId, user_id: userId }
-      await building.create(entranceData, { transaction });
+      await entry.create(entranceData, { transaction });
       await transaction.commit()
       return "success"
     } catch (err) {
@@ -67,7 +68,7 @@ const GeoFenceService = (userId) => {
      let transaction = await sequelize.transaction();
      try {
       //  const entranceData = { building_id: buildingId, user_id: userId };
-       await building.destroy({ where:{ building_id: buildingId, user_id: userId } ,transaction});
+       await entry.destroy({ where:{ building_id: buildingId, user_id: userId } ,transaction});
        await transaction.commit();
        return "success";
      } catch (err) {
