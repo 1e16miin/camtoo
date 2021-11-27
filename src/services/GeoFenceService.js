@@ -86,7 +86,7 @@ const GeoFenceService = (userId) => {
 
  
 
-  return {getUniversityData,  getBuildingData, entrance, exit };
+  return {getUniversityData,  getBuildingData };
 };
 
 module.exports = GeoFenceService;
