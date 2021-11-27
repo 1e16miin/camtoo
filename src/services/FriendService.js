@@ -3,7 +3,7 @@ const { Op } = require("sequelize");
 const NotificationService = require("./NotificationService");
 const UserService = require("./UserService");
 
-const FriendService = (userId) => {
+const FriendService = (userId=null) => {
   const send = async (receiverDto, payload) => {
     let transaction = await sequelize.transaction();
     try {
@@ -27,7 +27,7 @@ const FriendService = (userId) => {
     }
   };
 
-  const invite = async (phoneNumber) => {
+  const invite = async (userName,phoneNumber) => {
   
     const downloadUrl = "https://vt.tiktok.com/ZSeSEyotJ/"
     const notificationInstance = NotificationService(userId)
