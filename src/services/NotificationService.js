@@ -89,6 +89,7 @@ const NotificationService = (sender = null) => {
     try {
       // const sender = await (await UserService(senderId)).userId;
       // const receiver = await (await UserService(receiverId)).userId;
+      console.log(sender)
       const senderName = (
         await user.findOne({
           nest: true,
