@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       profile_image_url: {
-        type: DataTypes.CHAR(36),
+        type: DataTypes.TEXT,
         defaultValue: s3.defaultUrl,
         allowNull: true,
       },
