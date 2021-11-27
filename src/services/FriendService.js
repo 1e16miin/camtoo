@@ -54,7 +54,7 @@ const FriendService = (userId) => {
   const findAll = async () => {
     const option = { [Op.ne]: 0 };
     const friendIdList = await findById(option);
-    // const
+    const allFriend = await Promise.all()
   };
 
   const findById = async (option) => {

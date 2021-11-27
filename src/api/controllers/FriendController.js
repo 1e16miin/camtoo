@@ -19,7 +19,13 @@ router.post("/add", checkAccessTokens, async (req, res) => {
     return res.status(400).send(err.message);
   }
 });
+
+
 router.put("/approval", checkAccessTokens, async (req, res) => {});
+
+router.get("/search", checkAccessTokens, async (req, res) => {
+  
+})
 
 router.post("/invite", checkAccessTokens, async (req, res) => {});
 
@@ -34,8 +40,6 @@ router.get("/list", checkAccessTokens, async (req, res) => {
     console.log(err);
     return res.status(400).send(err.message);
   }
-
-
 });
 
 router.post("/message/send", checkAccessTokens, async (req, res) => {

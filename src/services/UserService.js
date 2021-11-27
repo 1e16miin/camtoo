@@ -57,6 +57,18 @@ const UserService = async (id) => {
   const userId = await getUserId();
   const userData = await getUserData();
   
+  const updateLocation = async (coordinate) => {
+    let transaction = await sequelize.transaction();
+    try {
+      await user.update(coordinate, { where: { id: id }, transaction });
+      await transaction.commit()
+      return "success"
+    } catch (err) {
+      await transaction.rollback()
+      throw (err)
+    }
+  }
+
   const update = async (newUserData) => {
     let transaction = await sequelize.transaction()
     const timeTableInstance = TimeTableService(userId)
@@ -94,7 +106,7 @@ const UserService = async (id) => {
       throw new Error("유저 정보를 업데이트 하는 도중 에러가 발생하였습니다.")
     }
   }
-  return { userData, userId, update };
+  return { userData, userId, update, updateLocation };
 };
 
 module.exports = UserService

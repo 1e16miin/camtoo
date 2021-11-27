@@ -47,4 +47,21 @@ router.put("/update", checkAccessTokens, async (req, res) => {
   }
 });
 
+router.put("/location", checkAccessTokens, async (req, res) => {
+  try {
+    const id = req.id;
+    const coordinate = req.body.coordinate;
+    const userInstance = await UserService(id);
+    const result = await userInstance.updateLocation(coordinate);
+    return res.status(200).send(result);
+  } catch(err) {
+    console.log(err);
+    return res
+      .status(400)
+      .send({
+        message: "위치 정보를 업데이트 하는 중에 에러가 발생하였습니다.",
+      });
+  }
+})
+
 module.exports = router
