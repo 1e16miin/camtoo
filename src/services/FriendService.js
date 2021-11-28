@@ -145,11 +145,31 @@ const FriendService = (userId=null) => {
   };
 
   
-  const messageLog = () => {
-
+  const messageLog = async (friendId) => {
+    const friend = (await UserService(friendId)).userId
+    const messages = await Promise.all([
+      await communication.findAll({
+        nest: true,
+        raw: true,
+        attributes: ["sender", "message", "createdAt"],
+        where: { sender: userId, receiver: friend },
+      }),
+      await communication.findAll({
+        nest: true,
+        raw: true,
+        attributes: ["sender", "message", "createdAt"],
+        where: { sender: friend, receiver: userId },
+      }),
+    ]);
+    const result = messages.sort((first, second) => {
+      return (
+        first.createdAt - second.createdAt 
+      );
+    });
+    return result
   }
-
-  return { findById, add, confirm, remove, send, findAll, invite };
+  
+  return { findById, add, confirm, remove, send, findAll, invite, messageLog };
 };
 
 module.exports = FriendService;

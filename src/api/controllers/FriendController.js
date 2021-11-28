@@ -23,7 +23,7 @@ router.post("/add", checkAccessTokens, async (req, res) => {
 router.put("/confirm", checkAccessTokens, async (req, res) => {
   try {
     const id = req.id;
-    const { follower, response} = req.body
+    const { follower, response } = req.body;
     const friendInstance = FriendService(id);
     const result = friendInstance.confirm(follower, response);
     return res.status(200).send(result);
@@ -79,6 +79,19 @@ router.post("/message/send", checkAccessTokens, async (req, res) => {
   }
 });
 
-router.get("/message/log", checkAccessTokens, (req, res) => {});
+router.get("/message/log", checkAccessTokens, (req, res) => {
+  try {
+    const id = req.id;
+    const friendId = req.query.friendId;
+    const userInstance = await UserService(id);
+    const userId = userInstance.userId;
+    const friendInstance = FriendService(userId);
+    const result = await friendInstance.messageLog(friendId);
+    return res.status(200).send(result);
+  } catch (err) {
+    console.log(err);
+    return res.status(400).send(err.message);
+  }
+});
 
 module.exports = router;
