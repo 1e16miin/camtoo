@@ -79,7 +79,7 @@ router.post("/message/send", checkAccessTokens, async (req, res) => {
   }
 });
 
-router.get("/message/log", checkAccessTokens, (req, res) => {
+router.get("/message/log", checkAccessTokens, async (req, res) => {
   try {
     const id = req.id;
     const friendId = req.query.friendId;
