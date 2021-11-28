@@ -2,7 +2,8 @@ const express = require("express");
 const UserService = require("../../services/UserService");
 const { checkAccessTokens } = require("../middlewares/verifyToken");
 const router = express();
-
+const moment = require('moment-timezone')
+moment().tz("Asia/Seoul")
 
 router.get("/information", checkAccessTokens, async (req, res) => {
   try {
@@ -52,6 +53,7 @@ router.put("/location", checkAccessTokens, async (req, res) => {
     const id = req.id;
     const coordinate = req.body;
     console.log(coordinate)
+    console.log(moment())
     const userInstance = await UserService(id);
     const result = await userInstance.updateLocation(coordinate);
     return res.status(200).send(result);
