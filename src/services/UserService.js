@@ -1,4 +1,4 @@
-const { user, entry, sequelize } = require("../models");
+const { user, entry, sequelize,timeTable } = require("../models");
 const TimeTableService = require("./TimeTableService");
 
 
@@ -55,8 +55,18 @@ const UserService = async (id) => {
     return result;
   };
 
-  const updateStatus = async () => {
-    
+  const updateStatus = async (day,time) => {
+    const inScheduleUserIdList = await user.findAll({
+      nest: true,
+      raw: true,
+      attributes:["user_id","class_type"],
+      include:[{
+        model: timeTable,
+        where: {start_time:{[Op.lte]: time}, end_time:{[Op.gte]: time}, day_of_week:day-1},
+        
+
+      }]
+    })
   }
  
   
