@@ -35,7 +35,7 @@ const UserService = async (id) => {
       longitude,
       profile_image_url,
     } = userData;
-    // timeTableClasses
+
     const result = {
       id: id,
       name: name,
@@ -56,17 +56,36 @@ const UserService = async (id) => {
   };
 
   const updateStatus = async (day,time) => {
-    const inScheduleUserIdList = await user.findAll({
-      nest: true,
-      raw: true,
-      attributes:["user_id","class_type"],
-      include:[{
-        model: timeTable,
-        where: {start_time:{[Op.lte]: time}, end_time:{[Op.gte]: time}, day_of_week:day-1},
-        
+    let transaction = await sequelize.transaction()
+    try{
+      const allUsers = await user.findAll({
+        nest: true,
+        raw: true,
+        attributes:["user_id","time_table.class_type", "status"],
+        include:[{
+          model: timeTable,
+          where: {start_time:{[Op.lte]: time}, end_time:{[Op.gte]: time}, day_of_week:day-1},
+          attributes:[],
+          required:false
+        }]
+      })
 
-      }]
-    })
+      await Promise.all(allUsers.forEach(userData=>{
+        let status = 2
+        if(userData.class_type) status = userData.class_type
+        await user.update({status:status},{where:{user_id: userData.user_id}, transaction})
+      }))
+      
+      
+      
+      return "success"
+
+      
+    }catch(err){
+      console.log(err)
+      throw err
+    }
+    
   }
  
   
