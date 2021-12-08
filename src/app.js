@@ -7,7 +7,7 @@ const authController = require('./api/controllers/AuthController');
 const friendController = require("./api/controllers/FriendController");
 const discoverController = require("./api/controllers/DiscoverController");
 const userController = require("./api/controllers/UserController");
-
+const userStatusUpdate = require("./jobs/userStatusUpdate")
 
 
 const app = express();
@@ -20,7 +20,7 @@ sequelize
   .then(() => {
     console.log("데이터베이스 연결 성공");
   })
-  .catch((err) => {``
+  .catch((err) => {
     console.error(err);
   });
 
@@ -33,7 +33,7 @@ app.use('/auth', authController)
 app.use('/friend', friendController)
 app.use('/main', discoverController)
 app.use('/user', userController)
-
+userStatusUpdate();
 
 app.get("/", function (req, res) {
   res.status(200).send({ message: "hello camtoo" });
