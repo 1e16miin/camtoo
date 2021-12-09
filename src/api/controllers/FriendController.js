@@ -33,7 +33,6 @@ router.put("/confirm", checkAccessTokens, async (req, res) => {
   }
 });
 
-// router.get("/search", checkAccessTokens, async (req, res) => {});
 
 router.post("/invite", checkAccessTokens, async (req, res) => {
   try {
@@ -49,6 +48,7 @@ router.post("/invite", checkAccessTokens, async (req, res) => {
   }
 });
 
+
 router.post("/list", checkAccessTokens, async (req, res) => {
   try {
     const id = req.id;
@@ -62,6 +62,7 @@ router.post("/list", checkAccessTokens, async (req, res) => {
     return res.status(400).send(err.message);
   }
 });
+
 
 router.post("/message/send", checkAccessTokens, async (req, res) => {
   try {

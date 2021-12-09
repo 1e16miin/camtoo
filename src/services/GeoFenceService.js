@@ -3,6 +3,7 @@ const {
   user,
   sequelize,
   entry,
+  university,
 } = require("../models");
 const { Op } = require("sequelize");
 const FriendService = require("./FriendService");
@@ -16,6 +17,9 @@ const GeoFenceService = (userId) => {
     return result
   };
 
+  const getUniversity = async (universityId) => {
+    const universityData = await university.findByPk(universityId, {attributes:["latitude", "longitude", "radius"]});
+  }
   const getInSchoolUsers = async () => {
     const option = 2
     const friendInstance = FriendService(userId);
