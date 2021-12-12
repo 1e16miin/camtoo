@@ -70,7 +70,7 @@ const UserService = async (id) => {
         }]
       })
 
-      await Promise.all(allUsers.forEach(userData=>{
+      await Promise.all(allUsers.forEach(async userData=>{
         let status = 2
         if(userData.class_type) status = userData.class_type
         await user.update({status:status},{where:{user_id: userData.user_id}, transaction})
