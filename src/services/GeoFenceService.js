@@ -18,7 +18,8 @@ const GeoFenceService = (userId) => {
   };
 
   const getUniversity = async (universityId) => {
-    const universityData = await university.findByPk(universityId, {attributes:["latitude", "longitude", "radius"]});
+    const result = await university.findByPk(universityId, {attributes:["latitude", "longitude", "radius"]});
+    return result
   }
   const getInSchoolUsers = async () => {
     const option = 2
@@ -90,13 +91,7 @@ const GeoFenceService = (userId) => {
   }
 
   const getBuildingData = async (buildingId) => {
-    let entries = await getInSchoolUsers();
-    const people = entries.filter((userData) => {
-      userData.user.buildingId === buildingId;
-    });
-    if (!buildingId) {
-      return people;
-    }
+    const people = await getInSchoolUsers();
     const buildingData = await building.findOne({
       nest: true,
       raw: true,
@@ -118,7 +113,7 @@ const GeoFenceService = (userId) => {
 
  
 
-  return {getUniversityData,  getBuildingData, entrance, exit };
+  return {getUniversityData,  getBuildingData, entrance, exit, getUniversity };
 };
 
 module.exports = GeoFenceService;
