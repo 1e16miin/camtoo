@@ -1,4 +1,4 @@
-const { user, entry, sequelize,timeTable } = require("../models");
+const { user, entry, sequelize } = require("../models");
 const TimeTableService = require("./TimeTableService");
 
 
@@ -55,42 +55,8 @@ const UserService = async (id) => {
     return result;
   };
 
-  const updateStatus = async (day,time) => {
-    let transaction = await sequelize.transaction()
-    try{
-      const allUsers = await user.findAll({
-        nest: true,
-        raw: true,
-        attributes:["user_id","time_table.class_type", "status"],
-        include:[{
-          model: timeTable,
-          where: {start_time:{[Op.lte]: time}, end_time:{[Op.gte]: time}, day_of_week:day-1},
-          attributes:[],
-          required:false
-        }]
-      })
-
-      await Promise.all(allUsers.forEach(async userData=>{
-        let status = 2
-        if(userData.class_type) status = userData.class_type
-        await user.update({status:status},{where:{user_id: userData.user_id}, transaction})
-      }))
-      
-      
-      
-      return "success"
-
-      
-    }catch(err){
-      console.log(err)
-      throw err
-    }
-    
-  }
- 
-  
   const updateLocation = async (coordinate) => {
-    console.l
+    
     let transaction = await sequelize.transaction();
     try {
       await user.update(coordinate, { where: { id: id }, transaction });
