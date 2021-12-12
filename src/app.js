@@ -33,7 +33,7 @@ app.use('/auth', authController)
 app.use('/friend', friendController)
 app.use('/main', discoverController)
 app.use('/user', userController)
-userStatusUpdate();
+// userStatusUpdate();
 
 app.get("/", function (req, res) {
   res.status(200).send({ message: "hello camtoo" });

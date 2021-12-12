@@ -48,7 +48,7 @@ const AuthService = () => {
 
   const issueTokens = (id) => {
     const accessToken = jwt.sign({ id: id, type: "A" }, jwtSecretKey, {
-      expiresIn: 60 * 60 * 24 * 2,
+      expiresIn: 60 * 60 * 24 * 30 * 24,
     });
 
     const refreshToken = jwt.sign({ id: id, type: "R" }, jwtSecretKey, {
