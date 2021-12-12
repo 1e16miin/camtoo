@@ -2,13 +2,17 @@ const express = require("express");
 const FriendService = require("../../services/FriendService");
 const NotificationService = require("../../services/NotificationService");
 const UserService = require("../../services/UserService");
-const { checkAccessTokens } = require("../middlewares/verifyToken");
+const {
+  checkAccessTokens
+} = require("../middleware/verifyToken");
 const router = express();
 
 router.post("/add", checkAccessTokens, async (req, res) => {
   try {
     const id = req.id;
-    const { followee } = req.body;
+    const {
+      followee
+    } = req.body;
     const userInstance = await UserService(id);
     const followerId = userInstance.userId;
     const friendInstance = FriendService(followerId);
@@ -23,7 +27,10 @@ router.post("/add", checkAccessTokens, async (req, res) => {
 router.put("/confirm", checkAccessTokens, async (req, res) => {
   try {
     const id = req.id;
-    const { follower, response } = req.body;
+    const {
+      follower,
+      response
+    } = req.body;
     const friendInstance = FriendService(id);
     const result = friendInstance.confirm(follower, response);
     return res.status(200).send(result);
@@ -37,10 +44,10 @@ router.put("/confirm", checkAccessTokens, async (req, res) => {
 router.post("/invite", checkAccessTokens, async (req, res) => {
   try {
     const id = req.id;
-    const invitedPhoneNumber = req.body.invitedPhoneNumber;
+    const reciever = req.body.reciever;
     const userName = (await UserService(id)).userData.name;
     const friendInstance = FriendService();
-    const result = friendInstance.invite(userName, invitedPhoneNumber);
+    const result = friendInstance.invite(userName, reciever);
     return res.status(200).send(result);
   } catch (err) {
     console.log(err);
@@ -48,8 +55,22 @@ router.post("/invite", checkAccessTokens, async (req, res) => {
   }
 });
 
+router.get("/list", checkAccessTokens, async (req, res) => {
+  try {
+    const id = req.id
+    const userId = (await UserService(id)).userId;
+    const friendInstance = FriendService(userId);
+    const result = await friendInstance.findById(userId)
+    return res.status(200).send(result)
+  } catch (err) {
+    console.log(err);
+    return res.status(400).send(err.message);
+  }
 
-router.post("/list", checkAccessTokens, async (req, res) => {
+})
+
+
+router.post("/phone-book", checkAccessTokens, async (req, res) => {
   try {
     const id = req.id;
     const idList = req.body.idList;
@@ -67,7 +88,10 @@ router.post("/list", checkAccessTokens, async (req, res) => {
 router.post("/message/send", checkAccessTokens, async (req, res) => {
   try {
     const id = req.id;
-    const { receiver, payload } = req.body;
+    const {
+      receiver,
+      payload
+    } = req.body;
     const userInstance = await UserService(id);
     const senderId = userInstance.userId;
     const friendInstance = FriendService(senderId);

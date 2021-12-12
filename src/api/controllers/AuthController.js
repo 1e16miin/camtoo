@@ -3,7 +3,7 @@ const { jwtSecretKey } = require("../../config/key");
 const AuthService = require("../../services/AuthService");
 const NotificationService = require("../../services/NotificationService");
 const UserService = require("../../services/UserService");
-const { checkAccessTokens, checkRefreshTokens } = require("../middlewares/verifyToken");
+const { checkAccessTokens, checkRefreshTokens } = require("../middleware/verifyToken");
 const router = express();
 
 

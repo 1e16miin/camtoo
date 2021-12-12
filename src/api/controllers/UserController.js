@@ -1,6 +1,6 @@
 const express = require("express");
 const UserService = require("../../services/UserService");
-const { checkAccessTokens } = require("../middlewares/verifyToken");
+const { checkAccessTokens } = require("../middleware/verifyToken");
 const router = express();
 const moment = require('moment-timezone')
 moment().tz("Asia/Seoul")

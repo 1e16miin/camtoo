@@ -1,11 +1,8 @@
 const GeoFenceService = require("../../services/GeoFenceService");
 const express = require('express');
-const { checkAccessTokens } = require("../middlewares/verifyToken");
+const { checkAccessTokens } = require("../middleware/verifyToken");
 const UserService = require("../../services/UserService");
 const router = express()
-
-
-
 
 
 router.get('/building', checkAccessTokens ,async (req,res) => {
@@ -79,7 +76,6 @@ router.delete("/building/exit", checkAccessTokens ,async (req, res) => {
   try {
     const id = req.id
     const buildingId = req.body.buildingId;
-    console.log(buildingId);
     const userId = (await UserService(id)).userId;
     const geoFenceInstance = GeoFenceService(userId);
     const result = await geoFenceInstance.exit(buildingId);
@@ -93,10 +89,18 @@ router.delete("/building/exit", checkAccessTokens ,async (req, res) => {
 });
 
 
-router.get("/", checkAccessTokens, async (req, res) => {
-  const universityId = req.query.universityId
+// router.post("/building/member/message/send", checkAccessTokens, async (req, res) => {
+//   try {
+//     const id = req.id
+//     const { receiver, payload } = req.body
+    
+//   } catch (err) {
+//     console.log(err)
+
+//   }
   
 
-})
+
+// })
 
 module.exports = router
