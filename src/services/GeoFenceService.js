@@ -11,6 +11,7 @@ const UserService = require("./UserService");
 const isInRange = require("../utils/isInRange");
 
 const GeoFenceService = (userId) => {
+  
   const findAllInSchoolUserId = async () => {
     const inSchoolUsers = await user.findAll({ raw: true, nest: true, where: { in_school: 1 } })
     const result = inSchoolUsers.map((userData) => userData.user_id);
@@ -21,6 +22,7 @@ const GeoFenceService = (userId) => {
     const result = await university.findByPk(universityId, {attributes:["latitude", "longitude", "radius"]});
     return result
   }
+
   const getInSchoolUsers = async () => {
     const option = 2
     const friendInstance = FriendService(userId);
