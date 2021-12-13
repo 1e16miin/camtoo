@@ -53,16 +53,15 @@ const GeoFenceService = (userId) => {
       }
     });
     const outDoorUsers = await Promise.all(outDoorUsersId.map(async id => {
+      const userInstance = await UserService(null);
+      const userData = await userInstance.getUserData(id)
       let result = {
         user: userData,
         friendStatus: 0
       }
       if (friendIdList.includes(id)) {
-        friendStatus = 2
+        result.friendStatus = 2
       } else {
-        const userInstance = await UserService(null);
-
-        const userData = await userInstance.getUserData(id)
         if (userData.publicProfileMode === 0) return null;
 
         const coordinate2 = userData.coordinate
@@ -133,7 +132,9 @@ const GeoFenceService = (userId) => {
     const inBuildingUserIdList = (await entry.findAll({
       raw: true,
       attributes: ["user_id"],
-      where: {building_id: buildingId}
+      where: {
+        building_id: buildingId
+      }
     })).map(user => user.user_id)
     const coordinate1 = await user.findOne({
       raw: true,
