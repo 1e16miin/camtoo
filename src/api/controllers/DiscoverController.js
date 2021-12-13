@@ -104,18 +104,4 @@ router.get("/", checkAccessTokens, async (req,res)=>{
   }
 })
 
-// router.post("/building/member/message/send", checkAccessTokens, async (req, res) => {
-//   try {
-//     const id = req.id
-//     const { receiver, payload } = req.body
-    
-//   } catch (err) {
-//     console.log(err)
-
-//   }
-  
-
-
-// })
-
 module.exports = router

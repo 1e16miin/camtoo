@@ -201,8 +201,7 @@ const GeoFenceService = (userId) => {
     getBuildingInUniversity,
     getBuildingData,
     entrance,
-    exit,
-    getUniversity
+    exit
   };
 };
 
