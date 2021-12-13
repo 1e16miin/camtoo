@@ -122,6 +122,7 @@ const GeoFenceService = (userId) => {
         university_id: universityId
       }
     })).map(data => data.id)
+    console.log(buildingIdList)
     const result = await Promise.all(
       buildingIdList.map(async (buildingId) => await getBuildingData(buildingId))
     );
@@ -129,9 +130,10 @@ const GeoFenceService = (userId) => {
   }
 
   const getBuildingData = async (buildingId) => {
-    const inBuildingUserIdList = (await entry.findByPk(buildingId, {
+    const inBuildingUserIdList = (await entry.findAll({
       raw: true,
-      attributes: ["user_id"]
+      attributes: ["user_id"],
+      where: {building_id: buildingId}
     })).map(user => user.user_id)
     const coordinate1 = await user.findOne({
       raw: true,
