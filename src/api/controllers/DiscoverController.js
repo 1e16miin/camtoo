@@ -88,6 +88,9 @@ router.delete("/building/exit", checkAccessTokens ,async (req, res) => {
   }
 });
 
+router.get("/", checkAccessTokens, async (req,res)=>{
+  
+})
 
 // router.post("/building/member/message/send", checkAccessTokens, async (req, res) => {
 //   try {

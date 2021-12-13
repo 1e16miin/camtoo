@@ -35,6 +35,7 @@ const FriendService = (userId=null) => {
     const result = await notificationInstance.sendSMS(phoneNumber, message);
     return result
   }
+  
   const add = async (followeeDto) => {
     let transaction = await sequelize.transaction();
     try {
@@ -99,8 +100,8 @@ const FriendService = (userId=null) => {
     const friendIdList = Object.keys(friendObject);
     const result = await Promise.all(
       signedFriendIdListInPhoneBook.map(async (signedUserId) => {
-        const userInstance = await UserService(signedUserId);
-        const signedUserData = userInstance.userData;
+        const userInstance = await UserService();
+        const signedUserData = userInstance.getUserData(signedUserId);
         let friendStatus = 0;
         if (friendIdList.includes(signedUserId)) {
           friendStatus = friendObject.signedUserId;

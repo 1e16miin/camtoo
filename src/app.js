@@ -7,7 +7,7 @@ const authController = require('./api/controllers/AuthController');
 const friendController = require("./api/controllers/FriendController");
 const discoverController = require("./api/controllers/DiscoverController");
 const userController = require("./api/controllers/UserController");
-const userStatusUpdate = require("./jobs/userStatusUpdate")
+// const userStatusUpdate = require("./jobs/userStatusUpdate")
 
 
 const app = express();

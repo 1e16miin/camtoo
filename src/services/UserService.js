@@ -2,7 +2,7 @@ const { user, entry, sequelize } = require("../models");
 const TimeTableService = require("./TimeTableService");
 
 
-const UserService = async (id) => {
+const UserService = async (id=null) => {
   const getUserId = async () => {
     const userId = await user.findOne({
       nest: true,
@@ -15,7 +15,7 @@ const UserService = async (id) => {
   }
 
   
-  const getUserData = async () => {
+  const getUserData = async (userId) => {
     const schedules = await TimeTableService(userId).getAllSchedules();
     const userData = await user.findOne({
       nest: true,
@@ -107,9 +107,9 @@ const UserService = async (id) => {
   }
 
    const userId = await getUserId();
-   const userData = await getUserData();
+   //const userData = await getUserData();
 
-  return { userData, userId, update, updateLocation };
+  return { getUserData, userId, update, updateLocation };
 };
 
 module.exports = UserService

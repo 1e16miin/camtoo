@@ -44,10 +44,12 @@ router.put("/confirm", checkAccessTokens, async (req, res) => {
 router.post("/invite", checkAccessTokens, async (req, res) => {
   try {
     const id = req.id;
-    const reciever = req.body.reciever;
-    const userName = (await UserService(id)).userData.name;
+    const receiver = req.body.receiver;
+    const userInstance = await UserService(id)
+    const userId = userInstance.userId
+    const userData = await userInstance.getUserData(userId)
     const friendInstance = FriendService();
-    const result = friendInstance.invite(userName, reciever);
+    const result = friendInstance.invite(userData.name, receiver);
     return res.status(200).send(result);
   } catch (err) {
     console.log(err);
