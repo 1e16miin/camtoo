@@ -147,7 +147,7 @@ const GeoFenceService = (userId) => {
     const friendInstance = FriendService(userId);
     const friendObject = await friendInstance.findById(option);
     const friendIdList = Object.keys(friendObject);
-    const people = (Promise.all(inBuildingUserIdList.map(async id => {
+    const people = (await Promise.all(inBuildingUserIdList.map(async id => {
       const userInstance = await UserService();
       const userData = await userInstance.getUserData(id)
       let result = {
