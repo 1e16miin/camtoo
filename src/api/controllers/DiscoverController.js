@@ -89,7 +89,18 @@ router.delete("/building/exit", checkAccessTokens ,async (req, res) => {
 });
 
 router.get("/", checkAccessTokens, async (req,res)=>{
-  
+  // const id = req.id
+  // const userInstance = await UserService(id)
+  // const userId = userInstance.userId
+  // const userData = userInstance.getUserData(userId)
+  // const universityId = userData.universityId
+  try{
+    const geoFenceService = GeoFenceService()
+    const result = await geoFenceInstance.getUniversityData(1);
+    return res.status(200).send(result)
+  }catch(err){
+    return res.status(400).send({message: "데이터를 가져오는 과정에 오류가 발생하였습니다."})
+  }
 })
 
 // router.post("/building/member/message/send", checkAccessTokens, async (req, res) => {
