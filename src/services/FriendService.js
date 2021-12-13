@@ -100,7 +100,7 @@ const FriendService = (userId=null) => {
     const friendIdList = Object.keys(friendObject);
     const result = await Promise.all(
       signedFriendIdListInPhoneBook.map(async (signedUserId) => {
-        const userInstance = await UserService();
+        const userInstance = await UserService(null);
         const signedUserData = userInstance.getUserData(signedUserId);
         let friendStatus = 0;
         if (friendIdList.includes(signedUserId)) {

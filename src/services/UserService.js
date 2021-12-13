@@ -105,7 +105,7 @@ const UserService = async (id=null) => {
       throw new Error("유저 정보를 업데이트 하는 도중 에러가 발생하였습니다.")
     }
   }
-
+  
    const userId = await getUserId();
    //const userData = await getUserData();
 

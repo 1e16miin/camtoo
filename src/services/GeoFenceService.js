@@ -60,7 +60,7 @@ const GeoFenceService = (userId) => {
       if (friendIdList.includes(id)) {
         friendStatus = 2
       } else {
-        const userInstance = await UserService();
+        const userInstance = await UserService(null);
 
         const userData = await userInstance.getUserData(id)
         if (userData.publicProfileMode === 0) return null;
@@ -148,7 +148,7 @@ const GeoFenceService = (userId) => {
     const friendObject = await friendInstance.findById(option);
     const friendIdList = Object.keys(friendObject);
     const people = (await Promise.all(inBuildingUserIdList.map(async id => {
-      const userInstance = await UserService();
+      const userInstance = await UserService(null);
       const userData = await userInstance.getUserData(id)
       let result = {
         user: userData,
