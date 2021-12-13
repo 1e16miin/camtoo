@@ -95,10 +95,11 @@ router.get("/", checkAccessTokens, async (req,res)=>{
   // const userData = userInstance.getUserData(userId)
   // const universityId = userData.universityId
   try{
-    const geoFenceService = GeoFenceService()
+    const geoFenceInstance = GeoFenceService()
     const result = await geoFenceInstance.getUniversityData(1);
     return res.status(200).send(result)
   }catch(err){
+    console.log(err);
     return res.status(400).send({message: "데이터를 가져오는 과정에 오류가 발생하였습니다."})
   }
 })
