@@ -4,13 +4,17 @@ const TimeTableService = require("./TimeTableService");
 
 const UserService = async (id=null) => {
   const getUserId = async () => {
-    const userId = await user.findOne({
-      nest: true,
-      raw: true,
-      attributes: ["user_id"],
-      where: { id: id },
-    });
-    const result = userId.user_id;
+    let result = null
+    if(id){
+      const userId = await user.findOne({
+        nest: true,
+        raw: true,
+        attributes: ["user_id"],
+        where: { id: id },
+      });
+      result = userId.user_id;
+    }
+    
     return result;
   }
 
