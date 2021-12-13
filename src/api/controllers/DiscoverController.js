@@ -42,7 +42,7 @@ router.get("/university",checkAccessTokens, async (req, res) => {
     const universityId = req.query.universityId;
     const userId = (await UserService(id)).userId;
     const geoFenceInstance = GeoFenceService(userId);
-    const result = await geoFenceInstance.getUniversityData(universityId);
+    const result = await geoFenceInstance.getBuildingInUniversity(universityId);
     return res.status(200).send(result);
   } catch (err) {
     console.log(err);
