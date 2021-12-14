@@ -7,7 +7,7 @@ require("moment-timezone");
 moment().tz("Asia/Seoul");
 
 let rule = new schedule.RecurrenceRule()
-rule.minute = new schedule.Range(0,59,1)
+rule.minute = new schedule.Range(0,59,30)
 
 const userStatusUpdate = () => schedule.scheduleJob(rule, async () => {
   const day = moment().day()
@@ -37,7 +37,6 @@ const userStatusUpdate = () => schedule.scheduleJob(rule, async () => {
        allUsers.map(async (userData) => {
          let status = 2;
          if (userData.class_type) status = userData.class_type;
-         console.log(status)
          await user.update(
            { status: status },
            { where: { user_id: userData.user_id }, transaction }
