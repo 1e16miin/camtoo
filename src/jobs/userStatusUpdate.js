@@ -32,7 +32,7 @@ const userStatusUpdate = () => schedule.scheduleJob(rule, async () => {
          },
        ],
      });
-
+     console.log(allUsers)
      await Promise.all(
        allUsers.map(async (userData) => {
          let status = 2;
