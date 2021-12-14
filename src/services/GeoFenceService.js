@@ -68,7 +68,7 @@ const GeoFenceService = (userId) => {
         if (!isInRange(coordinate1, coordinate2)) return null;
       }
 
-      return { friend:result };
+      return result
     }))
 
     const result = outDoorUsers.filter(Boolean);
@@ -163,7 +163,7 @@ const GeoFenceService = (userId) => {
         const coordinate2 = userData.coordinate
         if (!isInRange(coordinate1, coordinate2)) return null
       }
-      return { friend: result }
+      return result
     }))).filter(Boolean)
 
     const buildingData = await building.findOne({
