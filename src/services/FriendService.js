@@ -8,7 +8,6 @@ const FriendService = (userId=null) => {
     let transaction = await sequelize.transaction();
     try {
       const receiver = (await UserService(receiverDto.id)).userId;
-      console.log(receiver);
       const notificationInstance = NotificationService(userId);
       const message = ` : ${payload}`;
       const communicationData = {
