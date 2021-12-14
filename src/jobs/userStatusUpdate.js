@@ -7,7 +7,7 @@ require("moment-timezone");
 moment().tz("Asia/Seoul");
 
 let rule = new schedule.RecurrenceRule()
-rule.minute = new schedule.Range(0,59,30)
+rule.minute = new schedule.Range(0,59,1)
 
 const userStatusUpdate = () => schedule.scheduleJob(rule, async () => {
   const day = moment().day()
@@ -26,7 +26,7 @@ const userStatusUpdate = () => schedule.scheduleJob(rule, async () => {
            where: {
              start_time: { [Op.lte]: time },
              end_time: { [Op.gte]: time },
-             day_of_week: day - 1,
+             day_of_the_week: day - 1,
            },
            required: false,
          },
