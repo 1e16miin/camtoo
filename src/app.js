@@ -7,7 +7,7 @@ const authController = require('./api/controllers/AuthController');
 const friendController = require("./api/controllers/FriendController");
 const discoverController = require("./api/controllers/DiscoverController");
 const userController = require("./api/controllers/UserController");
-// const userStatusUpdate = require("./jobs/userStatusUpdate")
+const { userStatusUpdate } = require("./jobs/userStatusUpdate")
 
 
 const app = express();
@@ -33,7 +33,7 @@ app.use('/auth', authController)
 app.use('/friend', friendController)
 app.use('/main', discoverController)
 app.use('/user', userController)
-// userStatusUpdate();
+userStatusUpdate();
 
 app.get("/", function (req, res) {
   res.status(200).send({ message: "hello camtoo" });
