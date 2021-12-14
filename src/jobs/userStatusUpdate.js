@@ -43,10 +43,11 @@ const userStatusUpdate = () => schedule.scheduleJob(rule, async () => {
          );
        })
      );
-
+     await transaction.commit()
+     console.log("스케쥴링 완료")
    } catch (err) {
-     console.log(err);
-     throw err;
+     console.log("스케쥴링 에러");
+     await transaction.rollback();
    }
     
 })
