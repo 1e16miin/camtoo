@@ -28,15 +28,16 @@ const userStatusUpdate = () => schedule.scheduleJob(rule, async () => {
              end_time: { [Op.gte]: time },
              day_of_the_week: day - 1,
            },
+           attributes:[],
            required: false,
          },
        ],
      });
-     console.log(allUsers)
      await Promise.all(
        allUsers.map(async (userData) => {
          let status = 2;
          if (userData.class_type) status = userData.class_type;
+         console.log(status)
          await user.update(
            { status: status },
            { where: { user_id: userData.user_id }, transaction }
