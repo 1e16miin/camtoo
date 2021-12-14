@@ -19,7 +19,7 @@ const userStatusUpdate = () => schedule.scheduleJob(rule, async () => {
      const allUsers = await user.findAll({
        nest: true,
        raw: true,
-       attributes: ["user_id", "status"],
+       attributes: ["user_id", "time_tables.class_type", "status"],
        include: [
          {
            model: timeTable,
