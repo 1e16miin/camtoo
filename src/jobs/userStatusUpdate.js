@@ -1,7 +1,7 @@
 const schedule = require("node-schedule");
 
 const moment = require("moment");
-const { sequelize, user } = require("../models");
+const { sequelize, user,timeTable } = require("../models");
 require("moment-timezone");
 moment().tz("Asia/Seoul");
 
