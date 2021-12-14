@@ -83,7 +83,6 @@ const NotificationService = (sender = null) => {
 
   const sendPush = async (receiver, message) => {
     try {
-      console.log(sender)
       const senderName = (
         await user.findOne({
           nest: true,

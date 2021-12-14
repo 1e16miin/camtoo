@@ -121,7 +121,6 @@ const GeoFenceService = (userId) => {
         university_id: universityId
       }
     })).map(data => data.id)
-    console.log(buildingIdList)
     const result = await Promise.all(
       buildingIdList.map(async (buildingId) => await getBuildingData(buildingId))
     );
