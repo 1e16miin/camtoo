@@ -62,7 +62,7 @@ const GeoFenceService = (userId) => {
       if (friendIdList.includes(id)) {
         result.friendStatus = 2
       } else {
-        if (userData.publicProfileMode === 0) return null;
+        if (userData.publicProfileMode === false) return null;
 
         const coordinate2 = userData.coordinate
         if (!isInRange(coordinate1, coordinate2)) return null;

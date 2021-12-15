@@ -38,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       public_profile_mode: {
         type: DataTypes.BOOLEAN,
-        defaultValue: false,
+        defaultValue: true,
         allowNull: false,
       },
       status_message: {
