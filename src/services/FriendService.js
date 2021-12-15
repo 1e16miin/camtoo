@@ -26,7 +26,7 @@ const FriendService = (userId=null) => {
     }
   };
 
-  const invite = async (userName,phoneNumber) => {
+  const invite = async (phoneNumber) => {
   
     const downloadUrl = "https://vt.tiktok.com/ZSeSEyotJ/"
     const notificationInstance = NotificationService(userId)
