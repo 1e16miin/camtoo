@@ -1,4 +1,5 @@
 const express = require("express");
+const { Op } = require("sequelize");
 const FriendService = require("../../services/FriendService");
 const UserService = require("../../services/UserService");
 const {
@@ -40,28 +41,31 @@ router.put("/confirm", checkAccessTokens, async (req, res) => {
 });
 
 
-router.post("/invite", checkAccessTokens, async (req, res) => {
-  try {
-    const id = req.id;
-    const receiver = req.body.receiver;
-    const userInstance = await UserService(id)
-    const userId = userInstance.userId
-    const userData = await userInstance.getUserData(userId)
-    const friendInstance = FriendService();
-    const result = friendInstance.invite(receiver);
-    return res.status(200).send(result);
-  } catch (err) {
-    console.log(err);
-    return res.status(400).send(err.message);
-  }
-});
+// router.post("/invite", checkAccessTokens, async (req, res) => {
+//   try {
+//     const id = req.id;
+//     const receiver = req.body.receiver;
+//     const userInstance = await UserService(id)
+//     const userId = userInstance.userId
+//     const userData = await userInstance.getUserData(userId)
+//     const friendInstance = FriendService();
+//     const result = friendInstance.invite(receiver);
+//     return res.status(200).send(result);
+//   } catch (err) {
+//     console.log(err);
+//     return res.status(400).send(err.message);
+//   }
+// });
 
 router.get("/list", checkAccessTokens, async (req, res) => {
   try {
     const id = req.id
     const userId = (await UserService(id)).userId;
     const friendInstance = FriendService(userId);
-    const result = await friendInstance.findById(2)
+    const option = {
+      status: { [Op.ne]:0 }
+    }
+    const result = await friendInstance.getFriendList(option);
     return res.status(200).send(result)
   } catch (err) {
     console.log(err);

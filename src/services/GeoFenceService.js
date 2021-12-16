@@ -49,6 +49,7 @@ const GeoFenceService = (userId) => {
     const option = 2;
     const friendInstance = FriendService(userId);
     const friendDAOList = await friendInstance.findAll(option);
+    const friendList = await friendInstance.getFriendList(friendDAOList);
     const friendIdList = friendDAOList.map((friendDAO) => friendDAO.userId);
     const myCoordinate = await user.findOne({
       raw: true,
@@ -62,13 +63,7 @@ const GeoFenceService = (userId) => {
       (id) => friendIdList.indexOf(id) === -1
     );
     console.log(notFriendUsersId);
-    const friendList = await Promise.all(
-      friendDAOList.map(async (friendDAO) => {
-        const friendInstance = FriendService(null);
-        const result = await friendInstance.getFriendDto(friendDAO);
-        return result;
-      })
-    );
+    
     const readableUsers = (
       await Promise.all(
         notFriendUsersId.map(

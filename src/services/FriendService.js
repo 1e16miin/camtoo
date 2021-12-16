@@ -2,6 +2,7 @@ const { friend, user, sequelize, communication } = require("../models");
 const { Op } = require("sequelize");
 const NotificationService = require("./NotificationService");
 const UserService = require("./UserService");
+const { find } = require("lodash");
 
 const FriendService = (userId=null) => {
   const send = async (receiverDto, payload) => {
@@ -126,6 +127,16 @@ const FriendService = (userId=null) => {
     return result;
   };
 
+  const getFriendList = async () => {
+    const friendDAOList = await findAll()
+    const result = await Promise.all(
+      friendDAOList.map(async (friendDAO) => 
+        getFriendDto(friendDAO)
+      )
+    );
+    return result;
+  }
+
   const findAll = async (option) => {
     const result = (await Promise.all([
       await friend.findAll({
@@ -147,18 +158,6 @@ const FriendService = (userId=null) => {
         where: { status: option, followee: userId },
       }),
     ])).flat();
-    // const result = await Promise.all(friendObjectList.map(async (friendObject) => {
-    //   const userInstance = await UserService(null)
-    //   const userData = await userInstance.getUserData(friendObject.userId);
-    //   const result = { user: userData, friendStatus: friendObject.friendStatus };
-    //   return result;
-    // }
-    // ))
-    // const friendList = friendObjectList
-    //   .flat()
-    //   .map((friendObject) => [friendObject.userID, friendObject.friendStatus]);
-    // const friendEntries = new Map([friendList]);
-    // const result = Object.fromEntries(friendEntries);
     return result;
   };
 
@@ -188,6 +187,7 @@ const FriendService = (userId=null) => {
   }
   
   return {
+    getFriendList,
     add,
     confirm,
     remove,
@@ -195,7 +195,6 @@ const FriendService = (userId=null) => {
     findAll,
     invite,
     messageLog,
-    getFriendDto,
   };
 };
 
