@@ -1,6 +1,5 @@
 const express = require("express");
 const FriendService = require("../../services/FriendService");
-const NotificationService = require("../../services/NotificationService");
 const UserService = require("../../services/UserService");
 const {
   checkAccessTokens
@@ -62,7 +61,7 @@ router.get("/list", checkAccessTokens, async (req, res) => {
     const id = req.id
     const userId = (await UserService(id)).userId;
     const friendInstance = FriendService(userId);
-    const result = await friendInstance.findById(userId)
+    const result = await friendInstance.findById(2)
     return res.status(200).send(result)
   } catch (err) {
     console.log(err);

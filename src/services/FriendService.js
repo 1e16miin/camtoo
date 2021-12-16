@@ -45,7 +45,12 @@ const FriendService = (userId=null) => {
         follower: userId,
         followee: followee,
       };
+      const isExist = await friend.findOne({
+        raw: true,
+        where: connectionData,
+      });
       await friend.create(connectionData, { transaction });
+      
       const result = await notificationInstance.sendPush(followee, message);
       await transaction.commit();
       return result;
@@ -85,38 +90,44 @@ const FriendService = (userId=null) => {
 
   const remove = async () => {};
 
-  const findAll = async (idList) => {
-    const signedFriendIdListInPhoneBook = (
-      await user.findAll({
-        nest: true,
-        raw: true,
-        attributes: [["user_id", "userId"]],
-        where: { id: idList },
-      })
-    ).map((foundUser) => foundUser.id);
-    const option = { [Op.ne]: 0 };
-    const friendObject = await findById(option);
-    const friendIdList = Object.keys(friendObject);
-    const result = await Promise.all(
-      signedFriendIdListInPhoneBook.map(async (signedUserId) => {
-        const userInstance = await UserService(null);
-        const signedUserData = userInstance.getUserData(signedUserId);
-        let friendStatus = 0;
-        if (friendIdList.includes(signedUserId)) {
-          friendStatus = friendObject.signedUserId;
-        }
-        const result = {
-          user: signedUserData,
-          friendStatus: friendStatus,
-        };
-        return result;
-      })
-    );
+  // const findAll = async (idList) => {
+  //   const signedFriendIdListInPhoneBook = (
+  //     await user.findAll({
+  //       nest: true,
+  //       raw: true,
+  //       attributes: [["user_id", "userId"]],
+  //       where: { id: idList },
+  //     })
+  //   ).map((foundUser) => foundUser.id);
+  //   const option = { [Op.ne]: 0 };
+  //   const friendObject = await findById(option);
+  //   const friendIdList = Object.keys(friendObject);
+  //   const result = await Promise.all(
+  //     signedFriendIdListInPhoneBook.map(async (signedUserId) => {
+  //       const userInstance = await UserService(null);
+  //       const signedUserData = userInstance.getUserData(signedUserId);
+  //       let friendStatus = 0;
+  //       if (friendIdList.includes(signedUserId)) {
+  //         friendStatus = friendObject.signedUserId;
+  //       }
+  //       const result = {
+  //         user: signedUserData,
+  //         friendStatus: friendStatus,
+  //       };
+  //       return result;
+  //     })
+  //   );
+  //   return result;
+  // };
+  const getFriendDto = async (friendDAO) => {
+    const userInstance = await UserService(null);
+    const userData = await userInstance.getUserData(friendDAO.userId);
+    const result = { user: userData, friendStatus: friendDAO.friendStatus };
     return result;
   };
 
-  const findById = async (option) => {
-    const friendObjectList = await Promise.all([
+  const findAll = async (option) => {
+    const result = (await Promise.all([
       await friend.findAll({
         nest: true,
         raw: true,
@@ -124,7 +135,7 @@ const FriendService = (userId=null) => {
           ["followee", "userId"],
           ["status", "friendStatus"],
         ],
-        where: { status: 2, follower: userId },
+        where: { status: option, follower: userId },
       }),
       await friend.findAll({
         nest: true,
@@ -135,19 +146,26 @@ const FriendService = (userId=null) => {
         ],
         where: { status: option, followee: userId },
       }),
-    ]);
-    const friendList = friendObjectList
-      .flat()
-      .map((friendObject) => [friendObject.userID, friendObject.friendStatus]);
-    const friendEntries = new Map([friendList]);
-    const result = Object.fromEntries(friendEntries);
+    ])).flat();
+    // const result = await Promise.all(friendObjectList.map(async (friendObject) => {
+    //   const userInstance = await UserService(null)
+    //   const userData = await userInstance.getUserData(friendObject.userId);
+    //   const result = { user: userData, friendStatus: friendObject.friendStatus };
+    //   return result;
+    // }
+    // ))
+    // const friendList = friendObjectList
+    //   .flat()
+    //   .map((friendObject) => [friendObject.userID, friendObject.friendStatus]);
+    // const friendEntries = new Map([friendList]);
+    // const result = Object.fromEntries(friendEntries);
     return result;
   };
 
   
   const messageLog = async (friendId) => {
     const friend = (await UserService(friendId)).userId
-    const messages = await Promise.all([
+    const messages = (await Promise.all([
       await communication.findAll({
         nest: true,
         raw: true,
@@ -160,7 +178,7 @@ const FriendService = (userId=null) => {
         attributes: ["sender", "message", "createdAt"],
         where: { sender: friend, receiver: userId },
       }),
-    ]);
+    ])).flat();
     const result = messages.sort((first, second) => {
       return (
         first.createdAt - second.createdAt 
@@ -169,7 +187,16 @@ const FriendService = (userId=null) => {
     return result
   }
   
-  return { findById, add, confirm, remove, send, findAll, invite, messageLog };
+  return {
+    add,
+    confirm,
+    remove,
+    send,
+    findAll,
+    invite,
+    messageLog,
+    getFriendDto,
+  };
 };
 
 module.exports = FriendService;
