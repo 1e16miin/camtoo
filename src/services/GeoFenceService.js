@@ -49,7 +49,7 @@ const GeoFenceService = (userId) => {
     const option = 2;
     const friendInstance = FriendService(userId);
     const friendDAOList = await friendInstance.findAll(option);
-    const friendList = await friendInstance.getFriendList(friendDAOList);
+    const friendList = await friendInstance.getFriendList();
     const friendIdList = friendDAOList.map((friendDAO) => friendDAO.userId);
     const myCoordinate = await user.findOne({
       raw: true,
