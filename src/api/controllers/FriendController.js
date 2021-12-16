@@ -48,7 +48,7 @@ router.post("/invite", checkAccessTokens, async (req, res) => {
     const userId = userInstance.userId
     const userData = await userInstance.getUserData(userId)
     const friendInstance = FriendService();
-    const result = friendInstance.invite(userData.name, receiver);
+    const result = friendInstance.invite(receiver);
     return res.status(200).send(result);
   } catch (err) {
     console.log(err);

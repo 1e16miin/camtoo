@@ -4,7 +4,7 @@ const moment = require("moment");
 const { sequelize, user,timeTable } = require("../models");
 const { Op } = require("sequelize");
 require("moment-timezone");
-moment().tz("Asia/Seoul");
+moment.tz.setDefault("Asia/Seoul");
 
 let rule = new schedule.RecurrenceRule()
 rule.minute = new schedule.Range(0,59,30)
@@ -13,7 +13,6 @@ const userStatusUpdate = () => schedule.scheduleJob(rule, async () => {
   const day = moment().day()
   const hour = moment().hour()
   const time = moment().minute() + hour * 60
-  
   let transaction = await sequelize.transaction();
    try {
      const allUsers = await user.findAll({
