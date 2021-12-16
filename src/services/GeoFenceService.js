@@ -60,6 +60,7 @@ const GeoFenceService = (userId) => {
     const notFriendUsersId = membersId.filter(
       (id) => friendIdList.indexOf(id) === -1
     );
+    console.log(notFriendUsersId);
     const friendList = await Promise.all(
       friendDAOList.map(async (friendDAO) => {
         const friendInstance = FriendService(null);
@@ -90,6 +91,7 @@ const GeoFenceService = (userId) => {
     const outDoorUsersId = inSchoolUsersId.filter(
       (id) => inBuildingUsersId.indexOf(id) === -1
     );
+    console.log(outDoorUsersId);
     const result = await getPeople(outDoorUsersId);
 
     return result;
