@@ -4,13 +4,11 @@ const {
   sequelize,
   entry,
   university,
-  friend,
 } = require("../models");
-const { Op } = require("sequelize");
+
 const FriendService = require("./FriendService");
 const UserService = require("./UserService");
 const isInRange = require("../utils/isInRange");
-const { inRange } = require("lodash");
 
 const GeoFenceService = (userId) => {
   const findAllInSchoolUserId = async () => {
@@ -34,7 +32,7 @@ const GeoFenceService = (userId) => {
 
   const getReadableUserDto = async (readableUserId, myCoordinate) => {
     const userInstance = await UserService(null);
-    console.log(readableUserId);
+
     const userData = await userInstance.getUserData(readableUserId);
     if (user.publicProfileMode === 0) return null;
     if (!isInRange(myCoordinate, userData.coordinate)) return null;
@@ -62,7 +60,6 @@ const GeoFenceService = (userId) => {
     const notFriendUsersId = membersId.filter(
       (id) => friendIdList.indexOf(id) === -1
     );
-    console.log(notFriendUsersId);
     
     const readableUsers = (
       await Promise.all(
@@ -87,7 +84,6 @@ const GeoFenceService = (userId) => {
     const outDoorUsersId = inSchoolUsersId.filter(
       (id) => inBuildingUsersId.indexOf(id) === -1
     );
-    console.log(outDoorUsersId);
     const result = await getPeople(outDoorUsersId);
 
     return result;

@@ -140,29 +140,36 @@ const FriendService = (userId=null) => {
 
   const findAll = async (option) => {
     const result = (await Promise.all([
-      await friend.findAll({
-        nest: true,
-        raw: true,
-        attributes: [
-          ["followee", "userId"],
-          ["status", "friendStatus"],
-        ],
-        where: { status: option, follower: userId },
-      }),
-      await friend.findAll({
-        nest: true,
-        raw: true,
-        attributes: [
-          ["follower", "userId"],
-          ["status", "friendStatus"],
-        ],
-        where: { status: option, followee: userId },
-      }),
+      await getFollowedList(option),
+      await getFollowingList(option),
     ])).flat();
     return result;
   };
 
-  
+  const getFollowingList = async (option) => {
+    return await friend.findAll({
+      nest: true,
+      raw: true,
+      attributes: [
+        ["followee", "userId"],
+        ["status", "friendStatus"],
+      ],
+      where: { status: option, follower: userId },
+    });
+  }
+
+  const getFollowedList = async (option) => {
+    return await friend.findAll({
+      nest: true,
+      raw: true,
+      attributes: [
+        ["follower", "userId"],
+        ["status", "friendStatus"],
+      ],
+      where: { status: option, followee: userId },
+    });
+  }
+
   const messageLog = async (friendId) => {
     const friend = (await UserService(friendId)).userId
     const messages = (await Promise.all([
@@ -200,3 +207,7 @@ const FriendService = (userId=null) => {
 };
 
 module.exports = FriendService;
+
+
+
+
