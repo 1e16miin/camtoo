@@ -129,6 +129,7 @@ const FriendService = (userId=null) => {
 
   const getFriendList = async () => {
     const friendDAOList = await findAll()
+    console.log(friendDAOList);
     const result = await Promise.all(
       friendDAOList.map(async (friendDAO) => 
         getFriendDto(friendDAO)
