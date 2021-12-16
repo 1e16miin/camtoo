@@ -61,9 +61,9 @@ const GeoFenceService = (userId) => {
       (id) => friendIdList.indexOf(id) === -1
     );
     const friendList = await Promise.all(
-      friendDAOList.map((friendDAO) => {
-        const friendInstanced = FriendService(null);
-        const result = await friendInstanced.getFriendDto(friendDAO);
+      friendDAOList.map(async (friendDAO) => {
+        const friendInstance = FriendService(null);
+        const result = await friendInstance.getFriendDto(friendDAO);
         return result;
       })
     );
