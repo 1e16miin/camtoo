@@ -1,5 +1,7 @@
 const { user, entry, sequelize } = require("../models");
 const TimeTableService = require("./TimeTableService");
+const moment = require('moment-timezone')
+moment().tz("Asia/Seoul");
 
 
 const UserService = async (id=null) => {
