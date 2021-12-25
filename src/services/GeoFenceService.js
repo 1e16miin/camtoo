@@ -65,7 +65,6 @@ const GeoFenceService = (userId) => {
     const notFriendUsersId = membersId.filter(
       (id) => friendIdList.indexOf(id) === -1)
     
-    commit
     const readableUsers = (
       await Promise.all(
         notFriendUsersId.map(

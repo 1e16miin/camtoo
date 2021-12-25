@@ -62,10 +62,11 @@ router.get("/list", checkAccessTokens, async (req, res) => {
     const id = req.id
     const userId = (await UserService(id)).userId;
     const friendInstance = FriendService(userId);
-    const option = {
-      status: { [Op.ne]:0 }
-    }
-    const result = await friendInstance.getFriendList(option);
+    const friendIdList = await friendInstance.findAll(2)
+    const requestedFriendIdList = await friendInstance.getFollowedList(1)
+    const friendList = await friendInstance.getFriendList(friendIdList);
+    const requestFriendList = await friendInstance.getFriendList(requestedFriendIdList)
+    const result = {friendList: friendList, requestFriendList: requestFriendList}
     return res.status(200).send(result)
   } catch (err) {
     console.log(err);

@@ -127,11 +127,10 @@ const FriendService = (userId=null) => {
     return result;
   };
 
-  const getFriendList = async () => {
-    const friendDAOList = await findAll(2)
+  const getFriendList = async (friendIdList) => {
     // console.log(friendDAOList);
     const result = await Promise.all(
-      friendDAOList.map(async (friendDAO) => 
+      friendIdList.map(async (friendDAO) => 
         getFriendDto(friendDAO)
       )
     );
@@ -196,6 +195,8 @@ const FriendService = (userId=null) => {
   
   return {
     getFriendList,
+    getFollowingList,
+    getFollowedList,
     add,
     confirm,
     remove,
