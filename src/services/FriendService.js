@@ -2,7 +2,7 @@ const { friend, user, sequelize, communication } = require("../models");
 const { Op } = require("sequelize");
 const NotificationService = require("./NotificationService");
 const UserService = require("./UserService");
-const { find } = require("lodash");
+
 
 const FriendService = (userId=null) => {
   const send = async (receiverDto, payload) => {
