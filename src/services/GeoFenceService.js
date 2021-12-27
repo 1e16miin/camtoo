@@ -45,9 +45,9 @@ const GeoFenceService = (userId) => {
 
   const getPeople = async (membersId) => {
     const friendInstance = FriendService(userId);
-    let friendIdList = await friendInstance.findAll(2);
+    let friendIdList = await friendInstance.findAll(1);
     // const friendList = await friendInstance.getFriendList(friendIdList);
-    const followingIdList = await friendInstance.getFollowingList(1)
+    const followingIdList = await friendInstance.getFollowingList(0)
     friendIdList = friendIdList.concat(followingIdList)
     
     const friendList = await friendInstance.getFriendList(friendIdList)
