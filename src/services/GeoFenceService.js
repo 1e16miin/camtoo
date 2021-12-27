@@ -35,7 +35,7 @@ const GeoFenceService = (userId) => {
 
     const userData = await userInstance.getUserData(readableUserId);
     if (user.publicProfileMode === 0) return null;
-    if (!isInRange(myCoordinate, userData.coordinate)) return null;
+    // if (!isInRange(myCoordinate, userData.coordinate)) return null;
     const result = {
       user: userData,
       friendStatus: 0,
