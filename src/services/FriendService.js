@@ -42,14 +42,23 @@ const FriendService = (userId=null) => {
       const followee = (await UserService(followeeDto.id)).userId;
       const notificationInstance = NotificationService(userId);
       const message = `님으로부터 친구요청이 왔어요!`;
-      const connectionData = {
+      let connectionData = {
         follower: userId,
         followee: followee,
       };
-      const isExist = await friend.findOne({
+      let isExist = await friend.findOne({
         raw: true,
         where: connectionData,
       });
+      connectionData.followee = userId
+      connectionData.follower = followee
+      isExist = await friend.findOne({
+        raw: true,
+        where: connectionData,
+      })
+      if(isExist){
+        throw new Error("이미 존재하는 관계입니다.")
+      }
       await friend.create(connectionData, { transaction });
       
       const result = await notificationInstance.sendPush(followee, message);
