@@ -35,7 +35,7 @@ router.get("/my-profile", checkAccessTokens, async (req, res) => {
   }
 });
 
-router.put("/update", checkAccessTokens, async (req, res) => {
+router.patch("/update", checkAccessTokens, async (req, res) => {
   try {
     const id = req.id;
     const userData = req.body
