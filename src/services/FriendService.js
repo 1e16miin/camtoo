@@ -2,7 +2,7 @@ const { friend, user, sequelize, communication } = require("../models");
 const { Op } = require("sequelize");
 const NotificationService = require("./NotificationService");
 const UserService = require("./UserService");
-const { find } = require("lodash");
+
 
 const FriendService = (userId=null) => {
   const send = async (receiverDto, payload) => {
@@ -42,14 +42,23 @@ const FriendService = (userId=null) => {
       const followee = (await UserService(followeeDto.id)).userId;
       const notificationInstance = NotificationService(userId);
       const message = `님으로부터 친구요청이 왔어요!`;
-      const connectionData = {
+      let connectionData = {
         follower: userId,
         followee: followee,
       };
-      const isExist = await friend.findOne({
+      let isExist = await friend.findOne({
         raw: true,
         where: connectionData,
       });
+      connectionData.followee = userId
+      connectionData.follower = followee
+      isExist = await friend.findOne({
+        raw: true,
+        where: connectionData,
+      })
+      if(isExist){
+        throw new Error("이미 존재하는 관계입니다.")
+      }
       await friend.create(connectionData, { transaction });
       
       const result = await notificationInstance.sendPush(followee, message);
@@ -127,11 +136,10 @@ const FriendService = (userId=null) => {
     return result;
   };
 
-  const getFriendList = async () => {
-    const friendDAOList = await findAll(2)
+  const getFriendList = async (friendIdList) => {
     // console.log(friendDAOList);
     const result = await Promise.all(
-      friendDAOList.map(async (friendDAO) => 
+      friendIdList.map(async (friendDAO) => 
         getFriendDto(friendDAO)
       )
     );
@@ -196,6 +204,8 @@ const FriendService = (userId=null) => {
   
   return {
     getFriendList,
+    getFollowingList,
+    getFollowedList,
     add,
     confirm,
     remove,
