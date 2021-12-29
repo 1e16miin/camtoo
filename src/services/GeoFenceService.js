@@ -39,28 +39,31 @@ const GeoFenceService = (userId) => {
 
   const getPeople = async (membersId) => {
     const friendInstance = FriendService(userId);
-    let friendIdList = await friendInstance.findAll(2);
-    console.log(friendIdList);
+    let friendObjectList = await friendInstance.findAll(2);
+    console.log(friendObjectList);
     // const friendList = await friendInstance.getFriendList(friendIdList);
-    const followingIdList = await friendInstance.getFollowingList(1);
+    const followingObjectList = await friendInstance.getFollowingList(1);
     // console.log(followingIdList);
-    friendIdList = friendIdList.concat(followingIdList);
-    let newFriendIdList = [];
-    let notFriendUsersId = [];
-    for (let i = 0; i < friendIdList.length; i++){
-      const friendData = friendIdList[i]
-      if (membersId.includes(friendData.userId)) {
-        newFriendIdList.push(friendData)
-      } else {
-        notFriendUsersId.push(friendData)
+    friendObjectList = friendObjectList.concat(followingObjectList);
+    // let newFriendIdList = [];
+    // let notFriendUsersId = [];
+    // for (let i = 0; i < friendIdList.length; i++){
+    //   const friendData = friendIdList[i]
+    //   if (membersId.includes(friendData.userId)) {
+    //     newFriendIdList.push(friendData)
+    //   } else {
+    //     notFriendUsersId.push(friendData)
+    //   }
+    // }
+    const friendIdList = friendObjectList.map(friendObject=>friendObject.userId)
+    const newFriendObjectList = membersId.map(member=> {
+      const idx = friendIdList.indexOf(member)
+      if(idx !== -1){
+        return friendObjectList[idx]
       }
-    }
-
-    console.log(membersId, notFriendUsersId);
-   
-    const friendList = await friendInstance.getFriendList(newFriendIdList);
-    console.log(friendIdList, 3);
-
+    }).filter(Boolean)
+    const notFriendIdList = membersId.filter(member=> friendIdList.indexOf(member) === -1)
+    const friendList = await friendInstance.getFriendList(newFriendObjectList);
     const myCoordinate = await user.findOne({
       raw: true,
       nest: true,
@@ -69,9 +72,10 @@ const GeoFenceService = (userId) => {
         user_id: userId,
       },
     });
+
     const readableUsers = (
       await Promise.all(
-        notFriendUsersId.map(
+        notFriendIdList.map(
           async (notFriendUserId) =>
             await getReadableUserDto(notFriendUserId.userId, myCoordinate)
         )
