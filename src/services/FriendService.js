@@ -129,17 +129,17 @@ const FriendService = (userId = null) => {
   //   );
   //   return result;
   // };
-  const getFriendDto = async (friendDAO) => {
+  const getFriendDto = async (friendData) => {
     const userInstance = await UserService(null);
-    const userData = await userInstance.getUserData(friendDAO.userId);
-    const result = { user: userData, friendStatus: friendDAO.friendStatus };
+    const userData = await userInstance.getUserData(friendData.userId);
+    const result = { user: userData, friendStatus: friendData.friendStatus };
     return result;
   };
 
   const getFriendList = async (friendIdList) => {
     // console.log(friendDAOList);
     const result = await Promise.all(
-      friendIdList.map(async (friendDAO) => getFriendDto(friendDAO))
+      friendIdList.map(async (friendData) => getFriendDto(friendData))
     );
     return result;
   };

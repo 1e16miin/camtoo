@@ -50,19 +50,18 @@ const GeoFenceService = (userId) => {
     console.log(friendIdList)
     // const friendList = await friendInstance.getFriendList(friendIdList);
     const followingIdList = await friendInstance.getFollowingList(1);
-    console.log(followingIdList);
-    friendIdList = (friendIdList.concat(followingIdList)).map(user=>user.userId);
-    console.log(friendIdList)
-    const notFriendUsersId = [...membersId].filter(
-      (id) => friendIdList.indexOf(id) === -1
+    // console.log(followingIdList);
+    friendIdList = friendIdList.concat(followingIdList)
+    const notFriendUsersId = friendIdList.filter(
+      (friendData) => membersId.indexOf(friendData.userId) === -1
     );
     console.log(notFriendUsersId);
-    friendIdList = membersId.filter((id) => friendIdList.indexOf(id) !== -1);
-    const friendList = await friendInstance.getFriendList(friendIdList);
+    const newFriendIdList = friendIdList.filter(
+      (friendData) => membersId.indexOf(friendData.userId) !== -1
+    );
+    const friendList = await friendInstance.getFriendList(newFriendIdList);
     console.log(friendIdList, 3)
-    // const followingList = await friendInstance.getFriendList(followingIdList)
-    // const friendIdList = friendDAOList.map((friendDAO) => friendDAO.userId);
-    console.log(userId,1);
+
     const myCoordinate = await user.findOne({
       raw: true,
       nest: true,
@@ -71,7 +70,6 @@ const GeoFenceService = (userId) => {
         user_id: userId,
       },
     });
-    console.log(userId, 2);
     const readableUsers = (
       await Promise.all(
         notFriendUsersId.map(
