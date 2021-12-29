@@ -40,21 +40,11 @@ const GeoFenceService = (userId) => {
   const getPeople = async (membersId) => {
     const friendInstance = FriendService(userId);
     let friendObjectList = await friendInstance.findAll(2);
-    // console.log(friendObjectList);
-    // const friendList = await friendInstance.getFriendList(friendIdList);
+   
     const followingObjectList = await friendInstance.getFollowingList(1);
-    console.log(followingObjectList);
+
     friendObjectList = friendObjectList.concat(followingObjectList);
-    // let newFriendIdList = [];
-    // let notFriendUsersId = [];
-    // for (let i = 0; i < friendIdList.length; i++){
-    //   const friendData = friendIdList[i]
-    //   if (membersId.includes(friendData.userId)) {
-    //     newFriendIdList.push(friendData)
-    //   } else {
-    //     notFriendUsersId.push(friendData)
-    //   }
-    // }
+
     const friendIdList = friendObjectList.map(friendObject=>friendObject.userId)
     const newFriendObjectList = membersId.map(member=> {
       const idx = friendIdList.indexOf(member)
@@ -62,7 +52,7 @@ const GeoFenceService = (userId) => {
         return friendObjectList[idx]
       }
     }).filter(Boolean)
-    console.log(newFriendObjectList, 1)
+
     const notFriendIdList = membersId.filter(member=> friendIdList.indexOf(member) === -1)
     const friendList = await friendInstance.getFriendList(newFriendObjectList);
     const myCoordinate = await user.findOne({
