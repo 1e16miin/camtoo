@@ -47,10 +47,14 @@ const GeoFenceService = (userId) => {
     const friendInstance = FriendService(userId);
     let friendIdList = await friendInstance.findAll(2);
     // const friendList = await friendInstance.getFriendList(friendIdList);
-    const followingIdList = await friendInstance.getFollowingList(1)
-    friendIdList = friendIdList.concat(followingIdList)
+    const followingIdList = await friendInstance.getFollowingList(1);
+    friendIdList = friendIdList.concat(followingIdList);
+
+    const notFriendUsersId = membersId.filter(
+      (id) => friendIdList.indexOf(id) === -1
+    );
     friendIdList = membersId.filter((id) => friendIdList.indexOf(id) !== -1);
-    const friendList = await friendInstance.getFriendList(friendIdList)
+    const friendList = await friendInstance.getFriendList();
     // const followingList = await friendInstance.getFriendList(followingIdList)
     // const friendIdList = friendDAOList.map((friendDAO) => friendDAO.userId);
 
@@ -62,9 +66,7 @@ const GeoFenceService = (userId) => {
         user_id: userId,
       },
     });
-    const notFriendUsersId = membersId.filter(
-      (id) => friendIdList.indexOf(id) === -1)
-    
+
     const readableUsers = (
       await Promise.all(
         notFriendUsersId.map(
