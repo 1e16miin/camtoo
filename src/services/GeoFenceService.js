@@ -156,16 +156,19 @@ const GeoFenceService = (userId) => {
   };
 
   const getBuildingData = async (buildingId) => {
-    const inBuildingUsersId = (
-      await entry.findAll({
-        raw: true,
-        attributes: ["user_id"],
-        where: {
-          building_id: buildingId,
-        },
-      })
-    ).map((user) => user.user_id);
-   
+    const inBuildingUsersId = Array.from(
+      new Set(
+        (
+          await entry.findAll({
+            raw: true,
+            attributes: ["user_id"],
+            where: {
+              building_id: buildingId,
+            },
+          })
+        ).map((user) => user.user_id)
+      )
+    );
     const people = await getPeople(inBuildingUsersId)
 
     const buildingData = await building.findOne({
