@@ -19,10 +19,8 @@ const UserService = async (id=null) => {
   }
 
   const getBestFriend = async (friendInstance) => {
-    
-    const bestFriend = await friend.findAll({
+    const query = `SELECT userId FROM`
 
-    })
     const result = []
     return result 
   }

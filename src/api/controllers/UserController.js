@@ -9,7 +9,7 @@ moment().tz("Asia/Seoul")
 router.get("/information", checkAccessTokens, async (req, res) => {
   try {
     const id = req.query.id ? req.query.id : req.id;
-    console.log(req.query)
+    
     const userInstance = await UserService(id);
     const userId = userInstance.userId
     const result = await userInstance.getUserData(userId)
@@ -58,8 +58,7 @@ router.patch("/update", checkAccessTokens, async (req, res) => {
 router.put("/location", checkAccessTokens, async (req, res) => {
   try {
     const id = req.id;
-    const coordinate = req.body;
-    console.log(coordinate)
+    const coordinate = req.body
     const userInstance = await UserService(id);
     const result = await userInstance.updateLocation(coordinate);
     return res.status(200).send(result);

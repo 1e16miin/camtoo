@@ -79,7 +79,7 @@ const FriendService = (userId=null) => {
         where: { follower: userId, followee: follower },
       });
       if (!connection) {
-        connection= await friend.findOne({
+        connection = await friend.findOne({
           where: { follower: follower, followee: userId },
         });
       }
