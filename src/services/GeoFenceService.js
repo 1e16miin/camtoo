@@ -55,7 +55,7 @@ const GeoFenceService = (userId) => {
     );
     console.log(notFriendUsersId);
     friendIdList = membersId.filter((id) => friendIdList.indexOf(id) !== -1);
-    const friendList = await friendInstance.getFriendList();
+    const friendList = await friendInstance.getFriendList(friendIdList);
     console.log(friendIdList)
     // const followingList = await friendInstance.getFriendList(followingIdList)
     // const friendIdList = friendDAOList.map((friendDAO) => friendDAO.userId);
