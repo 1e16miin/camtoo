@@ -66,7 +66,6 @@ router.get("/list", checkAccessTokens, async (req, res) => {
     const friendInstance = FriendService(userId);
     const friendIdList = await friendInstance.findAll(2)
     const requestedFriendIdList = await friendInstance.getFollowedList(1)
-    console.log(requestedFriendIdList);
     const friendList = await friendInstance.getFriendList(friendIdList);
     const requestedFriendList = await friendInstance.getFriendList(requestedFriendIdList)
     const result = {friendList: friendList, requestedFriendList: requestedFriendList}

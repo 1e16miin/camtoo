@@ -87,7 +87,7 @@ const FriendService = (userId = null) => {
       if (!connection) {
         throw new Error("connection is not exist");
       } else {
-        if (response) await connection.update({ status: 1 }, { transaction });
+        if (response) await connection.update({ status: 2 }, { transaction });
         else await connection.destroy({ transaction });
       }
       await transaction.commit();
