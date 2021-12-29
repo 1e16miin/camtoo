@@ -22,7 +22,9 @@ const UserService = async (id=null) => {
 
   }
 
-  const get
+  const getHangOuts = async () => {
+    
+  }
   
   const getUserData = async (userId) => {
     const schedules = await TimeTableService(userId).getAllSchedules();
