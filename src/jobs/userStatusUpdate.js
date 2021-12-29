@@ -13,6 +13,7 @@ const userStatusUpdate = () => schedule.scheduleJob(rule, async () => {
   const day = moment().day()
   const hour = moment().hour()
   const time = moment().minute() + hour * 60
+  
   let transaction = await sequelize.transaction();
    try {
      const allUsers = await user.findAll({
