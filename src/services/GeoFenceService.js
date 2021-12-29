@@ -44,6 +44,7 @@ const GeoFenceService = (userId) => {
   };
 
   const getPeople = async (membersId) => {
+    console.log(userId)
     const friendInstance = FriendService(userId);
     let friendIdList = await friendInstance.findAll(2);
     // const friendList = await friendInstance.getFriendList(friendIdList);
