@@ -28,6 +28,7 @@ const UserService = async (id=null) => {
 
   const getHangOuts = async () => {
     const hangouts = await entry.findAll({
+      raw:true,
       limit: 3,
       where: { user_id: userId },
       paranoid: false,
