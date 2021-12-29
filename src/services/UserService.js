@@ -23,7 +23,7 @@ const UserService = async (id=null) => {
     const bestFriends = await sequelize.query(query, {
       type: sequelize.QueryTypes.SELECT,
     });
-    const result = await Promise.all(bestFriends.map(friendId=>getUserData(friendId)))
+    const result = await Promise.all(bestFriends.map(friendData=>getUserData(friendData.userId)))
     return result 
   }
 
