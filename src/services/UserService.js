@@ -22,7 +22,7 @@ const UserService = async (id=null) => {
   const getBestFriend = async () => {
     
     const bestFriend = await friend.findAll({
-      
+
     })
   }
 
@@ -32,8 +32,11 @@ const UserService = async (id=null) => {
       where: { user_id: userId },
       paranoid: false,
       group: ["building_id"],
-      attributes: [[sequelize.fn("COUNT", "building_id"), "visitCount"], ["building_id","buildingId"]],
-      order: [["visitCount", "DESC"]],
+      attributes: [
+        [sequelize.fn("COUNT", "building_id"), "visitCount"],
+        ["building_id", "buildingId"],
+      ],
+      order: [[sequelize.literal("visitCount"), "DESC"]],
     });
     const geoFenceInstance = GeoFenceService(userId)
     const result = await Promise.all(hangouts.map(async building => {
