@@ -9,6 +9,7 @@ moment().tz("Asia/Seoul")
 router.get("/information", checkAccessTokens, async (req, res) => {
   try {
     const id = req.query.id ? req.query.id : req.id;
+    console.log(req.query)
     const userInstance = await UserService(id);
     const userId = userInstance.userId
     const result = await userInstance.getUserData(userId)
@@ -24,9 +25,12 @@ router.get("/my-profile", checkAccessTokens, async (req, res) => {
   try {
     const id = req.id;
     const userInstance = await UserService(id);
-    const geoFenceInstance = GeoFenceService(userInstance.userId);
+    const userId = userInstance.userId;
+    const geoFenceInstance = GeoFenceService(userId);
+    const friendInstance = FriendService(userId);
     const hangouts = await userInstance.getHangOuts(geoFenceInstance);
-    const result = { hangouts: hangouts };
+    const bestFriends = await userInstance.getBestFriend(friendInstance);
+    const result = { hangouts: hangouts, bestFriends: bestFriends };
     return res.status(200).send(result);
   } catch (err) {
     console.log(err)

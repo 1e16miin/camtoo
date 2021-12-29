@@ -18,11 +18,13 @@ const UserService = async (id=null) => {
     return result;
   }
 
-  const getBestFriend = async () => {
+  const getBestFriend = async (friendInstance) => {
     
     const bestFriend = await friend.findAll({
 
     })
+    const result = []
+    return result 
   }
 
   const getHangOuts = async (geoFenceInstance) => {
@@ -145,7 +147,14 @@ const UserService = async (id=null) => {
    const userId = await getUserId();
    //const userData = await getUserData();
 
-  return { getUserData, userId, update, updateLocation, getHangOuts };
+  return {
+    getUserData,
+    userId,
+    update,
+    updateLocation,
+    getHangOuts,
+    getBestFriend,
+  };
 };
 
 module.exports = UserService
