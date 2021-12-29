@@ -55,7 +55,7 @@ const GeoFenceService = (userId) => {
     const notFriendUsersId = friendIdList.filter(
       (friendData) => membersId.indexOf(friendData.userId) === -1
     );
-    console.log(notFriendUsersId);
+    console.log(membersId, notFriendUsersId);
     const newFriendIdList = friendIdList.filter(
       (friendData) => membersId.indexOf(friendData.userId) !== -1
     );
