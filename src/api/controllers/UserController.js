@@ -7,7 +7,6 @@ moment().tz("Asia/Seoul")
 
 router.get("/information", checkAccessTokens, async (req, res) => {
   try {
-    console.log(req.query.id);
     const id = req.query.id ? req.query.id : req.id;
     const userInstance = await UserService(id);
     const userId = userInstance.userId
@@ -17,7 +16,6 @@ router.get("/information", checkAccessTokens, async (req, res) => {
     console.log(err)
     return res.status(400).send({message:"유저 정보를 조회하는 중에 에러가 발생하였습니다."})
   }
-
 })
 
 

@@ -1,4 +1,5 @@
-const { user, entry, sequelize } = require("../models");
+const { user, entry, sequelize, friend } = require("../models");
+const GeoFenceService = require("./GeoFenceService");
 const TimeTableService = require("./TimeTableService");
 
 
@@ -20,10 +21,26 @@ const UserService = async (id=null) => {
 
   const getBestFriend = async () => {
     
+    const bestFriend = await friend.findAll({})
   }
 
   const getHangOuts = async () => {
+    const hangouts = await entry.findAll({
+      limit: 3,
+      where: { user_id: userId },
+      paranoid: false,
+      group: ["building_id"],
+      attributes: [[sequelize.fn("COUNT", "building_id"), "visitCount"], ["building_id","buildingId"]],
+      order: [["visitCount", "DESC"]],
+    });
+    const geoFenceInstance = GeoFenceService(userId)
+    const result = await Promise.all(hangouts.map(building => {
+      const buildingId = building.buildingId;
+      const result = await geoFenceInstance.getBuildingData(buildingId);
+      return result
+    }));
 
+    return result 
   }
   
   const getUserData = async (userId) => {
@@ -121,7 +138,7 @@ const UserService = async (id=null) => {
    const userId = await getUserId();
    //const userData = await getUserData();
 
-  return { getUserData, userId, update, updateLocation };
+  return { getUserData, userId, update, updateLocation, getHangOuts };
 };
 
 module.exports = UserService
