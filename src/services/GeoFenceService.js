@@ -48,7 +48,7 @@ const GeoFenceService = (userId) => {
     let friendIdList = await friendInstance.findAll(2);
     // const friendList = await friendInstance.getFriendList(friendIdList);
     const followingIdList = await friendInstance.getFollowingList(1);
-    friendIdList = friendIdList.concat(followingIdList);
+    friendIdList = (friendIdList.concat(followingIdList)).map(user=>user.userId);
     console.log(friendIdList)
     const notFriendUsersId = [...membersId].filter(
       (id) => friendIdList.indexOf(id) === -1
