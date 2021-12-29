@@ -47,6 +47,7 @@ const GeoFenceService = (userId) => {
     
     const friendInstance = FriendService(userId);
     let friendIdList = await friendInstance.findAll(2);
+    console.log(friendIdList)
     // const friendList = await friendInstance.getFriendList(friendIdList);
     const followingIdList = await friendInstance.getFollowingList(1);
     friendIdList = (friendIdList.concat(followingIdList)).map(user=>user.userId);
