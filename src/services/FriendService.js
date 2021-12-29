@@ -3,8 +3,7 @@ const { Op } = require("sequelize");
 const NotificationService = require("./NotificationService");
 const UserService = require("./UserService");
 
-
-const FriendService = (userId=null) => {
+const FriendService = (userId = null) => {
   const send = async (receiverDto, payload) => {
     let transaction = await sequelize.transaction();
     try {
@@ -28,14 +27,13 @@ const FriendService = (userId=null) => {
   };
 
   const invite = async (phoneNumber) => {
-  
-    const downloadUrl = "https://vt.tiktok.com/ZSeSEyotJ/"
-    const notificationInstance = NotificationService(userId)
+    const downloadUrl = "https://vt.tiktok.com/ZSeSEyotJ/";
+    const notificationInstance = NotificationService(userId);
     const message = `캠투 다운로드 링크: ${downloadUrl}`;
     const result = await notificationInstance.sendSMS(phoneNumber, message);
-    return result
-  }
-  
+    return result;
+  };
+
   const add = async (followeeDto) => {
     let transaction = await sequelize.transaction();
     try {
@@ -50,17 +48,20 @@ const FriendService = (userId=null) => {
         raw: true,
         where: connectionData,
       });
-      connectionData.followee = userId
-      connectionData.follower = followee
+      connectionData.followee = userId;
+      connectionData.follower = followee;
       isExist = await friend.findOne({
         raw: true,
         where: connectionData,
-      })
-      if(isExist){
-        throw new Error("이미 존재하는 관계입니다.")
+      });
+      if (isExist) {
+        throw new Error("이미 존재하는 관계입니다.");
       }
+
+      connectionData.followee = followee;
+      connectionData.follower = userId;
       await friend.create(connectionData, { transaction });
-      
+
       const result = await notificationInstance.sendPush(followee, message);
       await transaction.commit();
       return result;
@@ -84,17 +85,16 @@ const FriendService = (userId=null) => {
         });
       }
       if (!connection) {
-        throw new Error("connection is not exist")
-      }
-      else {
+        throw new Error("connection is not exist");
+      } else {
         if (response) await connection.update({ status: 1 }, { transaction });
-        else await connection.destroy({transaction});
+        else await connection.destroy({ transaction });
       }
-      await transaction.commit()
-      return "success"
+      await transaction.commit();
+      return "success";
     } catch (err) {
-      await transaction.rollback()
-      throw err
+      await transaction.rollback();
+      throw err;
     }
   };
 
@@ -139,18 +139,18 @@ const FriendService = (userId=null) => {
   const getFriendList = async (friendIdList) => {
     // console.log(friendDAOList);
     const result = await Promise.all(
-      friendIdList.map(async (friendDAO) => 
-        getFriendDto(friendDAO)
-      )
+      friendIdList.map(async (friendDAO) => getFriendDto(friendDAO))
     );
     return result;
-  }
+  };
 
   const findAll = async (option) => {
-    const result = (await Promise.all([
-      await getFollowedList(option),
-      await getFollowingList(option),
-    ])).flat();
+    const result = (
+      await Promise.all([
+        await getFollowedList(option),
+        await getFollowingList(option),
+      ])
+    ).flat();
     return result;
   };
 
@@ -164,7 +164,7 @@ const FriendService = (userId=null) => {
       ],
       where: { status: option, follower: userId },
     });
-  }
+  };
 
   const getFollowedList = async (option) => {
     return await friend.findAll({
@@ -176,32 +176,32 @@ const FriendService = (userId=null) => {
       ],
       where: { status: option, followee: userId },
     });
-  }
+  };
 
   const messageLog = async (friendId) => {
-    const friend = (await UserService(friendId)).userId
-    const messages = (await Promise.all([
-      await communication.findAll({
-        nest: true,
-        raw: true,
-        attributes: ["sender", "message", "createdAt"],
-        where: { sender: userId, receiver: friend },
-      }),
-      await communication.findAll({
-        nest: true,
-        raw: true,
-        attributes: ["sender", "message", "createdAt"],
-        where: { sender: friend, receiver: userId },
-      }),
-    ])).flat();
+    const friend = (await UserService(friendId)).userId;
+    const messages = (
+      await Promise.all([
+        await communication.findAll({
+          nest: true,
+          raw: true,
+          attributes: ["sender", "message", "createdAt"],
+          where: { sender: userId, receiver: friend },
+        }),
+        await communication.findAll({
+          nest: true,
+          raw: true,
+          attributes: ["sender", "message", "createdAt"],
+          where: { sender: friend, receiver: userId },
+        }),
+      ])
+    ).flat();
     const result = messages.sort((first, second) => {
-      return (
-        first.createdAt - second.createdAt 
-      );
+      return first.createdAt - second.createdAt;
     });
-    return result
-  }
-  
+    return result;
+  };
+
   return {
     getFriendList,
     getFollowingList,
@@ -217,7 +217,3 @@ const FriendService = (userId=null) => {
 };
 
 module.exports = FriendService;
-
-
-
-
