@@ -44,7 +44,7 @@ const GeoFenceService = (userId) => {
   };
 
   const getPeople = async (membersId) => {
-    console.log(userId)
+    
     const friendInstance = FriendService(userId);
     let friendIdList = await friendInstance.findAll(2);
     // const friendList = await friendInstance.getFriendList(friendIdList);
@@ -60,7 +60,7 @@ const GeoFenceService = (userId) => {
     console.log(friendIdList)
     // const followingList = await friendInstance.getFriendList(followingIdList)
     // const friendIdList = friendDAOList.map((friendDAO) => friendDAO.userId);
-
+    console.log(userId,1);
     const myCoordinate = await user.findOne({
       raw: true,
       nest: true,
@@ -69,7 +69,7 @@ const GeoFenceService = (userId) => {
         user_id: userId,
       },
     });
-
+    console.log(userId, 2);
     const readableUsers = (
       await Promise.all(
         notFriendUsersId.map(
