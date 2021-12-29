@@ -1,4 +1,4 @@
-const { user, entry, sequelize, friend } = require("../models");
+const { user, entry, sequelize } = require("../models");
 const TimeTableService = require("./TimeTableService");
 
 
@@ -18,10 +18,12 @@ const UserService = async (id=null) => {
     return result;
   }
 
-  const getBestFriend = async (friendInstance) => {
-    const query = `SELECT userId FROM`
-
-    const result = []
+  const getBestFriend = async () => {
+    const query = `SELECT userId, count(userId) AS interactionCount FROM ((SELECT sender as userId FROM communication WHERE receiver = ${userId}) UNION (SELECT receiver as userId FROM communication WHERE sender = ${userId})) GROUP BY userId ORDER BY interactionCount DESC LIMIT 3`
+    const bestFriends = await sequelize.query(query, {
+      type: sequelize.QueryTypes.SELECT,
+    });
+    const result = await Promise.all(bestFriends.map(friendId=>getUserData(friendId)))
     return result 
   }
 
