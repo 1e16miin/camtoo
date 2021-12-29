@@ -58,7 +58,6 @@ router.post("/building/enter", checkAccessTokens,async (req, res) => {
     const id = req.id
     const buildingId = req.body.buildingId
     const userId = (await UserService(id)).userId;
-    console.log(userId)
     const geoFenceInstance = GeoFenceService(userId);
     const result = await geoFenceInstance.entrance(buildingId);
     return res.status(200).send(result);

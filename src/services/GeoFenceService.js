@@ -49,7 +49,7 @@ const GeoFenceService = (userId) => {
     // const friendList = await friendInstance.getFriendList(friendIdList);
     const followingIdList = await friendInstance.getFollowingList(1);
     friendIdList = friendIdList.concat(followingIdList);
-
+    console.log(friendIdList)
     const notFriendUsersId = [...membersId].filter(
       (id) => friendIdList.indexOf(id) === -1
     );
