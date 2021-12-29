@@ -27,9 +27,8 @@ router.get("/my-profile", checkAccessTokens, async (req, res) => {
     const userInstance = await UserService(id);
     const userId = userInstance.userId;
     const geoFenceInstance = GeoFenceService(userId);
-    const friendInstance = FriendService(userId);
     const hangouts = await userInstance.getHangOuts(geoFenceInstance);
-    const bestFriends = await userInstance.getBestFriend(friendInstance);
+    const bestFriends = await userInstance.getBestFriend();
     const result = { hangouts: hangouts, bestFriends: bestFriends };
     return res.status(200).send(result);
   } catch (err) {
