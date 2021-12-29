@@ -40,6 +40,7 @@ const UserService = async (id=null) => {
     });
     const geoFenceInstance = GeoFenceService(userId)
     const result = await Promise.all(hangouts.map(async building => {
+      console.log(building)
       const buildingId = building.buildingId;
       const result = await geoFenceInstance.getBuildingData(buildingId);
       return result
