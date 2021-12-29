@@ -4,7 +4,7 @@ const moment = require("moment");
 const { sequelize, user,timeTable } = require("../models");
 const { Op } = require("sequelize");
 require("moment-timezone");
-moment.tz.setDefault("Asia/Seoul");
+moment().tz("Asia/Seoul");
 
 let rule = new schedule.RecurrenceRule()
 rule.minute = new schedule.Range(0,59,30)
