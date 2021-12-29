@@ -19,11 +19,11 @@ const UserService = async (id=null) => {
   }
 
   const getBestFriend = async () => {
-
+    
   }
 
   const getHangOuts = async () => {
-    
+
   }
   
   const getUserData = async (userId) => {

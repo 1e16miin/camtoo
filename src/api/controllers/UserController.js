@@ -7,7 +7,8 @@ moment().tz("Asia/Seoul")
 
 router.get("/information", checkAccessTokens, async (req, res) => {
   try {
-    const id = req.query.id;
+    console.log(req.query.id);
+    const id = req.query.id ? req.query.id : req.id;
     const userInstance = await UserService(id);
     const userId = userInstance.userId
     const result = await userInstance.getUserData(userId)
