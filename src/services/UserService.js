@@ -18,6 +18,11 @@ const UserService = async (id=null) => {
     return result;
   }
 
+  const getBestFriend = async () => {
+
+  }
+
+  const get
   
   const getUserData = async (userId) => {
     const schedules = await TimeTableService(userId).getAllSchedules();

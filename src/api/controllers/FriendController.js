@@ -31,7 +31,9 @@ router.put("/confirm", checkAccessTokens, async (req, res) => {
       follower,
       response
     } = req.body;
-    const friendInstance = FriendService(id);
+    const userInstance = await UserService(id);
+    const followeeId = userInstance.userId;
+    const friendInstance = FriendService(followeeId);
     const result = friendInstance.confirm(follower, response);
     return res.status(200).send(result);
   } catch (err) {
