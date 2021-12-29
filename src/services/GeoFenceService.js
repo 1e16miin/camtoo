@@ -1,10 +1,4 @@
-const {
-  building,
-  user,
-  sequelize,
-  entry,
-  university,
-} = require("../models");
+const { building, user, sequelize, entry, university } = require("../models");
 
 const FriendService = require("./FriendService");
 const UserService = require("./UserService");
@@ -44,23 +38,28 @@ const GeoFenceService = (userId) => {
   };
 
   const getPeople = async (membersId) => {
-    
     const friendInstance = FriendService(userId);
     let friendIdList = await friendInstance.findAll(2);
-    console.log(friendIdList)
+    console.log(friendIdList);
     // const friendList = await friendInstance.getFriendList(friendIdList);
     const followingIdList = await friendInstance.getFollowingList(1);
     // console.log(followingIdList);
-    friendIdList = friendIdList.concat(followingIdList)
-    const notFriendUsersId = friendIdList.filter(
-      (friendData) => membersId.indexOf(friendData.userId) === -1
-    );
+    friendIdList = friendIdList.concat(followingIdList);
+    let newFriendIdList = [];
+    let notFriendUsersId = [];
+    for (let i = 0; i < friendIdList.length; i++){
+      const friendData = friendIdList[i]
+      if (membersId.include(friendData.userId)) {
+        newFriendIdList.push(friendData)
+      } else {
+        notFriendUsersId.push(friendData)
+      }
+    }
+
     console.log(membersId, notFriendUsersId);
-    const newFriendIdList = friendIdList.filter(
-      (friendData) => membersId.indexOf(friendData.userId) !== -1
-    );
+   
     const friendList = await friendInstance.getFriendList(newFriendIdList);
-    console.log(friendIdList, 3)
+    console.log(friendIdList, 3);
 
     const myCoordinate = await user.findOne({
       raw: true,
@@ -167,7 +166,7 @@ const GeoFenceService = (userId) => {
         ).map((user) => user.user_id)
       )
     );
-    const people = await getPeople(inBuildingUsersId)
+    const people = await getPeople(inBuildingUsersId);
 
     const buildingData = await building.findOne({
       nest: true,
