@@ -78,7 +78,7 @@ const GeoFenceService = (userId) => {
       await Promise.all(
         notFriendIdList.map(
           async (notFriendUserId) =>
-            await getReadableUserDto(notFriendUserId.userId, myCoordinate)
+            await getReadableUserDto(notFriendUserId, myCoordinate)
         )
       )
     ).filter(Boolean);
