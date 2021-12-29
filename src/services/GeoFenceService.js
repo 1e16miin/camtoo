@@ -43,7 +43,7 @@ const GeoFenceService = (userId) => {
     // console.log(friendObjectList);
     // const friendList = await friendInstance.getFriendList(friendIdList);
     const followingObjectList = await friendInstance.getFollowingList(1);
-    console.log(followingIdList);
+    console.log(followingObjectList);
     friendObjectList = friendObjectList.concat(followingObjectList);
     // let newFriendIdList = [];
     // let notFriendUsersId = [];
