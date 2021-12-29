@@ -19,7 +19,7 @@ const UserService = async (id=null) => {
   }
 
   const getBestFriend = async () => {
-    const query = `SELECT userId, count(userId) AS interactionCount FROM ((SELECT sender as userId FROM communication WHERE receiver = ${userId}) UNION (SELECT receiver as userId FROM communication WHERE sender = ${userId})) GROUP BY userId ORDER BY interactionCount DESC LIMIT 3`
+    const query = `SELECT userId, count(userId) AS interactionCount FROM ((SELECT sender as userId FROM communication WHERE receiver = ${userId}) UNION (SELECT receiver as userId FROM communication WHERE sender = ${userId})) AS u GROUP BY userId ORDER BY interactionCount DESC LIMIT 3`
     const bestFriends = await sequelize.query(query, {
       type: sequelize.QueryTypes.SELECT,
     });
