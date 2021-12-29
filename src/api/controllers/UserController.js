@@ -23,8 +23,8 @@ router.get("/my-profile", checkAccessTokens, async (req, res) => {
   try {
     const id = req.id;
     const userInstance = await UserService(id);
-    const userId = userInstance.userId
-    const result = await userInstance.getUserData(userId)
+    const hangouts = await userInstance.getHangOuts()
+    const result = { hangouts: hangouts };
     return res.status(200).send(result);
   } catch (err) {
     console.log(err)

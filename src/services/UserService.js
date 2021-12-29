@@ -21,7 +21,9 @@ const UserService = async (id=null) => {
 
   const getBestFriend = async () => {
     
-    const bestFriend = await friend.findAll({})
+    const bestFriend = await friend.findAll({
+      
+    })
   }
 
   const getHangOuts = async () => {
@@ -34,7 +36,7 @@ const UserService = async (id=null) => {
       order: [["visitCount", "DESC"]],
     });
     const geoFenceInstance = GeoFenceService(userId)
-    const result = await Promise.all(hangouts.map(building => {
+    const result = await Promise.all(hangouts.map(async building => {
       const buildingId = building.buildingId;
       const result = await geoFenceInstance.getBuildingData(buildingId);
       return result
