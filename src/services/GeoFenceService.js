@@ -62,6 +62,7 @@ const GeoFenceService = (userId) => {
         return friendObjectList[idx]
       }
     }).filter(Boolean)
+    console.log(newFriendObjectList, 1)
     const notFriendIdList = membersId.filter(member=> friendIdList.indexOf(member) === -1)
     const friendList = await friendInstance.getFriendList(newFriendObjectList);
     const myCoordinate = await user.findOne({
