@@ -2,7 +2,8 @@ const express = require("express");
 const UserService = require("../../services/UserService");
 const { checkAccessTokens } = require("../middleware/verifyToken");
 const router = express();
-const moment = require('moment-timezone')
+const moment = require('moment-timezone');
+const GeoFenceService = require("../../services/GeoFenceService");
 moment().tz("Asia/Seoul")
 
 router.get("/information", checkAccessTokens, async (req, res) => {
@@ -23,7 +24,8 @@ router.get("/my-profile", checkAccessTokens, async (req, res) => {
   try {
     const id = req.id;
     const userInstance = await UserService(id);
-    const hangouts = await userInstance.getHangOuts()
+    const geoFenceInstance = GeoFenceService(userInstance.userId);
+    const hangouts = await userInstance.getHangOuts(geoFenceInstance);
     const result = { hangouts: hangouts };
     return res.status(200).send(result);
   } catch (err) {

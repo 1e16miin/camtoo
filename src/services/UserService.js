@@ -1,5 +1,4 @@
 const { user, entry, sequelize, friend } = require("../models");
-const GeoFenceService = require("./GeoFenceService");
 const TimeTableService = require("./TimeTableService");
 
 
@@ -26,9 +25,9 @@ const UserService = async (id=null) => {
     })
   }
 
-  const getHangOuts = async () => {
+  const getHangOuts = async (geoFenceInstance) => {
     const hangouts = await entry.findAll({
-      raw:true,
+      raw: true,
       limit: 3,
       where: { user_id: userId },
       paranoid: false,
@@ -39,16 +38,17 @@ const UserService = async (id=null) => {
       ],
       order: [[sequelize.literal("visitCount"), "DESC"]],
     });
-    const geoFenceInstance = GeoFenceService(userId)
-    const result = await Promise.all(hangouts.map(async building => {
-      console.log(building)
-      const buildingId = building.buildingId;
-      const result = await geoFenceInstance.getBuildingData(buildingId);
-      return result
-    }));
+    const result = await Promise.all(
+      hangouts.map(async (building) => {
+        console.log(building);
+        const buildingId = building.buildingId;
+        const result = await geoFenceInstance.getBuildingData(buildingId);
+        return result;
+      })
+    );
 
-    return result 
-  }
+    return result;
+  };
   
   const getUserData = async (userId) => {
     const schedules = await TimeTableService(userId).getAllSchedules();
