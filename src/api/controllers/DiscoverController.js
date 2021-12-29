@@ -24,6 +24,7 @@ router.get("/road", checkAccessTokens, async (req, res) => {
   try {
     const id = req.id;
     const userId = (await UserService(id)).userId;
+    console.log(userId)
     const geoFenceInstance = GeoFenceService(userId);
     const result = await geoFenceInstance.getOutDoorUsers();
     return res.status(200).send(result);
