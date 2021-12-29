@@ -49,7 +49,7 @@ const GeoFenceService = (userId) => {
     let notFriendUsersId = [];
     for (let i = 0; i < friendIdList.length; i++){
       const friendData = friendIdList[i]
-      if (membersId.include(friendData.userId)) {
+      if (membersId.includes(friendData.userId)) {
         newFriendIdList.push(friendData)
       } else {
         notFriendUsersId.push(friendData)
