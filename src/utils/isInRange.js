@@ -1,5 +1,5 @@
 //위도 37 기준 경도 1도 약 88.74km, 위도 약 111km
-const isInRange = (coord1, coord2) => {
+const isInRange = (coord1, coord2, range) => {
   const { latitude: x1, longitude: y1 } = coord1;
   const { latitude: x2, longitude: y2 } = coord2;
 
@@ -8,7 +8,7 @@ const isInRange = (coord1, coord2) => {
 
   const distance = Math.sqrt(dx * dx + dy * dy);
   let result = true
-  if (distance > 400) {
+  if (distance > range) {
     result = false
   }
   return result;
