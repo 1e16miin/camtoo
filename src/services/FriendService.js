@@ -50,10 +50,13 @@ const FriendService = (userId = null) => {
       });
       connectionData.followee = userId;
       connectionData.follower = followee;
-      isExist = await friend.findOne({
-        raw: true,
-        where: connectionData,
-      });
+      if (!isExist) {
+         isExist = await friend.findOne({
+           raw: true,
+           where: connectionData,
+         });
+      }
+     
       if (isExist) {
         throw new Error("이미 존재하는 관계입니다.");
       }
