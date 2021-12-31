@@ -54,7 +54,6 @@ const UserService = async (id = null) => {
     });
     const result = await Promise.all(
       hangouts.map(async (building) => {
-        console.log(building);
         const buildingId = building.buildingId;
         const result = await geoFenceInstance.getBuildingData(buildingId);
         return result;
@@ -65,7 +64,6 @@ const UserService = async (id = null) => {
   };
 
   const getUserData = async (userId) => {
-    console.log(userId)
     const schedules = await TimeTableService(userId).getAllSchedules();
     const userData = await user.findOne({
       nest: true,
