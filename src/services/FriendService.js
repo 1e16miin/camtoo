@@ -4,7 +4,7 @@ const NotificationService = require("./NotificationService");
 const UserService = require("./UserService");
 
 const FriendService = (userId = null) => {
-  const send = async (receiverDto, payload) => {
+  const send = async (receiverDto, payload, type) => {
     let transaction = await sequelize.transaction();
     try {
       const receiver = (await UserService(receiverDto.id)).userId;
@@ -16,7 +16,7 @@ const FriendService = (userId = null) => {
         message: payload,
       };
       await communication.create(communicationData, { transaction });
-      const result = await notificationInstance.sendPush(receiver, payload);
+      const result = await notificationInstance.sendPush(receiver, payload, type);
       await transaction.commit();
       return result;
     } catch (err) {
@@ -39,7 +39,7 @@ const FriendService = (userId = null) => {
     try {
       const followee = (await UserService(followeeDto.id)).userId;
       const notificationInstance = NotificationService(userId);
-      const message = `님으로부터 친구요청이 왔어요!`;
+      const type="request_friend"
       let connectionData = {
         follower: userId,
         followee: followee,
@@ -62,7 +62,7 @@ const FriendService = (userId = null) => {
       connectionData.follower = userId;
       await friend.create(connectionData, { transaction });
 
-      const result = await notificationInstance.sendPush(followee, message);
+      const result = await notificationInstance.sendPush(followee, "", type);
       await transaction.commit();
       return result;
     } catch (err) {
