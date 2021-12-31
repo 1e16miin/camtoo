@@ -92,6 +92,7 @@ const NotificationService = (sender = null) => {
         message: message,
         type: type,
       };
+      console.log(JSON.stringify(content));
       const uri = `https://sens.apigw.ntruss.com/push/v2/services/${pushServiceId}/messages`;
       const url = `/push/v2/services/${pushServiceId}/messages`;
       const method = "POST";
