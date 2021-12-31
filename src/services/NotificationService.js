@@ -84,7 +84,8 @@ const NotificationService = (sender = null) => {
 
   const sendPush = async (receiver, message, type) => {
     try {
-      const senderDto = await user.findOne({raw:true, attributes:["name", "id"], where:{user_id:sender}})
+      const userInstance = await UserService()
+      const senderDto = await userInstance.getUserData(sender)
       const timestamp = Date.now().toString(); // current timestamp (epoch)
       const content = {
         receiver: senderDto,
