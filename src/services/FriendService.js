@@ -9,14 +9,14 @@ const FriendService = (userId = null) => {
     try {
       const receiver = (await UserService(receiverDto.id)).userId;
       const notificationInstance = NotificationService(userId);
-      const message = ` : ${payload}`;
+      
       const communicationData = {
         sender: userId,
         receiver: receiver,
-        message: message,
+        message: payload,
       };
       await communication.create(communicationData, { transaction });
-      const result = await notificationInstance.sendPush(receiver, message);
+      const result = await notificationInstance.sendPush(receiver, payload);
       await transaction.commit();
       return result;
     } catch (err) {

@@ -128,7 +128,6 @@ const UserService = async (id = null) => {
         raw: true,
         attributes: ["latitude", "longitude", "radius"]
       })
-      console.log(buildingData);
       if (buildingData) {
          const buildingCoordinate = {
            latitude: buildingData.latitude,

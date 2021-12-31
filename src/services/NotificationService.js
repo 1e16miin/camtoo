@@ -81,7 +81,7 @@ const NotificationService = (sender = null) => {
     return resultCode;
   };
 
-  const sendPush = async (receiver, message) => {
+  const sendPush = async (receiver, message, type) => {
     try {
       const senderName = (
         await user.findOne({
@@ -116,7 +116,7 @@ const NotificationService = (sender = null) => {
           default: {},
 
           fcm: {
-            content: `[${senderName}]${message}`,
+            content: `${senderName} ${message}`,
           },
         },
       };
