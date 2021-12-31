@@ -129,19 +129,22 @@ const UserService = async (id = null) => {
         attributes: ["latitude", "longitude", "radius"]
       })
       console.log(buildingData);
-      const buildingCoordinate = {
-        latitude: buildingData.latitude,
-        longitude: buildingData.longitude
+      if (buildingData) {
+         const buildingCoordinate = {
+           latitude: buildingData.latitude,
+           longitude: buildingData.longitude,
+         };
+         if (!isInRange(buildingCoordinate, coordinate, buildingData.radius)) {
+           await entry.destroy({
+             where: {
+               building_id: buildingId,
+               user_id: userId,
+             },
+             transaction,
+           });
+         }
       }
-      if (!isInRange(buildingCoordinate, coordinate, buildingData.radius)) {
-        await entry.destroy({
-          where: {
-            building_id: buildingId,
-            user_id: userId,
-          },
-          transaction,
-        })
-      }
+     
       await user.update(coordinate, {
         where: {
           id: id
