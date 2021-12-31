@@ -89,7 +89,7 @@ const NotificationService = (sender = null) => {
       const timestamp = Date.now().toString(); // current timestamp (epoch)
       const content = {
         receiver: senderDto,
-        message: message,
+        payload: message,
         type: type,
       };
       console.log(JSON.stringify(content));
