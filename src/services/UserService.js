@@ -64,6 +64,7 @@ const UserService = async (id = null) => {
   };
 
   const getUserData = async (userId) => {
+    console.log(userId, "userId")
     const timeTableInstance = TimeTableService(userId);
     const schedules = await timeTableInstance.getAllSchedules();
     const userData = await user.findOne({
