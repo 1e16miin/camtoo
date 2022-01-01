@@ -5,6 +5,7 @@ const UserService = require("./UserService");
 
 const FriendService = (userId = null) => {
   const send = async (receiverDto, payload, type) => {
+    console.log(type)
     let transaction = await sequelize.transaction();
     try {
       const receiver = (await UserService(receiverDto.id)).userId;
