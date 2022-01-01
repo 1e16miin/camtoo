@@ -64,7 +64,9 @@ const UserService = async (id = null) => {
   };
 
   const getUserData = async (userId) => {
-    const schedules = await TimeTableService(userId).getAllSchedules();
+    console.log(userId)
+    const timeTableInstance = TimeTableService(userId);
+    const schedules = await timeTableInstance.getAllSchedules();
     const userData = await user.findOne({
       nest: true,
       raw: true,
@@ -119,8 +121,10 @@ const UserService = async (id = null) => {
 
     let transaction = await sequelize.transaction();
     try {
+      console.log(userId)
       const userData = await getUserData(userId)
       const buildingId = userData.buildingId
+      console.log(buildingId)
       const buildingData = await building.findByPk(buildingId, {
         raw: true,
         attributes: ["latitude", "longitude", "radius"]
