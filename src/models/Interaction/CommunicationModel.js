@@ -30,7 +30,8 @@ module.exports = (sequelize, DataTypes) => {
       },
       messageType: {
         type: DataTypes.CHAR(1),
-        allowNull: false
+        allowNull: false,
+        defaultValue: 0
       }
     },
     {
