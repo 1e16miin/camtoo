@@ -32,7 +32,8 @@ const AuthService = () => {
   }; 
   
   const confirmVerifyCode = async (authData) => {
-    const {phoneNumber, verifyCode} = authData
+    const { phoneNumber, verifyCode, encryptedPhoneNumber } = authData;
+    const result = {accessToken:null}
     const cacheData = cache.get(phoneNumber);
     if (!cacheData) {
       throw new Error("제한 시간이 초과하였습니다")
@@ -41,9 +42,18 @@ const AuthService = () => {
     if (cacheData !== verifyCode) {
       throw new Error("인증 번호가 맞지 않습니다.");
     }
-
+    const isUser = await user.findOne({ where: { id: encryptedPhoneNumber } });
+    if (isUser) {
+      result.accessToken = jwt.sign(
+        { id: encryptedPhoneNumber, type: "A" },
+        jwtSecretKey,
+        {
+          expiresIn: 60 * 60 * 24 * 30 * 24,
+        }
+      );
+    }
     cache.del(phoneNumber);
-    return "success"
+    return result;
   }
 
   const issueTokens = (id) => {
