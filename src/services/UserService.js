@@ -64,7 +64,6 @@ const UserService = async (id = null) => {
   };
 
   const getUserData = async (userId) => {
-    console.log(userId)
     const timeTableInstance = TimeTableService(userId);
     const schedules = await timeTableInstance.getAllSchedules();
     const userData = await user.findOne({
@@ -121,7 +120,6 @@ const UserService = async (id = null) => {
 
     let transaction = await sequelize.transaction();
     try {
-      console.log(userId)
       const userData = await getUserData(userId)
       const buildingId = userData.buildingId
       console.log(buildingId)
