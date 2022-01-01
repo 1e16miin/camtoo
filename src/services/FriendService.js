@@ -40,7 +40,7 @@ const FriendService = (userId = null) => {
     try {
       const followee = (await UserService(followeeDto.id)).userId;
       const notificationInstance = NotificationService(userId);
-      const type="request_friend"
+      const type=2
       let connectionData = {
         follower: userId,
         followee: followee,
