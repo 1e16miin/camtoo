@@ -64,7 +64,6 @@ const UserService = async (id = null) => {
   };
 
   const getUserData = async (userId) => {
-    console.log(userId, "userId")
     const timeTableInstance = TimeTableService(userId);
     const schedules = await timeTableInstance.getAllSchedules();
     const userData = await user.findOne({
@@ -123,7 +122,6 @@ const UserService = async (id = null) => {
     try {
       const userData = await getUserData(userId)
       const buildingId = userData.buildingId
-      console.log(buildingId)
       const buildingData = await building.findByPk(buildingId, {
         raw: true,
         attributes: ["latitude", "longitude", "radius"]
@@ -183,14 +181,12 @@ const UserService = async (id = null) => {
         longitude: coordinate.longitude,
         in_school: inSchool,
       };
-      // console.log(newUserData)
       await user.update(updatedUserData, {
         where: {
           id: id
         },
         transaction
       });
-      // console.log(updatedUserData);
       transaction = await timeTableInstance.update(timeTableClasses, transaction)
       await transaction.commit()
       return "success"
