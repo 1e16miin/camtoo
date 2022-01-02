@@ -5,6 +5,7 @@ module.exports = {
   async checkAccessTokens(req, res, next) {
 
     const { authorization } = req.headers;
+    console.log(authorization)
     const credentials = authorization.replace("Bearer ", "");
     // console.log(credentials);
     const tokenData = verifyToken(credentials);
