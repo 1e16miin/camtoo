@@ -5,7 +5,7 @@
   "main": "src/app.js",
   "dependencies": {
     "aws-cloudfront-sign": "^2.2.0",
-    "aws-sdk": "^2.1028.0",
+    "aws-sdk": "^2.1048.0",
     "axios": "^0.24.0",
     "crypto": "^1.0.1",
     "express": "^4.17.1",

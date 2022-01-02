@@ -200,6 +200,10 @@ const UserService = async (id = null) => {
     }
   }
 
+  const uploadProfileImage = () => {
+    
+  }
+
   const userId = await getUserId();
   //const userData = await getUserData();
 
