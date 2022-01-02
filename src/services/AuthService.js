@@ -22,7 +22,7 @@ const AuthService = () => {
     try {
       const verifyCode = createVerifyCode();
       const notificationInstance = NotificationService();
-      
+      console.log(receiver)
       cache.set(receiver, verifyCode, 180 * 1000)
       const result = await notificationInstance.sendSMS(receiver, verifyCode);
       return result;
@@ -35,7 +35,8 @@ const AuthService = () => {
   
   const confirmVerifyCode = async (authData) => {
     const { phoneNumber, verifyCode, encryptedPhoneNumber } = authData;
-    const result = {accessToken:""}
+    console.log(phoneNumber);
+    const result = { accessToken: "" }
     const cacheData = cache.get(phoneNumber);
     if (!cacheData) {
       throw new Error("제한 시간이 초과하였습니다")
