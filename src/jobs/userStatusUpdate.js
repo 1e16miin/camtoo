@@ -13,44 +13,47 @@ const userStatusUpdate = () => schedule.scheduleJob(rule, async () => {
   if (process.env.INSTANCE_ID === '0') {
     const day = moment().day();
     const hour = moment().hour();
-    const time = moment().minute() + hour * 60;
+    if (day != 0 && day != 6 && hour >= 9 && hour <= 19) {
+       const time = moment().minute() + hour * 60;
 
-    let transaction = await sequelize.transaction();
-    try {
-      const allUsers = await user.findAll({
-        nest: true,
-        raw: true,
-        attributes: ["user_id", "time_tables.class_type", "status"],
-        include: [
-          {
-            model: timeTable,
-            where: {
-              start_time: { [Op.lte]: time },
-              end_time: { [Op.gte]: time },
-              day_of_the_week: day - 1,
-            },
-            attributes: [],
-            required: false,
-          },
-        ],
-      });
-      await Promise.all(
-        allUsers.map(async (userData) => {
-          let status = 2;
-          if (userData.class_type) status = userData.class_type;
-          await user.update(
-            { status: status },
-            { where: { user_id: userData.user_id }, transaction }
-          );
-        })
-      );
-      await transaction.commit();
-      console.log("스케쥴링 완료");
-    } catch (err) {
-      console.log("스케쥴링 에러");
-      await transaction.rollback();
-    }
+       let transaction = await sequelize.transaction();
+       try {
+         const allUsers = await user.findAll({
+           nest: true,
+           raw: true,
+           attributes: ["user_id", "time_tables.class_type", "status"],
+           include: [
+             {
+               model: timeTable,
+               where: {
+                 start_time: { [Op.lte]: time },
+                 end_time: { [Op.gte]: time },
+                 day_of_the_week: day - 1,
+               },
+               attributes: [],
+               required: false,
+             },
+           ],
+         });
+         await Promise.all(
+           allUsers.map(async (userData) => {
+             let status = 2;
+             if (userData.class_type) status = userData.class_type;
+             await user.update(
+               { status: status },
+               { where: { user_id: userData.user_id }, transaction }
+             );
+           })
+         );
+         await transaction.commit();
+         console.log("스케쥴링 완료");
+       } catch (err) {
+         console.log("스케쥴링 에러");
+         await transaction.rollback();
+       }
     
+    }
+   
   }
   
 })
