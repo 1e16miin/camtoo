@@ -2,8 +2,10 @@ const { sequelize, user } = require("../models");
 const { jwtSecretKey } = require("../config/key");
 const jwt = require("jsonwebtoken");
 const TimeTableService = require("./TimeTableService");
-const cache = require("memory-cache-ttl")
+const pm2ClusterCache = require("pm2-cluster-cache");
 const NotificationService = require("./NotificationService");
+
+let cache = pm2ClusterCache.init({ storage: "all" });
 
 const AuthService = () => {
   
@@ -21,7 +23,7 @@ const AuthService = () => {
       const verifyCode = createVerifyCode();
       const notificationInstance = NotificationService();
       
-      cache.set(receiver, verifyCode, 180)
+      cache.set(receiver, verifyCode, 180 * 1000)
       const result = await notificationInstance.sendSMS(receiver, verifyCode);
       return result;
     } catch (err) {
