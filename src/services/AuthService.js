@@ -38,6 +38,7 @@ const AuthService = () => {
     console.log(phoneNumber);
     const result = { accessToken: "" }
     const cacheData = cache.get(phoneNumber);
+    console.log(cacheData)
     if (!cacheData) {
       throw new Error("제한 시간이 초과하였습니다")
     }
