@@ -56,7 +56,7 @@ const AuthService = () => {
         }
       );
     }
-    cache.del(phoneNumber);
+    cache.delete(phoneNumber);
     return result;
   }
 
