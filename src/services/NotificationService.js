@@ -111,7 +111,7 @@ const NotificationService = (sender = null) => {
         target: {
           type: "USER",
           deviceType: "GCM",
-          to: [String(receiver)],
+          to: [`${receiver}`],
         },
         message: {
           default: {},
@@ -136,7 +136,6 @@ const NotificationService = (sender = null) => {
           resultCode = 200;
         })
         .catch((err) => {
-          console.log(err);
           console.log(err.response.data);
         });
       if (resultCode === 400) {
