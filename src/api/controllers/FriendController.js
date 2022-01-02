@@ -98,12 +98,13 @@ router.post("/message/send", checkAccessTokens, async (req, res) => {
     const id = req.id;
     const {
       receiver,
-      payload
+      payload,
+      type
     } = req.body;
     const userInstance = await UserService(id);
     const senderId = userInstance.userId;
     const friendInstance = FriendService(senderId);
-    const result = await friendInstance.send(receiver, payload);
+    const result = await friendInstance.send(receiver, payload, type);
 
     return res.status(200).send(result);
   } catch (err) {

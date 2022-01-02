@@ -2,8 +2,10 @@ const { sequelize, user } = require("../models");
 const { jwtSecretKey } = require("../config/key");
 const jwt = require("jsonwebtoken");
 const TimeTableService = require("./TimeTableService");
-const cache = require("memory-cache-ttl")
+const pm2ClusterCache = require("pm2-cluster-cache");
 const NotificationService = require("./NotificationService");
+
+let cache = pm2ClusterCache.init({ storage: "all" });
 
 const AuthService = () => {
   
@@ -20,8 +22,7 @@ const AuthService = () => {
     try {
       const verifyCode = createVerifyCode();
       const notificationInstance = NotificationService();
-      
-      cache.set(receiver, verifyCode, 180)
+      cache.set(receiver, verifyCode, 180 * 1000)
       const result = await notificationInstance.sendSMS(receiver, verifyCode);
       return result;
     } catch (err) {
@@ -32,8 +33,10 @@ const AuthService = () => {
   }; 
   
   const confirmVerifyCode = async (authData) => {
-    const {phoneNumber, verifyCode} = authData
-    const cacheData = cache.get(phoneNumber);
+    const { phoneNumber, verifyCode, encryptedPhoneNumber } = authData;
+ 
+    let result = { accessToken: ""}
+    const cacheData = await cache.get(phoneNumber);
     if (!cacheData) {
       throw new Error("제한 시간이 초과하였습니다")
     }
@@ -41,9 +44,18 @@ const AuthService = () => {
     if (cacheData !== verifyCode) {
       throw new Error("인증 번호가 맞지 않습니다.");
     }
-
-    cache.del(phoneNumber);
-    return "success"
+    const isUser = await user.findOne({ where: { id: encryptedPhoneNumber } });
+    if (isUser) {
+      result.accessToken = jwt.sign(
+        { id: encryptedPhoneNumber, type: "A" },
+        jwtSecretKey,
+        {
+          expiresIn: 60 * 60 * 24 * 30 * 24,
+        }
+      );
+    }
+    cache.delete(phoneNumber);
+    return result;
   }
 
   const issueTokens = (id) => {

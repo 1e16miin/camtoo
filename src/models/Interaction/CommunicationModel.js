@@ -25,9 +25,14 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       message: {
-        type: DataTypes.STRING(50),
+        type: DataTypes.STRING,
         allowNull: false,
       },
+      messageType: {
+        type: DataTypes.INTEGER(1),
+        allowNull: false,
+        defaultValue: 0
+      }
     },
     {
       sequelize,

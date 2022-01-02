@@ -27,7 +27,7 @@ const UserService = async (id = null) => {
   }
 
   const getBestFriend = async () => {
-    const query = `SELECT userId, count(userId) AS interactionCount FROM ((SELECT sender as userId FROM communication WHERE receiver = ${userId}) UNION (SELECT receiver as userId FROM communication WHERE sender = ${userId})) AS u GROUP BY userId ORDER BY interactionCount DESC LIMIT 3`
+    const query = `SELECT userId, count(userId) AS interactionCount FROM ((SELECT sender as userId FROM communication WHERE receiver = ${userId}) UNION (SELECT receiver as userId FROM communication WHERE sender = ${userId})) AS u WHERE userId != ${userId} GROUP BY userId  ORDER BY interactionCount DESC LIMIT 3`
     const bestFriends = await sequelize.query(query, {
       type: sequelize.QueryTypes.SELECT,
     });
@@ -54,7 +54,6 @@ const UserService = async (id = null) => {
     });
     const result = await Promise.all(
       hangouts.map(async (building) => {
-        console.log(building);
         const buildingId = building.buildingId;
         const result = await geoFenceInstance.getBuildingData(buildingId);
         return result;
@@ -65,8 +64,8 @@ const UserService = async (id = null) => {
   };
 
   const getUserData = async (userId) => {
-    console.log(userId)
-    const schedules = await TimeTableService(userId).getAllSchedules();
+    const timeTableInstance = TimeTableService(userId);
+    const schedules = await timeTableInstance.getAllSchedules();
     const userData = await user.findOne({
       nest: true,
       raw: true,
@@ -120,9 +119,6 @@ const UserService = async (id = null) => {
   const updateLocation = async (coordinate) => {
 
     let transaction = await sequelize.transaction();
-    // console.log(coordinate)
-
-
     try {
       const userData = await getUserData(userId)
       const buildingId = userData.buildingId
@@ -130,19 +126,22 @@ const UserService = async (id = null) => {
         raw: true,
         attributes: ["latitude", "longitude", "radius"]
       })
-      const buildingCoordinate = {
-        latitude: buildingData.latitude,
-        longitude: buildingData.longitude
+      if (buildingData) {
+         const buildingCoordinate = {
+           latitude: buildingData.latitude,
+           longitude: buildingData.longitude,
+         };
+         if (!isInRange(buildingCoordinate, coordinate, buildingData.radius)) {
+           await entry.destroy({
+             where: {
+               building_id: buildingId,
+               user_id: userId,
+             },
+             transaction,
+           });
+         }
       }
-      if (!isInRange(buildingCoordinate, coordinate, buildingData.radius)) {
-        await entry.destroy({
-          where: {
-            building_id: buildingId,
-            user_id: userId,
-          },
-          transaction,
-        })
-      }
+     
       await user.update(coordinate, {
         where: {
           id: id
@@ -182,14 +181,12 @@ const UserService = async (id = null) => {
         longitude: coordinate.longitude,
         in_school: inSchool,
       };
-      // console.log(newUserData)
       await user.update(updatedUserData, {
         where: {
           id: id
         },
         transaction
       });
-      // console.log(updatedUserData);
       transaction = await timeTableInstance.update(timeTableClasses, transaction)
       await transaction.commit()
       return "success"

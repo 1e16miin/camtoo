@@ -3,6 +3,7 @@ const { default: axios } = require("axios");
 const { SENS_SMS, SENS_PUSH } = require("../config/key");
 const moment = require("moment-timezone");
 const { user } = require("../models");
+const UserService = require("./UserService");
 
 moment().tz("Asia/Seoul");
 
@@ -81,18 +82,17 @@ const NotificationService = (sender = null) => {
     return resultCode;
   };
 
-  const sendPush = async (receiver, message) => {
+  const sendPush = async (receiver, message, type) => {
     try {
-      const senderName = (
-        await user.findOne({
-          nest: true,
-          raw: true,
-          attributes: ["name"],
-          where: { user_id: sender },
-        })
-      ).name;
+      const userInstance = await UserService()
+      const senderDto = await userInstance.getUserData(sender)
       const timestamp = Date.now().toString(); // current timestamp (epoch)
-
+      const content = {
+        receiver: senderDto,
+        payload: message,
+        type: type,
+      };
+      console.log(JSON.stringify(content));
       const uri = `https://sens.apigw.ntruss.com/push/v2/services/${pushServiceId}/messages`;
       const url = `/push/v2/services/${pushServiceId}/messages`;
       const method = "POST";
@@ -116,7 +116,7 @@ const NotificationService = (sender = null) => {
           default: {},
 
           fcm: {
-            content: `[${senderName}]${message}`,
+            content: JSON.stringify(content),
           },
         },
       };

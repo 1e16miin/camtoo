@@ -6,9 +6,7 @@ module.exports = {
 
     const { authorization } = req.headers;
     const credentials = authorization.replace("Bearer ", "");
-    // console.log(credentials);
     const tokenData = verifyToken(credentials);
-    // console.log(tokenData);
     const tokenType = tokenData.type;
 
     const id = tokenType !== "A" ? "1" : tokenData.id;
