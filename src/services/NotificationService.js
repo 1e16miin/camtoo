@@ -84,6 +84,7 @@ const NotificationService = (sender = null) => {
 
   const sendPush = async (receiver, message, type) => {
     try {
+      console.log(receiver)
       const userInstance = await UserService()
       const senderDto = await userInstance.getUserData(sender)
       const timestamp = Date.now().toString(); // current timestamp (epoch)
