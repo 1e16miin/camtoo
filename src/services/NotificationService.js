@@ -116,7 +116,8 @@ const NotificationService = (sender = null) => {
           default: {},
 
           gcm: {
-            content: JSON.stringify(content),
+            // content: JSON.stringify(content),
+            content: "test"
           },
         },
       };
