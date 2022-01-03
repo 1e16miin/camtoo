@@ -130,7 +130,7 @@ const NotificationService = (sender = null) => {
           "x-ncp-apigw-signature-v2": signature,
         },
       };
-      // console.log(1)
+      console.log(1)
       await axios
         .post(uri, body, options)
         .then(async (res) => {
