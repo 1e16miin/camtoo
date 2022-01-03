@@ -16,6 +16,7 @@ const FriendService = (userId = null) => {
         message: payload,
         messageType: type,
       };
+      console.log(receiver)
       await communication.create(communicationData, { transaction });
       const result = await notificationInstance.sendPush(receiver, payload, type);
       await transaction.commit();
