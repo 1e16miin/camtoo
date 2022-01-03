@@ -136,8 +136,8 @@ const NotificationService = (sender = null) => {
           resultCode = 200;
         })
         .catch((err) => {
-          console.log(err.response)
-          console.log(err.response.data);
+          console.log(err)
+          // console.log(err.response.data);
         });
       if (resultCode === 400) {
         throw new Error("푸쉬를 보내는 과정에서 에러가 발생하였습니다.");
