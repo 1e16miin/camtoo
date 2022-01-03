@@ -14,7 +14,7 @@ const userStatusUpdate = () =>
     if (process.env.INSTANCE_ID === "0") {
       const day = moment().day();
       const hour = moment().hour();
-      if (day != 0 && day != 6 && hour >= 9 && hour <= 19) {
+      if (day != 0 && day != 6 && hour >= 9 && hour <= 20) {
         const time = moment().minute() + hour * 60;
 
         let transaction = await sequelize.transaction();
