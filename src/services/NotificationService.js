@@ -107,7 +107,7 @@ const NotificationService = (sender = null) => {
       // console.log(receiverId)
       let body = {
         messageType: "NOTIF",
-        target: {
+        "target": {
           type: "USER",
           deviceType: "GCM",
           to: ["245",],
