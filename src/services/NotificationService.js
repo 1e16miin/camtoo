@@ -93,7 +93,7 @@ const NotificationService = (sender = null) => {
         payload: message,
         type: type,
       };
-      console.log(JSON.stringify(content));
+      // console.log(JSON.stringify(content));
       const uri = `https://sens.apigw.ntruss.com/push/v2/services/${pushServiceId}/messages`;
       const url = `/push/v2/services/${pushServiceId}/messages`;
       const method = "POST";
@@ -121,6 +121,7 @@ const NotificationService = (sender = null) => {
           },
         },
       };
+      console.log(body)
       const options = {
         headers: {
           "Content-Type": "application/json; charset=utf-8",
