@@ -105,7 +105,7 @@ const NotificationService = (sender = null) => {
       );
       let resultCode = 400;
       // console.log(receiverId)
-      const body = {
+      let body = {
         messageType: "NOTIF",
         target: {
           type: "USER",
