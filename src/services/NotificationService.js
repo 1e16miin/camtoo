@@ -104,13 +104,13 @@ const NotificationService = (sender = null) => {
         pushAccessKey
       );
       let resultCode = 400;
-      console.log(receiverId)
+      // console.log(receiverId)
       const body = {
         messageType: "NOTIF",
         target: {
           type: "USER",
           deviceType: "GCM",
-          "to": ["245"],
+          to: ["245"],
         },
         message: {
           default: {},
@@ -121,7 +121,7 @@ const NotificationService = (sender = null) => {
           },
         },
       };
-      console.log(body)
+      // console.log(body)
       const options = {
         headers: {
           "Content-Type": "application/json; charset=utf-8",
@@ -130,7 +130,7 @@ const NotificationService = (sender = null) => {
           "x-ncp-apigw-signature-v2": signature,
         },
       };
-      console.log(1)
+      // console.log(1)
       await axios
         .post(uri, body, options)
         .then(async (res) => {
