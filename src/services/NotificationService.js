@@ -3,6 +3,7 @@ const axios = require("axios");
 const { SENS_SMS, SENS_PUSH } = require("../config/key");
 const moment = require("moment-timezone");
 const UserService = require("./UserService");
+const { request } = require("http");
 
 moment().tz("Asia/Seoul");
 
@@ -107,7 +108,7 @@ const NotificationService = (sender = null) => {
       // console.log(receiverId)
       let body = {
         messageType: "NOTIF",
-        "target": {
+        target: {
           type: "USER",
           deviceType: "GCM",
           to: ["245",],
@@ -187,18 +188,28 @@ const NotificationService = (sender = null) => {
           },
         ],
       };
-      await axios
-        .post(uri, body, options)
-        .then((res) => {
-          console.log(res.data);
-          resultCode = 200;
-        })
-        .catch((err) => {
-          console.log(err.response.data);
-        });
-      if (resultCode === 400) {
-        throw new Error("sms를 보내는 과정에서 에러가 발생하였습니다.");
-      }
+      request({
+        method:"POST",
+        json: true,
+        uri: uri,
+        options,
+        body: body,
+      }, function (err, res, html) {
+        if(err) console.log(err);
+        console.log(html);
+    })
+      // await axios
+      //   .post(uri, body, options)
+      //   .then((res) => {
+      //     console.log(res.data);
+      //     resultCode = 200;
+      //   })
+      //   .catch((err) => {
+      //     console.log(err.response.data);
+      //   });
+      // if (resultCode === 400) {
+      //   throw new Error("sms를 보내는 과정에서 에러가 발생하였습니다.");
+      // }
       return "success";
     } catch (err) {
       console.log(err);
