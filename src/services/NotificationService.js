@@ -4,6 +4,8 @@ const { SENS_SMS, SENS_PUSH } = require("../config/key");
 const moment = require("moment-timezone");
 const UserService = require("./UserService");
 const { request } = require("http");
+const bent = require("bent");
+const superagent = require("superagent");
 
 moment().tz("Asia/Seoul");
 
@@ -132,16 +134,20 @@ const NotificationService = (sender = null) => {
         },
       };
       console.log(1)
-      request({
-        method:"POST",
-        json: true,
-        uri: uri,
-        options,
-        body: body,
-      }, function (err, res, html) {
-        if(err) console.log(err);
-        console.log(html);
-    })
+      const post = bent(uri, method, 'json', 200)
+      await superagent.post(uri).send(body).set(options).then(res=>{
+        resultCode = 200;
+      }).catch(err=>console.log(err))
+    //   request({
+    //     method:"POST",
+    //     json: true,
+    //     uri: uri,
+    //     options,
+    //     body: body,
+    //   }, function (err, res, html) {
+    //     if(err) console.log(err);
+    //     console.log(html);
+    // })
       // await axios
       //   .post(uri, body, options)
       //   .then(async (res) => {

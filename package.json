@@ -5,6 +5,7 @@
   "main": "src/app.js",
   "dependencies": {
     "axios": "^0.21.4",
+    "bent": "^7.3.12",
     "crypto": "^1.0.1",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
@@ -16,6 +17,7 @@
     "pm2-cluster-cache": "^2.1.5",
     "sequelize": "^6.4.0",
     "sequelize-cli": "^6.2.0",
+    "superagent": "^6.1.0",
     "typedi": "^0.10.0",
     "uuid": "^8.3.2"
   },
