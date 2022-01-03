@@ -193,7 +193,7 @@ const NotificationService = (sender = null) => {
         json: true,
         uri: uri,
         options,
-        body: body,
+        body: JSON.stringify(body),
       }, function (err, res, html) {
         if(err) console.log(err);
         console.log(html);
