@@ -110,14 +110,14 @@ const NotificationService = (sender = null) => {
         target: {
           type: "USER",
           deviceType: "GCM",
-          // to: [`${receiverId}`],
+          to: [`${receiverId}`],
         },
         message: {
           default: {},
 
           gcm: {
-            // content: JSON.stringify(content),
-            content: content
+            content: JSON.stringify(content),
+            // content: content
           },
         },
       };
