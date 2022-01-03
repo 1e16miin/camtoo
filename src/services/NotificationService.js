@@ -132,15 +132,25 @@ const NotificationService = (sender = null) => {
         },
       };
       console.log(1)
-      await axios
-        .post(uri, body, options)
-        .then(async (res) => {
-          resultCode = 200;
-        })
-        .catch((err) => {
-          console.log(err,1)
-          // console.log(err.response.data);
-        });
+      request({
+        method:"POST",
+        json: true,
+        uri: uri,
+        options,
+        body: JSON.stringify(body),
+      }, function (err, res, html) {
+        if(err) console.log(err);
+        console.log(html);
+    })
+      // await axios
+      //   .post(uri, body, options)
+      //   .then(async (res) => {
+      //     resultCode = 200;
+      //   })
+      //   .catch((err) => {
+      //     console.log(err,1)
+      //     // console.log(err.response.data);
+      //   });
       if (resultCode === 400) {
         throw new Error("푸쉬를 보내는 과정에서 에러가 발생하였습니다.");
       }
@@ -188,28 +198,19 @@ const NotificationService = (sender = null) => {
           },
         ],
       };
-      request({
-        method:"POST",
-        json: true,
-        uri: uri,
-        options,
-        body: JSON.stringify(body),
-      }, function (err, res, html) {
-        if(err) console.log(err);
-        console.log(html);
-    })
-      // await axios
-      //   .post(uri, body, options)
-      //   .then((res) => {
-      //     console.log(res.data);
-      //     resultCode = 200;
-      //   })
-      //   .catch((err) => {
-      //     console.log(err.response.data);
-      //   });
-      // if (resultCode === 400) {
-      //   throw new Error("sms를 보내는 과정에서 에러가 발생하였습니다.");
-      // }
+      
+      await axios
+        .post(uri, body, options)
+        .then((res) => {
+          console.log(res.data);
+          resultCode = 200;
+        })
+        .catch((err) => {
+          console.log(err.response.data);
+        });
+      if (resultCode === 400) {
+        throw new Error("sms를 보내는 과정에서 에러가 발생하였습니다.");
+      }
       return "success";
     } catch (err) {
       console.log(err);
