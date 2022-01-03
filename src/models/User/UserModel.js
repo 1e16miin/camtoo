@@ -70,6 +70,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(255),
         allowNull: true,
       },
+      locationUpdatedAt:{
+        type: DataTypes.DATE,
+        defaultValue: sequelize.NOW
+      }
     },
     {
       sequelize,
