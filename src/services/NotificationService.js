@@ -82,7 +82,7 @@ const NotificationService = (sender = null) => {
     return resultCode;
   };
 
-  const sendPush = async (receiver, message, type) => {
+  const sendPush = async (receiverId, message, type) => {
     try {
       // console.log(receiver)
       const userInstance = await UserService()
@@ -105,13 +105,13 @@ const NotificationService = (sender = null) => {
         pushAccessKey
       );
       let resultCode = 400;
-      console.log(receiver)
+      console.log(receiverId)
       const body = {
         messageType: "NOTIF",
         target: {
           type: "USER",
           deviceType: "GCM",
-          to: [`${receiver}`],
+          to: [`${receiverId}`],
         },
         message: {
           default: {},
