@@ -116,7 +116,7 @@ const NotificationService = (sender = null) => {
         message: {
           default: {},
 
-          fcm: {
+          gcm: {
             content: JSON.stringify(content),
           },
         },
