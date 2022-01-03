@@ -1,9 +1,14 @@
 const crypto = require("crypto");
 const axios = require("axios");
-const { SENS_SMS, SENS_PUSH } = require("../config/key");
+const {
+  SENS_SMS,
+  SENS_PUSH
+} = require("../config/key");
 const moment = require("moment-timezone");
 const UserService = require("./UserService");
-const { request } = require("http");
+const {
+  request
+} = require("http");
 const bent = require("bent");
 const superagent = require("superagent");
 
@@ -77,9 +82,9 @@ const NotificationService = (sender = null) => {
         resultCode = 200;
       })
       .catch((err) => {
-      //  console.log(err);
-       console.log(err.response.data);
-      throw new Error("디바이스 토큰 등록 중 에러 발생")
+        //  console.log(err);
+        console.log(err.response.data);
+        throw new Error("디바이스 토큰 등록 중 에러 발생")
       });
     return resultCode;
   };
@@ -113,7 +118,7 @@ const NotificationService = (sender = null) => {
         target: {
           type: "USER",
           deviceType: "GCM",
-          to: ["245",],
+          to: ["245", ],
         },
         message: {
           default: {},
@@ -125,29 +130,27 @@ const NotificationService = (sender = null) => {
         },
       };
       // console.log(body)
-      const options = {
-        headers: {
-          "Content-Type": "application/json; charset=utf-8",
-          "x-ncp-iam-access-key": pushAccessKey,
-          "x-ncp-apigw-timestamp": timestamp,
-          "x-ncp-apigw-signature-v2": signature,
-        },
-      };
-      console.log(1)
-      const post = bent(uri, method, 'json', 200)
-      await superagent.post(uri).send(body).set(options).then(res=>{
+
+      const headers = {
+        "Content-Type": "application/json; charset=utf-8",
+        "x-ncp-iam-access-key": pushAccessKey,
+        "x-ncp-apigw-timestamp": timestamp,
+        "x-ncp-apigw-signature-v2": signature,
+      }
+
+      await superagent.post(uri).send(body).set(headers).then(res => {
         resultCode = 200;
-      }).catch(err=>console.log(err))
-    //   request({
-    //     method:"POST",
-    //     json: true,
-    //     uri: uri,
-    //     options,
-    //     body: body,
-    //   }, function (err, res, html) {
-    //     if(err) console.log(err);
-    //     console.log(html);
-    // })
+      }).catch(err => console.log(err))
+      //   request({
+      //     method:"POST",
+      //     json: true,
+      //     uri: uri,
+      //     options,
+      //     body: body,
+      //   }, function (err, res, html) {
+      //     if(err) console.log(err);
+      //     console.log(html);
+      // })
       // await axios
       //   .post(uri, body, options)
       //   .then(async (res) => {
@@ -198,13 +201,11 @@ const NotificationService = (sender = null) => {
         countryCode: "82",
         from: "01051795955",
         content: `[본인 확인] 인증번호 [${verifyCode}]를 입력해주세요.`,
-        messages: [
-          {
-            to: `${receiver}`,
-          },
-        ],
+        messages: [{
+          to: `${receiver}`,
+        }, ],
       };
-      
+
       await axios
         .post(uri, body, options)
         .then((res) => {
@@ -224,7 +225,11 @@ const NotificationService = (sender = null) => {
     }
   };
 
-  return { postDeviceToken, sendPush, sendSMS };
+  return {
+    postDeviceToken,
+    sendPush,
+    sendSMS
+  };
 };
 
 module.exports = NotificationService;
