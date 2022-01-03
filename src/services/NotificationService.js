@@ -108,16 +108,16 @@ const NotificationService = (sender = null) => {
       const body = {
         messageType: "NOTIF",
         target: {
-          "type": "USER",
-          "deviceType": "GCM",
-          "to": [`${receiverId}`],
+          type: "USER",
+          deviceType: "GCM",
+          to: [`${receiverId}`],
         },
         message: {
           default: {},
 
           gcm: {
             // content: JSON.stringify(content),
-            content: "test"
+            content: content
           },
         },
       };
