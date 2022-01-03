@@ -1,5 +1,5 @@
 const crypto = require("crypto");
-const { default: axios } = require("axios");
+const axios = require("axios");
 const { SENS_SMS, SENS_PUSH } = require("../config/key");
 const moment = require("moment-timezone");
 const UserService = require("./UserService");
