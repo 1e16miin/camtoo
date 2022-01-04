@@ -6,10 +6,7 @@ const {
 } = require("../config/key");
 const moment = require("moment-timezone");
 const UserService = require("./UserService");
-const {
-  request
-} = require("http");
-const bent = require("bent");
+
 const superagent = require("superagent");
 
 moment().tz("Asia/Seoul");

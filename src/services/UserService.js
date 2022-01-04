@@ -6,7 +6,8 @@ const {
 } = require("../models");
 const isInRange = require("../utils/isInRange");
 const TimeTableService = require("./TimeTableService");
-
+const moment = require("moment-timezone");
+moment().tz("Asia/Seoul");
 
 const UserService = async (id = null) => {
   const getUserId = async () => {
