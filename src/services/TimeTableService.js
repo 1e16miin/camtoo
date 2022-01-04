@@ -18,9 +18,9 @@ const TimeTableService = (userId) => {
   }
 
   const update = async (timeTableClasses, transaction) => {
+    console.log(userId)
     await timeTable.destroy({ where: { userId: userId }, transaction });
     await create(timeTableClasses, transaction);
-    return transaction
   };
 
   return { getAllSchedules, create, update };

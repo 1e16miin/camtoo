@@ -159,6 +159,7 @@ const UserService = async (id = null) => {
   const update = async (newUserData) => {
     const transaction = await sequelize.transaction()
     const timeTableInstance = TimeTableService(userId)
+    console.log(userId)
     try {
       console.log(newUserData)
       await user.update(newUserData, {
