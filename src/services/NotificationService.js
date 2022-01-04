@@ -161,25 +161,7 @@ const NotificationService = (sender = null) => {
       await superagent.post(uri).send(body).set(headers).then(res => {
         resultCode = 200;
       }).catch(err => console.log(err))
-      //   request({
-      //     method:"POST",
-      //     json: true,
-      //     uri: uri,
-      //     options,
-      //     body: body,
-      //   }, function (err, res, html) {
-      //     if(err) console.log(err);
-      //     console.log(html);
-      // })
-      // await axios
-      //   .post(uri, body, options)
-      //   .then(async (res) => {
-      //     resultCode = 200;
-      //   })
-      //   .catch((err) => {
-      //     console.log(err,1)
-      //     // console.log(err.response.data);
-      //   });
+      
       if (resultCode === 400) {
         throw new Error("푸쉬를 보내는 과정에서 에러가 발생하였습니다.");
       }
