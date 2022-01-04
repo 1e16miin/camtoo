@@ -22,14 +22,14 @@ const userStatusUpdate = () =>
           const allUsers = await user.findAll({
             nest: true,
             raw: true,
-            attributes: ["user_id", "time_tables.class_type", "status"],
+            attributes: ["userId", "time_tables.scheduleType", "status"],
             include: [
               {
                 model: timeTable,
                 where: {
-                  start_time: { [Op.lte]: time },
-                  end_time: { [Op.gte]: time },
-                  day_of_the_week: day - 1,
+                  startTime: { [Op.lte]: time },
+                  endTime: { [Op.gte]: time },
+                  dayOfTheWeek: day - 1,
                 },
                 attributes: [],
                 required: false,
@@ -39,10 +39,10 @@ const userStatusUpdate = () =>
           await Promise.all(
             allUsers.map(async (userData) => {
               let status = 2;
-              if (userData.class_type) status = userData.class_type;
+              if (userData.scheduleType) status = userData.scheduleType;
               await user.update(
                 { status: status },
-                { where: { user_id: userData.user_id }, transaction }
+                { where: { userId: userData.userId }, transaction }
               );
             })
           );

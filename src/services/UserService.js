@@ -12,15 +12,15 @@ const UserService = async (id = null) => {
   const getUserId = async () => {
     let result = null
     if (id) {
-      const userId = await user.findOne({
+      const {userId} = await user.findOne({
         nest: true,
         raw: true,
-        attributes: ["user_id"],
+        attributes: ["userId"],
         where: {
           id: id
         },
       });
-      result = userId.user_id;
+      result = userId;
     }
 
     return result;
@@ -40,13 +40,13 @@ const UserService = async (id = null) => {
       raw: true,
       limit: 3,
       where: {
-        user_id: userId
+        userId: userId
       },
       paranoid: false,
-      group: ["building_id"],
+      group: ["buildingId"],
       attributes: [
-        [sequelize.fn("COUNT", "building_id"), "visitCount"],
-        ["building_id", "buildingId"],
+        [sequelize.fn("COUNT", "buildingId"), "visitCount"],
+        "buildingId",
       ],
       order: [
         [sequelize.literal("visitCount"), "DESC"]
@@ -70,15 +70,15 @@ const UserService = async (id = null) => {
       nest: true,
       raw: true,
       where: {
-        user_id: userId
+        userId: userId
       },
     });
     const buildingObject = (await entry.findOne({
       raw: true,
       nest: true,
-      attributes: ["building_id"],
+      attributes: ["buildingId"],
       where: {
-        user_id: userId
+        userId: userId
       },
       order: [
         ["createdAt", "DESC"]
@@ -88,30 +88,30 @@ const UserService = async (id = null) => {
       id,
       name,
       status,
-      promise_refusal_mode,
-      public_profile_mode,
-      in_school,
-      status_message,
+      promiseRefusalMode,
+      publicProfileMode,
+      inSchool,
+      statusMessage,
       latitude,
       longitude,
-      profile_image_url,
+      profileImageUrl,
     } = userData;
 
     const result = {
       id: id,
       name: name,
       status: status,
-      promiseRefusalMode: promise_refusal_mode === 1 ? true : false,
-      publicProfileMode: public_profile_mode === 1 ? true : false,
-      statusMessage: status_message ? status_message : "",
-      imageUrl: profile_image_url ? profile_image_url : "",
+      promiseRefusalMode: promiseRefusalMode === 1 ? true : false,
+      publicProfileMode: publicProfileMode === 1 ? true : false,
+      statusMessage: statusMessage ? statusMessage : "",
+      imageUrl: profileImageUrl ? profileImageUrl : "",
       timeTableClasses: schedules,
       coordinate: {
         latitude: latitude ? latitude : 0.0,
         longitude: longitude ? longitude : 0.0,
       },
-      inSchool: in_school === 1 ? true : false,
-      buildingId: buildingObject ? buildingObject.building_id : null,
+      inSchool: inSchool === 1 ? true : false,
+      buildingId: buildingObject ? buildingObject.buildingId : null,
     };
     return result;
   };
@@ -134,8 +134,8 @@ const UserService = async (id = null) => {
          if (!isInRange(buildingCoordinate, coordinate, buildingData.radius)) {
            await entry.destroy({
              where: {
-               building_id: buildingId,
-               user_id: userId,
+               buildingId: buildingId,
+               userId: userId,
              },
              transaction,
            });
@@ -160,28 +160,8 @@ const UserService = async (id = null) => {
     let transaction = await sequelize.transaction()
     const timeTableInstance = TimeTableService(userId)
     try {
-      const {
-        name,
-        promiseRefusalMode,
-        publicProfileMode,
-        statusMessage,
-        imageUrl,
-        coordinate,
-        inSchool,
-        timeTableClasses,
-      } = newUserData;
-
-      const updatedUserData = {
-        name: name,
-        promise_refusal_mode: promiseRefusalMode,
-        public_profile_mode: publicProfileMode,
-        status_message: statusMessage,
-        profile_image_url: imageUrl,
-        latitude: coordinate.latitude,
-        longitude: coordinate.longitude,
-        in_school: inSchool,
-      };
-      await user.update(updatedUserData, {
+      console.log(newUserData)
+      await user.update(newUserData, {
         where: {
           id: id
         },

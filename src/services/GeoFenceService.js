@@ -10,10 +10,10 @@ const GeoFenceService = (userId) => {
       raw: true,
       nest: true,
       where: {
-        in_school: 1,
+        inSchool: 1,
       },
     });
-    const result = inSchoolUsers.map((userData) => userData.user_id);
+    const result = inSchoolUsers.map((userData) => userData.userId);
     return result;
   };
 
@@ -60,7 +60,7 @@ const GeoFenceService = (userId) => {
       nest: true,
       attributes: ["latitude", "longitude"],
       where: {
-        user_id: userId,
+        userId: userId,
       },
     });
 
@@ -81,9 +81,9 @@ const GeoFenceService = (userId) => {
     const inBuildingUsersId = (
       await entry.findAll({
         raw: true,
-        attributes: ["user_id"],
+        attributes: ["userId"],
       })
-    ).map((user) => user.user_id);
+    ).map((user) => user.userId);
     const outDoorUsersId = inSchoolUsersId.filter(
       (id) => inBuildingUsersId.indexOf(id) === -1
     );
@@ -96,8 +96,8 @@ const GeoFenceService = (userId) => {
     let transaction = await sequelize.transaction();
     try {
       const entranceData = {
-        building_id: buildingId,
-        user_id: userId,
+        buildingId: buildingId,
+        userId: userId,
       };
       await entry.create(entranceData, {
         transaction,
@@ -113,11 +113,11 @@ const GeoFenceService = (userId) => {
   const exit = async (buildingId) => {
     let transaction = await sequelize.transaction();
     try {
-      //  const entranceData = { building_id: buildingId, user_id: userId };
+      //  const entranceData = { buildingId: buildingId, userId: userId };
       await entry.destroy({
         where: {
-          building_id: buildingId,
-          user_id: userId,
+          buildingId: buildingId,
+          userId: userId,
         },
         transaction,
       });
@@ -135,7 +135,7 @@ const GeoFenceService = (userId) => {
         raw: true,
         nest: true,
         where: {
-          university_id: universityId,
+          universityId: universityId,
         },
       })
     ).map((data) => data.id);
@@ -153,12 +153,12 @@ const GeoFenceService = (userId) => {
         (
           await entry.findAll({
             raw: true,
-            attributes: ["user_id"],
+            attributes: ["userId"],
             where: {
-              building_id: buildingId,
+              buildingId: buildingId,
             },
           })
-        ).map((user) => user.user_id)
+        ).map((user) => user.userId)
       )
     );
     const people = await getPeople(inBuildingUsersId);

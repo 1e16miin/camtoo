@@ -110,7 +110,7 @@ const FriendService = (userId = null) => {
   //     await user.findAll({
   //       nest: true,
   //       raw: true,
-  //       attributes: [["user_id", "userId"]],
+  //       attributes: [["userId", "userId"]],
   //       where: { id: idList },
   //     })
   //   ).map((foundUser) => foundUser.id);

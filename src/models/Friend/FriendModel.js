@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         references: {
           model: "user",
-          key: "user_id",
+          key: "userId",
         },
       },
       followee: {
@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         references: {
           model: "user",
-          key: "user_id",
+          key: "userId",
         },
       },
       status: {

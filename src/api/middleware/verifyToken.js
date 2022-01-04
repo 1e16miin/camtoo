@@ -52,12 +52,12 @@ module.exports = {
 
       if (tokenType === "R") {
         const checkToken = async () => {
-          return user.findOne({nest:true, raw:true, where: { user_id: bufferOne } }).then(
+          return user.findOne({nest:true, raw:true, where: { userId: bufferOne } }).then(
             (data) => {
               if (!data) {
                 return false;
               } else {
-                if (data.refresh_token === credentials) {
+                if (data.refreshToken === credentials) {
                   return true;
                 } else {
                   return false;

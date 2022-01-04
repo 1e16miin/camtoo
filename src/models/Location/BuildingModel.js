@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
       },
-      university_id: {
+      universityId: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
         references: {

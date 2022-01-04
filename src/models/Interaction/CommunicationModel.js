@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         references: {
           model: "user",
-          key: "user_id",
+          key: "userId",
         },
       },
       receiver: {
@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         references: {
           model: "user",
-          key: "user_id",
+          key: "userId",
         },
       },
       message: {

@@ -42,25 +42,25 @@ const NotificationService = (sender = null) => {
     return result;
   };
 
-  const findDeviceToken = async () => {
-    const uri = `https://sens.apigw.ntruss.com/push/v2/services/${pushServiceId}/users/${sender}`;
-    const url = `/push/v2/services/${pushServiceId}/users/${sender}`;
+  // const findDeviceToken = async () => {
+  //   const uri = `https://sens.apigw.ntruss.com/push/v2/services/${pushServiceId}/users/${sender}`;
+  //   const url = `/push/v2/services/${pushServiceId}/users/${sender}`;
 
-    const signature = makeSignature(
-      url,
-      timestamp,
-      method,
-      pushSecretKey,
-      pushAccessKey
-    );
-    const options = {
-      headers: {
-        "x-ncp-iam-access-key": pushAccessKey,
-        "x-ncp-apigw-timestamp": timestamp,
-        "x-ncp-apigw-signature-v2": signature,
-      },
-    };
-  }
+  //   const signature = makeSignature(
+  //     url,
+  //     timestamp,
+  //     method,
+  //     pushSecretKey,
+  //     pushAccessKey
+  //   );
+  //   const options = {
+  //     headers: {
+  //       "x-ncp-iam-access-key": pushAccessKey,
+  //       "x-ncp-apigw-timestamp": timestamp,
+  //       "x-ncp-apigw-signature-v2": signature,
+  //     },
+  //   };
+  // }
 
   const postDeviceToken = async (deviceToken) => {
     let resultCode = 400;

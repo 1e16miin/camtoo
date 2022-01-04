@@ -53,93 +53,93 @@ db.entry = require("./Location/EntryModel")(sequelize,Sequelize)
 
 
 db.university.hasMany(db.building, {
-  foreignKey: "university_id",
+  foreignKey: "universityId",
   sourceKey: "id",
 });
 db.building.belongsTo(db.university, {
-  foreignKey: "university_id",
+  foreignKey: "universityId",
   targetKey: "id",
 });
 
 
 db.university.hasOne(db.user, {
-  foreignKey: "university_id",
+  foreignKey: "universityId",
   sourceKey: "id",
 });
 db.user.belongsTo(db.university, {
-  foreignKey: "university_id",
+  foreignKey: "universityId",
   targetKey: "id",
 });
 
 db.building.hasMany(db.entry, {
-  foreignKey: "building_id",
+  foreignKey: "buildingId",
   sourceKey: "id",
 });
 db.entry.belongsTo(db.building, {
-  foreignKey: "building_id",
+  foreignKey: "buildingId",
   targetKey: "id",
 });
 
 
 db.user.hasMany(db.timeTable, {
-  foreignKey: "user_id",
-  sourceKey: "user_id",
+  foreignKey: "userId",
+  sourceKey: "userId",
 });
 
 db.timeTable.belongsTo(db.user, {
-  foreignKey: "user_id",
-  targetKey: "user_id",
+  foreignKey: "userId",
+  targetKey: "userId",
 });
 
 db.user.hasMany(db.entry, {
-  foreignKey: "user_id",
-  sourceKey: "user_id",
+  foreignKey: "userId",
+  sourceKey: "userId",
 });
 
 db.entry.belongsTo(db.user, {
-  foreignKey: "user_id",
-  targetKey: "user_id",
+  foreignKey: "userId",
+  targetKey: "userId",
 });
 
 db.user.hasMany(db.friend, {
   foreignKey: "followee",
-  sourceKey: "user_id",
+  sourceKey: "userId",
 });
 
 db.friend.belongsTo(db.user, {
   foreignKey: "followee",
-  targetKey: "user_id",
+  targetKey: "userId",
 });
 
 db.user.hasMany(db.friend, {
   foreignKey: "follower",
-  sourceKey: "user_id",
+  sourceKey: "userId",
 });
 
 db.friend.belongsTo(db.user, {
   foreignKey: "follower",
-  targetKey: "user_id",
+  targetKey: "userId",
 });
 
 
 db.user.hasMany(db.communication, {
   foreignKey: "sender",
-  sourceKey: "user_id",
+  sourceKey: "userId",
 });
 
 db.communication.belongsTo(db.user, {
   foreignKey: "sender",
-  targetKey: "user_id",
+  targetKey: "userId",
 });
 
 db.user.hasMany(db.communication, {
   foreignKey: "receiver",
-  sourceKey: "user_id",
+  sourceKey: "userId",
 });
 
 db.communication.belongsTo(db.user, {
   foreignKey: "receiver",
-  targetKey: "user_id",
+  targetKey: "userId",
 });
 
 

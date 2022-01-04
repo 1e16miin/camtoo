@@ -8,32 +8,32 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         allowNull: false,
       },
-      class_name: {
+      scheduleName: {
         type: DataTypes.STRING(20),
         allowNull: true,
       },
-      day_of_the_week: {
+      dayOfTheWeek: {
         type: DataTypes.CHAR(1),
         allowNull: false,
       },
-      class_type: {
+      scheduleType: {
         type: DataTypes.CHAR(1),
         allowNull: false,
       },
-      start_time: {
+      startTime: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      end_time: {
+      endTime: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      user_id: {
+      userId: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
         references: {
           model: "user",
-          key: "user_id",
+          key: "userId",
         },
       },
     },

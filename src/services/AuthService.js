@@ -77,11 +77,11 @@ const AuthService = () => {
       const { id, universityId, name, timeTableClasses } = signUpData;
       const userData = {
         id: id,
-        university_id: universityId,
+        universityId: universityId,
         name: name,
       };
       const createdUserData = await user.create(userData, { transaction });
-      const userId = createdUserData.dataValues.user_id;
+      const userId = createdUserData.dataValues.userId;
       const timeTableInstance = TimeTableService(userId);
       transaction = await timeTableInstance.create(
         timeTableClasses,
@@ -89,7 +89,7 @@ const AuthService = () => {
       );
       const result = issueTokens(id);
       await createdUserData.update(
-        { refresh_token: result.refreshToken },
+        { refreshToken: result.refreshToken },
         { transaction }
       );
       

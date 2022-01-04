@@ -12,12 +12,12 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      user_id: {
+      userId: {
         type: DataTypes.STRING,
         allowNull: false,
         references: {
           model: "user",
-          key: "user_id",
+          key: "userId",
         },
       },
     },

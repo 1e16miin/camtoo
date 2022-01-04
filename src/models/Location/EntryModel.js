@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         allowNull: false,
       },
-      building_id: {
+      buildingId: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
         references: {
@@ -16,12 +16,12 @@ module.exports = (sequelize, DataTypes) => {
           key: "id",
         },
       },
-      user_id: {
+      userId: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
         references: {
           model: "user",
-          key: "user_id",
+          key: "userId",
         },
       },
     },

@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
   return sequelize.define(
     "user",
     {
-      user_id: {
+      userId: {
         type: DataTypes.INTEGER.UNSIGNED,
         autoIncrement: true,
         primaryKey: true,
@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      profile_image_url: {
+      profileImageUrl: {
         type: DataTypes.TEXT,
         defaultValue: s3.defaultUrl,
         allowNull: true,
@@ -31,17 +31,17 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: "2",
         allowNull: false,
       },
-      promise_refusal_mode: {
+      promiseRefusalMode: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
         allowNull: false,
       },
-      public_profile_mode: {
+      publicProfileMode: {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
         allowNull: false,
       },
-      status_message: {
+      statusMessage: {
         type: DataTypes.STRING(100),
         allowNull: true,
       },
@@ -53,12 +53,12 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DECIMAL(9, 6),
         allowNull: true,
       },
-      in_school: {
+      inSchool: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
         allowNull: false,
       },
-      university_id: {
+      universityId: {
         type: DataTypes.INTEGER.UNSIGNED,
         references: {
           model: "university",
@@ -66,7 +66,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         allowNull: false,
       },
-      refresh_token: {
+      refreshToken: {
         type: DataTypes.STRING(255),
         allowNull: true,
       },
@@ -86,7 +86,7 @@ module.exports = (sequelize, DataTypes) => {
           name: "PRIMARY",
           unique: true,
           using: "BTREE",
-          fields: [{ name: "user_id" }],
+          fields: [{ name: "userId" }],
         },
       ],
     }
