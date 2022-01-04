@@ -96,6 +96,7 @@ const UserService = async (id = null) => {
       latitude,
       longitude,
       profileImageUrl,
+      locationUpdatedAt
     } = userData;
 
     const result = {
@@ -113,6 +114,7 @@ const UserService = async (id = null) => {
       },
       inSchool: inSchool === 1 ? true : false,
       buildingId: buildingObject ? buildingObject.buildingId : null,
+      isLocationUpdated: moment.duration(moment().diff(moment(locationUpdatedAt))).asSeconds() > 15 * 60 ? false : true
     };
     return result;
   };
