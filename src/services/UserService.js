@@ -167,7 +167,10 @@ const UserService = async (id = null) => {
         },
         transaction
       });
-      await timeTableInstance.update(newUserData.timeTableClasses, transaction)
+      if(newUserData.timeTableClasses){
+        await timeTableInstance.update(newUserData.timeTableClasses, transaction)
+      }
+      
       await transaction.commit()
       return "success"
     } catch (err) {
