@@ -157,7 +157,7 @@ const UserService = async (id = null) => {
   }
 
   const update = async (newUserData) => {
-    let transaction = await sequelize.transaction()
+    const transaction = await sequelize.transaction()
     const timeTableInstance = TimeTableService(userId)
     try {
       console.log(newUserData)
@@ -167,7 +167,7 @@ const UserService = async (id = null) => {
         },
         transaction
       });
-      transaction = await timeTableInstance.update(timeTableClasses, transaction)
+      await timeTableInstance.update(newUserData.timeTableClasses, transaction)
       await transaction.commit()
       return "success"
     } catch (err) {
