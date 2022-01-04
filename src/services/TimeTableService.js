@@ -11,10 +11,10 @@ const TimeTableService = (userId) => {
   };
   
   const create = async (timeTableClasses, transaction) => {
-    await Promise.all(timeTableClasses.map(async (scheduleDTO) => {
-      await timeTable.create(scheduleDTO, { transaction })
+    await Promise.all(timeTableClasses.map(async (scheduleDto) => {
+      scheduleDto.userId = userId
+      await timeTable.create(scheduleDto, { transaction })
     }))
-    return transaction
   }
 
   const update = async (timeTableClasses, transaction) => {
