@@ -16,7 +16,6 @@ const FriendService = (userId = null) => {
         message: payload,
         messageType: type,
       };
-      console.log(receiver)
       await communication.create(communicationData, { transaction });
       const result = await notificationInstance.sendPush(receiver, payload, type);
       await transaction.commit();
@@ -142,7 +141,6 @@ const FriendService = (userId = null) => {
   };
 
   const getFriendList = async (friendIdList) => {
-    // console.log(friendDAOList);
     const result = await Promise.all(
       friendIdList.map(async (friendData) => getFriendDto(friendData))
     );

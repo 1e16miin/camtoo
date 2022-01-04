@@ -211,7 +211,6 @@ const NotificationService = (sender = null) => {
       await axios
         .post(uri, body, options)
         .then((res) => {
-          console.log(res.data);
           resultCode = 200;
         })
         .catch((err) => {
