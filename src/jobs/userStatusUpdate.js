@@ -13,7 +13,7 @@ const userStatusUpdate = () =>
   schedule.scheduleJob(rule, async () => {
     if (process.env.INSTANCE_ID === "0") {
       const day = moment().day();
-      const hour = (moment().hour()+9)%24;
+      const hour = (moment().hour()+9)%24; 
       if (day != 0 && day != 6 && hour >= 9 && hour <= 20) {
         const time = moment().minute() + hour * 60;
 
