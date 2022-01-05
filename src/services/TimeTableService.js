@@ -5,7 +5,7 @@ const TimeTableService = (userId) => {
     return await timeTable.findAll({
       nest: true,
       raw: true,
-      attributes: {exclude: ["createdAt","deletedAt", "updatedAt"]},
+      attributes: {exclude: ["id","createdAt","deletedAt", "updatedAt"]},
       where: { userId: userId },
     });
   };
