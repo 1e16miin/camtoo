@@ -71,7 +71,7 @@ const AuthService = () => {
     return result;
   };
 
-  const createNewUser = async (signUpData) => {
+  const createUser = async (signUpData) => {
     let transaction = await sequelize.transaction();
     try {
       const { id, universityId, name, timeTableClasses } = signUpData;
@@ -102,7 +102,15 @@ const AuthService = () => {
     }
   };
 
-  return { sendVerifyCode, createNewUser, confirmVerifyCode };
+  const deleteUser = async (id) =>{
+    try{
+      await user.delete(id)
+    }catch(err){
+      throw new Error("유저 삭제 에러");
+    }
+  }
+
+  return { sendVerifyCode, createNewUser: createUser, confirmVerifyCode ,deleteUser};
 };
 
 module.exports = AuthService;

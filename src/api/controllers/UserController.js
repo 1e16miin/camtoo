@@ -70,8 +70,13 @@ router.put("/location", checkAccessTokens, async (req, res) => {
   }
 })
 
+router.get("/upload-url", checkAccessTokens, async (req,res)=> {
+    
+})
+
 router.put("/image/upload", checkAccessTokens, async (req,res)=> {
   
 })
+
 
 module.exports = router

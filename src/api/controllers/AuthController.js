@@ -71,4 +71,12 @@ router.post("/confirm", async (req, res) => {
   }
 })
 
+router.delete("withdrawal", checkAccessTokens, async (req, res)=>{
+  try{
+    
+  }catch(err){
+    console.log(err)
+  }
+})
+
 module.exports=router
