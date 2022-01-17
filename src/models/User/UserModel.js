@@ -1,4 +1,4 @@
-const { s3 } = require("../../config/key");
+const { S3: s3 } = require("../../config/key");
 
 module.exports = (sequelize, DataTypes) => {
   return sequelize.define(

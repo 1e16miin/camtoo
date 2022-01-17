@@ -73,9 +73,13 @@ router.post("/confirm", async (req, res) => {
 
 router.delete("withdrawal", checkAccessTokens, async (req, res)=>{
   try{
-    
+    const id =req.id
+    const authInstance = AuthService();
+    await authInstance.deleteUser(id)
+    return res.status(200).send("success")
   }catch(err){
     console.log(err)
+    return res.status(400).send({message:err.message})
   }
 })
 

@@ -7,6 +7,8 @@ const {
 const isInRange = require("../utils/isInRange");
 const TimeTableService = require("./TimeTableService");
 const moment = require("moment-timezone");
+const {v4} = require('uuid');
+const AwsService = require("./AwsService");
 moment().tz("Asia/Seoul");
 
 const UserService = async (id = null) => {
@@ -183,9 +185,16 @@ const UserService = async (id = null) => {
     }
   }
 
-  const uploadProfileImage = () => {
-    
+  const getUploadProfileImageUrl = () => {
+    const awsInstance = AwsService()
+    const imageUploadUrl = awsInstance.createPresignedUrl("profile-image", id)
+    const result = {
+      imageUploadUrl: imageUploadUrl
+    }
+    return result
   }
+
+  // const 
 
   const userId = await getUserId();
   //const userData = await getUserData();
@@ -197,6 +206,7 @@ const UserService = async (id = null) => {
     updateLocation,
     getHangOuts,
     getBestFriend,
+    getUploadProfileImageUrl
   };
 };
 
