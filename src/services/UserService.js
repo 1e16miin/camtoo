@@ -163,19 +163,24 @@ const UserService = async (id = null) => {
     }
   }
 
-  const update = async (newUserData) => {
+  const update = async (updateUserDto) => {
     const transaction = await sequelize.transaction()
     const timeTableInstance = TimeTableService(userId)
     try {
-      console.log(newUserData)
-      await user.update(newUserData, {
+      let updateUser = updateUserDto
+      if(updateUserDto.imageUrl){
+        const {imageUrl, ...remainder} = updateUserDto
+        updateUser = {profileImageName:imageUrl, ...remainder}
+      }
+      
+      await user.update(updateUser, {
         where: {
           id: id
         },
         transaction
       });
-      if(newUserData.timeTableClasses){
-        await timeTableInstance.update(newUserData.timeTableClasses, transaction)
+      if(updateUser.timeTableClasses){
+        await timeTableInstance.update(updateUser.timeTableClasses, transaction)
       }
       
       await transaction.commit()
