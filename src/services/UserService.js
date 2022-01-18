@@ -9,6 +9,7 @@ const TimeTableService = require("./TimeTableService");
 const moment = require("moment-timezone");
 const {v4} = require('uuid');
 const AwsService = require("./AwsService");
+const { S3 } = require("../config/key");
 moment().tz("Asia/Seoul");
 
 const UserService = async (id = null) => {
@@ -76,7 +77,7 @@ const UserService = async (id = null) => {
         userId: userId
       },
     });
-    const buildingObject = (await entry.findOne({
+    const buildingObject = await entry.findOne({
       raw: true,
       nest: true,
       attributes: ["buildingId"],
@@ -86,7 +87,7 @@ const UserService = async (id = null) => {
       order: [
         ["createdAt", "DESC"]
       ]
-    }))
+    })
     const {
       id,
       name,
@@ -97,10 +98,11 @@ const UserService = async (id = null) => {
       statusMessage,
       latitude,
       longitude,
-      profileImageUrl,
+      profileImageName,
       locationUpdatedAt
     } = userData;
 
+    const defaultProfileImageIndex = Math.floor(Math.random() * 6)
     const result = {
       id: id,
       name: name,
@@ -108,7 +110,7 @@ const UserService = async (id = null) => {
       promiseRefusalMode: promiseRefusalMode === 1 ? true : false,
       publicProfileMode: publicProfileMode === 1 ? true : false,
       statusMessage: statusMessage ? statusMessage : "",
-      imageUrl: profileImageUrl ? profileImageUrl : "",
+      imageUrl: profileImageName ? profileImageName : `${S3.defaultProfileImageDirectoryUrl}/${defaultProfileImageIndex}.png`,
       timeTableClasses: schedules,
       coordinate: {
         latitude: latitude ? latitude : 0.0,
@@ -186,9 +188,11 @@ const UserService = async (id = null) => {
   }
 
   const getUploadProfileImageUrl = () => {
+    const uuid = v4()
     const awsInstance = AwsService()
-    const imageUploadUrl = awsInstance.createPresignedUrl("profile-image", id)
+    const imageUploadUrl = awsInstance.createPresignedUrl("profile-image", uuid)
     const result = {
+      fileName: uuid,
       imageUploadUrl: imageUploadUrl
     }
     return result
@@ -206,7 +210,7 @@ const UserService = async (id = null) => {
     updateLocation,
     getHangOuts,
     getBestFriend,
-    getUploadProfileImageUrl
+    getProfileImageUploadUrl: getUploadProfileImageUrl
   };
 };
 

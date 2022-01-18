@@ -13,9 +13,8 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      profileImageUrl: {
+      profileImageName: {
         type: DataTypes.TEXT,
-        defaultValue: s3.defaultUrl,
         allowNull: true,
       },
       nickname: {
