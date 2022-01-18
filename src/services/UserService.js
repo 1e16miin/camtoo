@@ -2,21 +2,28 @@ const {
   user,
   entry,
   sequelize,
-  building
+  building,
+  university
 } = require("../models");
 const isInRange = require("../utils/isInRange");
 const TimeTableService = require("./TimeTableService");
 const moment = require("moment-timezone");
-const {v4} = require('uuid');
+const {
+  v4
+} = require('uuid');
 const AwsService = require("./AwsService");
-const { S3 } = require("../config/key");
+const {
+  S3
+} = require("../config/key");
 moment().tz("Asia/Seoul");
 
 const UserService = async (id = null) => {
   const getUserId = async () => {
     let result = null
     if (id) {
-      const {userId} = await user.findOne({
+      const {
+        userId
+      } = await user.findOne({
         nest: true,
         raw: true,
         attributes: ["userId"],
@@ -99,7 +106,8 @@ const UserService = async (id = null) => {
       latitude,
       longitude,
       profileImageName,
-      locationUpdatedAt
+      locationUpdatedAt,
+      universityId
     } = userData;
 
     const defaultProfileImageIndex = Math.floor(Math.random() * 6)
@@ -118,7 +126,7 @@ const UserService = async (id = null) => {
       },
       inSchool: inSchool === 1 ? true : false,
       buildingId: buildingObject ? buildingObject.buildingId : null,
-      isLocationUpdated: moment.duration(moment().diff(moment(locationUpdatedAt))).asSeconds() > 15 * 60 ? false : true
+      isLocationUpdated: moment.duration(moment().diff(moment(locationUpdatedAt))).asSeconds() > 15 * 60 ? false : true,
     };
     return result;
   };
@@ -129,26 +137,50 @@ const UserService = async (id = null) => {
     try {
       const userData = await getUserData(userId)
       const buildingId = userData.buildingId
+      const {
+        universityRadius,
+        ...universityCoordinate
+      } = await user.findOne({
+        raw: true,
+        nest: true,
+        attributes: ["university.latitude", "university.longitude", "university.radius"],
+        where: {
+          id: id
+        },
+        include: [{
+          model: university,
+          attributes: []
+        }]
+      })
+      let inSchool = true
+      if(!isInRange(universityCoordinate, coordinate, radius)){
+        inSchool = false
+      }
+      await update({inSchool:inSchool}, {where:{id:id}, transaction})
+
       const buildingData = await building.findByPk(buildingId, {
         raw: true,
         attributes: ["latitude", "longitude", "radius"]
       })
       if (buildingData) {
-         const buildingCoordinate = {
-           latitude: buildingData.latitude,
-           longitude: buildingData.longitude,
-         };
-         if (!isInRange(buildingCoordinate, coordinate, buildingData.radius)) {
-           await entry.destroy({
-             where: {
-               buildingId: buildingId,
-               userId: userId,
-             },
-             transaction,
-           });
-         }
+        const buildingCoordinate = {
+          latitude: buildingData.latitude,
+          longitude: buildingData.longitude,
+        };
+        if (!isInRange(buildingCoordinate, coordinate, buildingData.radius)) {
+          await entry.destroy({
+            where: {
+              buildingId: buildingId,
+              userId: userId,
+            },
+            transaction,
+          });
+        }
       }
-      const locationDto = {...coordinate, locationUpdatedAt:moment()}
+      const locationDto = {
+        ...coordinate,
+        locationUpdatedAt: moment()
+      }
       await user.update(locationDto, {
         where: {
           id: id
@@ -168,21 +200,27 @@ const UserService = async (id = null) => {
     const timeTableInstance = TimeTableService(userId)
     try {
       let updateUser = updateUserDto
-      if(updateUserDto.imageUrl){
-        const {imageUrl, ...remainder} = updateUserDto
-        updateUser = {profileImageName:imageUrl, ...remainder}
+      if (updateUserDto.imageUrl) {
+        const {
+          imageUrl,
+          ...remainder
+        } = updateUserDto
+        updateUser = {
+          profileImageName: imageUrl,
+          ...remainder
+        }
       }
-      
+
       await user.update(updateUser, {
         where: {
           id: id
         },
         transaction
       });
-      if(updateUser.timeTableClasses){
+      if (updateUser.timeTableClasses) {
         await timeTableInstance.update(updateUser.timeTableClasses, transaction)
       }
-      
+
       await transaction.commit()
       return "success"
     } catch (err) {
