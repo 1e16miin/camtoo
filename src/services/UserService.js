@@ -202,7 +202,14 @@ const UserService = async (id = null) => {
       let updateUser = updateUserDto
       if (updateUserDto.imageUrl === null) {
         const defaultProfileImageIndex = Math.floor(Math.random() * 6)
-        updateUser.imageUrl = defaultProfileImageIndex
+        const {
+          imageUrl,
+          ...remainder
+        } = updateUserDto
+        updateUser = {
+          profileImageName: defaultProfileImageIndex,
+          ...remainder
+        }
       }
 
       await user.update(updateUser, {
