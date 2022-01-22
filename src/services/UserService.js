@@ -207,7 +207,7 @@ const UserService = async (id = null) => {
           ...remainder
         } = updateUserDto
         updateUser = {
-          profileImageName: `${S3.defaultProfileImageDirectoryUrl}/${defaultProfileImageIndex}`,
+          profileImageName: `${S3.defaultProfileImageDirectoryUrl}/${defaultProfileImageIndex}.png`,
           ...remainder
         }
       }
