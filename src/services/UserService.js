@@ -153,7 +153,7 @@ const UserService = async (id = null) => {
         }]
       })
       let inSchool = true
-      if(!isInRange(universityCoordinate, coordinate, radius)){
+      if(!isInRange(universityCoordinate, coordinate, universityRadius)){
         inSchool = false
       }
       await update({inSchool:inSchool}, {where:{id:id}, transaction})
