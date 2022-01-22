@@ -110,7 +110,7 @@ const UserService = async (id = null) => {
       universityId
     } = userData;
 
-    const defaultProfileImageIndex = Math.floor(Math.random() * 6)
+   
     const result = {
       id: id,
       name: name,
@@ -118,7 +118,7 @@ const UserService = async (id = null) => {
       promiseRefusalMode: promiseRefusalMode === 1 ? true : false,
       publicProfileMode: publicProfileMode === 1 ? true : false,
       statusMessage: statusMessage ? statusMessage : "",
-      imageUrl: profileImageName ? profileImageName : `${S3.defaultProfileImageDirectoryUrl}/${defaultProfileImageIndex}.png`,
+      imageUrl: profileImageName,
       timeTableClasses: schedules,
       coordinate: {
         latitude: latitude ? latitude : 0.0,
@@ -200,15 +200,9 @@ const UserService = async (id = null) => {
     const timeTableInstance = TimeTableService(userId)
     try {
       let updateUser = updateUserDto
-      if (updateUserDto.imageUrl) {
-        const {
-          imageUrl,
-          ...remainder
-        } = updateUserDto
-        updateUser = {
-          profileImageName: imageUrl,
-          ...remainder
-        }
+      if (updateUserDto.imageUrl === "") {
+        const defaultProfileImageIndex = Math.floor(Math.random() * 6)
+        updateUser.imageUrl = defaultProfileImageIndex
       }
 
       await user.update(updateUser, {

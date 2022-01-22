@@ -71,13 +71,16 @@ const AuthService = () => {
     return result;
   };
 
+  
   const createUser = async (signUpData) => {
     let transaction = await sequelize.transaction();
     try {
+      const defaultProfileImageIndex = Math.floor(Math.random() * 6)
       const { id, universityId, name, timeTableClasses } = signUpData;
       const userData = {
         id: id,
         universityId: universityId,
+        profileImageName : defaultProfileImageIndex,
         name: name,
       };
       const createdUserData = await user.create(userData, { transaction });
