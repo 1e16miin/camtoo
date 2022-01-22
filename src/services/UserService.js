@@ -107,9 +107,7 @@ const UserService = async (id = null) => {
       longitude,
       profileImageName,
       locationUpdatedAt,
-      universityId
     } = userData;
-
    
     const result = {
       id: id,
@@ -241,7 +239,7 @@ const UserService = async (id = null) => {
   const getUploadProfileImageUrl = () => {
     const uuid = v4()
     const awsInstance = AwsService()
-    const imageUploadUrl = awsInstance.createPresignedUrl("profile-image", uuid)
+    const imageUploadUrl = awsInstance.createPresignedUrl("profile-image", 'camtoo')
     const result = {
       fileName: uuid,
       imageUploadUrl: imageUploadUrl

@@ -4,7 +4,8 @@ const { checkAccessTokens } = require("../middleware/verifyToken");
 const router = express();
 const moment = require('moment-timezone');
 const GeoFenceService = require("../../services/GeoFenceService");
-const AwsService = require("../../services/AwsService");
+
+const axios = require("axios");
 moment().tz("Asia/Seoul")
 
 router.get("/information", checkAccessTokens, async (req, res) => {
@@ -83,6 +84,18 @@ router.get("/image/upload", checkAccessTokens, async (req,res)=> {
       .send({
         message: "이미지 업로드하는 중에 에러가 발생하였습니다.",
       });
+  }
+})
+
+router.get("/test", async(req,res)=>{
+  try{
+    const {url, fileName} = req
+    await axios.put(url, fileName,{
+      headers: { "Content-Type": `image/jpeg` },
+    })
+  }catch(err){
+    console.log(err)
+    return res.status(400).send({message: "err"})
   }
 })
 
