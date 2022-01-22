@@ -200,7 +200,7 @@ const UserService = async (id = null) => {
     const timeTableInstance = TimeTableService(userId)
     try {
       let updateUser = updateUserDto
-      if (updateUserDto.imageUrl) {
+      if (updateUserDto.imageUrl !== undefined) {
         const {
           imageUrl,
           ...remainder
