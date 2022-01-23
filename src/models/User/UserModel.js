@@ -1,5 +1,3 @@
-const { S3: s3 } = require("../../config/key");
-
 module.exports = (sequelize, DataTypes) => {
   return sequelize.define(
     "user",
@@ -15,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       profileImageName: {
         type: DataTypes.STRING(80),
-        allowNull: true,
+        allowNull: false,
       },
       nickname: {
         type: DataTypes.STRING(20),

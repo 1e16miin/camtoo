@@ -212,6 +212,7 @@ const UserService = async (id = null) => {
             ...remainder
           }
         }else{
+          console.log(S3.profileImageDirectoryUrl)
           updateUser = {
             profileImageName: `${S3.profileImageDirectoryUrl}/${imageUrl}`,
             ...remainder
