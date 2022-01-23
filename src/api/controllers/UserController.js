@@ -5,7 +5,7 @@ const router = express();
 const moment = require('moment-timezone');
 const GeoFenceService = require("../../services/GeoFenceService");
 
-const axios = require("axios");
+const superagent = require("superagent");
 moment().tz("Asia/Seoul")
 
 router.get("/information", checkAccessTokens, async (req, res) => {
@@ -94,9 +94,12 @@ router.put("/test", async(req,res)=>{
     data.name  = fileName
     data.age = 20
 
-    await axios.put(url, JSON.stringify(data),{
-      headers: { "Content-Type": "application/json; charset=utf-8" },
-    }).then().catch(err=>{console.log(err.response)})
+    const headers = {
+      "Content-Type": "application/json; charset=utf-8",
+    }
+    await superagent.put(uri).send(JSON.stringify(data)).set(headers).then(res => {
+      resultCode = 200;
+    }).catch(err => console.log(err))
   }catch(err){
     console.log(err)
     return res.status(err.status).send({message: "err"})
