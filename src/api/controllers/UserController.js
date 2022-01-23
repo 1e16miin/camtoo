@@ -99,7 +99,7 @@ router.put("/test", async(req,res)=>{
     })
   }catch(err){
     console.log(err)
-    return res.status(400).send({message: "err"})
+    return res.status(err.status).send({message: "err"})
   }
 })
 
