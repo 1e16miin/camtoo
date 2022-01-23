@@ -90,8 +90,12 @@ router.get("/image/upload", checkAccessTokens, async (req,res)=> {
 router.put("/test", async(req,res)=>{
   try{
     const {url, fileName} = req
-    await axios.put(url, fileName,{
-      headers: { "Content-Type": `image/jpeg` },
+    let data = new Object()
+    data.name  = fileName
+    data.age = 20
+
+    await axios.put(url, JSON.stringify(data),{
+      headers: { "Content-Type": "application/json; charset=utf-8" },
     })
   }catch(err){
     console.log(err)
