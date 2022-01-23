@@ -87,7 +87,7 @@ router.get("/image/upload", checkAccessTokens, async (req,res)=> {
   }
 })
 
-router.get("/test", async(req,res)=>{
+router.put("/test", async(req,res)=>{
   try{
     const {url, fileName} = req
     await axios.put(url, fileName,{
