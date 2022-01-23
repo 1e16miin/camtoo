@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       profileImageName: {
-        type: DataTypes.STRING(80),
+        type: DataTypes.STRING(110),
         allowNull: false,
       },
       nickname: {
