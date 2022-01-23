@@ -147,6 +147,11 @@ const FriendService = (userId = null) => {
     return result;
   };
 
+  const findUserInPhoneBook = async (idList) =>{
+    const result = await user.findAll({raw:true, where:{id:idList}})
+    return result
+  }
+
   const findAll = async (option) => {
     const result = (
       await Promise.all([
@@ -206,6 +211,7 @@ const FriendService = (userId = null) => {
   };
 
   return {
+    findUserInPhoneBook,
     getFriendList,
     getFollowingList,
     getFollowedList,

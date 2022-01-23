@@ -203,7 +203,6 @@ const UserService = async (id = null) => {
           imageUrl,
           ...remainder
         } = updateUserDto
-        console.log(updateUserDto, imageUrl)
         if(updateUserDto.imageUrl === null){
           const defaultProfileImageIndex = Math.floor(Math.random() * 6)
         

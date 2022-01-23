@@ -84,7 +84,7 @@ router.post("/phone-book", checkAccessTokens, async (req, res) => {
     const idList = req.body.idList;
     const userId = (await UserService(id)).userId;
     const friendInstance = FriendService(userId);
-    const result = await friendInstance.findAll(idList);
+    const result = await friendInstance.findUserInPhoneBook(idList);
     return res.status(200).send(result);
   } catch (err) {
     console.log(err);
