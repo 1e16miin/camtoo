@@ -100,9 +100,10 @@ router.put("/test", async(req,res)=>{
     await superagent.put(uri).send(JSON.stringify(data)).set(headers).then(res => {
       resultCode = 200;
     }).catch(err => console.log(err))
+    return 1
   }catch(err){
     console.log(err)
-    return res.status(err.status).send({message: "err"})
+    return res.status(500).send({message: "err"})
   }
 })
 
