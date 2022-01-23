@@ -91,16 +91,17 @@ router.put("/test", async(req,res)=>{
   try{
     const {url, fileName} = req
     let data = new Object()
-    data.name  = fileName
+    data.name = fileName
     data.age = 20
 
+    console.log(url, fileName)
     const headers = {
       "Content-Type": "application/json; charset=utf-8",
     }
     await superagent.put(url).send(JSON.stringify(data)).set(headers).then(res => {
       resultCode = 200;
     }).catch(err => console.log(err))
-    return 1
+    return res.status(200)
   }catch(err){
     console.log(err)
     return res.status(500).send({message: "err"})
