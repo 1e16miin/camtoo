@@ -89,7 +89,7 @@ router.get("/image/upload", checkAccessTokens, async (req,res)=> {
 
 router.put("/test", async(req,res)=>{
   try{
-    const {url, fileName} = req
+    const {url, fileName} = req.body
     let data = new Object()
     data.name = fileName
     data.age = 20
