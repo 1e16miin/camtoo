@@ -212,11 +212,18 @@ const UserService = async (id = null) => {
             ...remainder
           }
         }else{
-          console.log(S3.profileImageDirectoryUrl)
-          updateUser = {
-            profileImageName: `${S3.profileImageDirectoryUrl}/${imageUrl}`,
-            ...remainder
+          if(imageUrl.startsWith("https://")){
+            updateUser = {
+              profileImageName: imageUrl,
+              ...remainder
+            }
+          }else{
+            updateUser = {
+              profileImageName: `${S3.profileImageDirectoryUrl}/${imageUrl}`,
+              ...remainder
+            }
           }
+         
         }
       }
       await user.update(updateUser, {
