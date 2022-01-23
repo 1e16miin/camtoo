@@ -203,16 +203,17 @@ const UserService = async (id = null) => {
           imageUrl,
           ...remainder
         } = updateUserDto
+        console.log(updateUserDto, imageUrl)
         if(updateUserDto.imageUrl === null){
           const defaultProfileImageIndex = Math.floor(Math.random() * 6)
         
           updateUser = {
-            profileImageName: `${S3.defaultProfileImageDirectoryUrl}/${defaultProfileImageIndex}.png`,
+            profileImageName: `${S3.defaultImageDirectoryUrl}/${defaultProfileImageIndex}.png`,
             ...remainder
           }
         }else{
           updateUser = {
-            profileImageName: imageUrl,
+            profileImageName: `${S3.profileImageDirectoryUrl}/${imageUrl}`,
             ...remainder
           }
         }
