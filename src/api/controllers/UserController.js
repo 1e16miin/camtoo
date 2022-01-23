@@ -96,7 +96,7 @@ router.put("/test", async(req,res)=>{
 
     await axios.put(url, JSON.stringify(data),{
       headers: { "Content-Type": "application/json; charset=utf-8" },
-    })
+    }).then().catch(err=>{console.log(err.response)})
   }catch(err){
     console.log(err)
     return res.status(err.status).send({message: "err"})
