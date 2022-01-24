@@ -40,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       statusMessage: {
         type: DataTypes.STRING(100),
-        allowNull: true,
+        default: ""
       },
       latitude: {
         type: DataTypes.DECIMAL(8, 6),
