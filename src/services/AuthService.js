@@ -4,9 +4,6 @@ const jwt = require("jsonwebtoken");
 const TimeTableService = require("./TimeTableService");
 const pm2ClusterCache = require("pm2-cluster-cache");
 const NotificationService = require("./NotificationService");
-const {
-  S3
-} = require('../config/key')
 
 let cache = pm2ClusterCache.init({ storage: "all" });
 
@@ -78,8 +75,6 @@ const AuthService = () => {
   const createNewUser = async (signUpData) => {
     let transaction = await sequelize.transaction();
     try {
-      
-      const defaultProfileImageIndex = Math.floor(Math.random() * 6)
       const { id, universityId, name, timeTableClasses } = signUpData;
       const isDuplicated = await user.findOne({where:{id:id}})
       if(isDuplicated){
@@ -88,7 +83,6 @@ const AuthService = () => {
       const userData = {
         id: id,
         universityId: universityId,
-        profileImageName : `${S3.defaultImageDirectoryUrl}/${defaultProfileImageIndex}`,
         name: name,
       };
       const createdUserData = await user.create(userData, { transaction });
