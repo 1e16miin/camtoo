@@ -48,7 +48,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       longitude: {
         type: DataTypes.DECIMAL(9, 6),
-        allowNull: 126.951549,
+        defaultValue: 126.951549,
       },
       inSchool: {
         type: DataTypes.BOOLEAN,
