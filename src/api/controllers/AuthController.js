@@ -71,7 +71,7 @@ router.post("/confirm", async (req, res) => {
   }
 })
 
-router.delete("withdrawal", checkAccessTokens, async (req, res)=>{
+router.delete("/withdrawal", checkAccessTokens, async (req, res)=>{
   try{
     const id =req.id
     const authInstance = AuthService();
