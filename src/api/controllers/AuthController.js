@@ -11,6 +11,7 @@ router.post("/sign-up", async (req, res) => {
   try {
     const signUpData = req.body
     const authInstance = AuthService()
+    console.log(signUpData)
     const result = await authInstance.createNewUser(signUpData)
     return res.status(200).send(result)
   } catch (err) {
