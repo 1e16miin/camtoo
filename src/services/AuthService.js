@@ -89,7 +89,7 @@ const AuthService = () => {
       const createdUserData = await user.create(userData, { transaction });
       const userId = createdUserData.dataValues.userId;
       const timeTableInstance = TimeTableService(userId);
-      transaction = await timeTableInstance.create(
+      await timeTableInstance.create(
         timeTableClasses,
         transaction
       );
