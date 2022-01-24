@@ -83,7 +83,7 @@ const AuthService = () => {
       const userData = {
         id: id,
         universityId: universityId,
-        profileImageName : `${S3.defaultProfileImageDirectoryUrl}/${defaultProfileImageIndex}`,
+        profileImageName : `${S3.defaultImageDirectoryUrl}/${defaultProfileImageIndex}`,
         name: name,
       };
       const createdUserData = await user.create(userData, { transaction });
