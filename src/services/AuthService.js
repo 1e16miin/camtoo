@@ -107,7 +107,7 @@ const AuthService = () => {
 
   const deleteUser = async (id) =>{
     try{
-      await user.delete(id)
+      await user.delete({where:{id:id}})
     }catch(err){
       throw new Error("유저 삭제 에러");
     }
