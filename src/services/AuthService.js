@@ -78,8 +78,13 @@ const AuthService = () => {
   const createNewUser = async (signUpData) => {
     let transaction = await sequelize.transaction();
     try {
+      
       const defaultProfileImageIndex = Math.floor(Math.random() * 6)
       const { id, universityId, name, timeTableClasses } = signUpData;
+      const isDuplicated = await user.findOne({where:{id:id}})
+      if(isDuplicated){
+        throw new Error("이미 존재하는 유저 입니다.")
+      }
       const userData = {
         id: id,
         universityId: universityId,
