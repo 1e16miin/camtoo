@@ -4,6 +4,9 @@ const jwt = require("jsonwebtoken");
 const TimeTableService = require("./TimeTableService");
 const pm2ClusterCache = require("pm2-cluster-cache");
 const NotificationService = require("./NotificationService");
+const {
+  S3
+} = require('../config/key')
 
 let cache = pm2ClusterCache.init({ storage: "all" });
 
@@ -72,7 +75,7 @@ const AuthService = () => {
   };
 
   
-  const createUser = async (signUpData) => {
+  const createNewUser = async (signUpData) => {
     let transaction = await sequelize.transaction();
     try {
       const defaultProfileImageIndex = Math.floor(Math.random() * 6)
@@ -114,7 +117,7 @@ const AuthService = () => {
     }
   }
 
-  return { sendVerifyCode, createNewUser: createUser, confirmVerifyCode ,deleteUser};
+  return { sendVerifyCode, createNewUser, confirmVerifyCode ,deleteUser};
 };
 
 module.exports = AuthService;
