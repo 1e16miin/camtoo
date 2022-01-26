@@ -148,7 +148,13 @@ const FriendService = (userId = null) => {
   };
 
   const findUserInPhoneBook = async (idList) =>{
-    const result = await user.findAll({raw:true, where:{id:idList}})
+    const result = (await user.findAll({raw:true, where:{id:idList}})).map(userData=>{
+      const result = {
+        ...userData,
+        friendStatus: 0
+      }
+      return result
+    })
     return result
   }
 
