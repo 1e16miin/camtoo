@@ -143,10 +143,9 @@ const UserService = async (id = null) => {
         longitude:universityData.longitude
       }
       let inSchool = true
-      if(!isInRange(universityCoordinate, coordinate, universityData.radius)){
-        console.log(inSchool)
-        inSchool = false
-      }
+      // if(!isInRange(universityCoordinate, coordinate, universityData.radius)){
+      //   inSchool = false
+      // }
      
       const buildingData = await building.findByPk(buildingId, {
         raw: true,
