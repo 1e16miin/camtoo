@@ -152,9 +152,10 @@ const UserService = async (id = null) => {
       })
       let inSchool = true
       if(!isInRange(universityCoordinate, coordinate, universityRadius)){
+        console.log(inSchool)
         inSchool = false
       }
-      await update({inSchool:inSchool}, {where:{id:id}, transaction})
+     
 
       const buildingData = await building.findByPk(buildingId, {
         raw: true,
@@ -177,7 +178,8 @@ const UserService = async (id = null) => {
       }
       const locationDto = {
         ...coordinate,
-        locationUpdatedAt: moment()
+        locationUpdatedAt: moment(),
+        inSchool: inSchool
       }
       await user.update(locationDto, {
         where: {
