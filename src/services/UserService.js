@@ -107,6 +107,7 @@ const UserService = async (id = null) => {
       longitude,
       profileImageName,
       locationUpdatedAt,
+      universityId
     } = userData;
    
     const result = {
@@ -125,6 +126,7 @@ const UserService = async (id = null) => {
       inSchool: inSchool === 1 ? true : false,
       buildingId: buildingObject ? buildingObject.buildingId : null,
       isLocationUpdated: moment.duration(moment().diff(moment(locationUpdatedAt))).asSeconds() > 15 * 60 ? false : true,
+      universityId: universityId
     };
     return result;
   };
@@ -135,28 +137,17 @@ const UserService = async (id = null) => {
     try {
       const userData = await getUserData(userId)
       const buildingId = userData.buildingId
-      const {
-        universityRadius,
-        ...universityCoordinate
-      } = await user.findOne({
-        raw: true,
-        nest: true,
-        attributes: ["university.latitude", "university.longitude", "university.radius"],
-        where: {
-          id: id
-        },
-        include: [{
-          model: university,
-          attributes: []
-        }]
-      })
+      const universityData = await university.findByPk(userData.universityId,{raw:true, attributes: ["latitude", "longitude", "radius"]})
+      const universityCoordinate = {
+        latitude:universityData.latitude,
+        longitude:universityData.longitude
+      }
       let inSchool = true
-      if(!isInRange(universityCoordinate, coordinate, universityRadius)){
+      if(!isInRange(universityCoordinate, coordinate, universityData.radius)){
         console.log(inSchool)
         inSchool = false
       }
      
-
       const buildingData = await building.findByPk(buildingId, {
         raw: true,
         attributes: ["latitude", "longitude", "radius"]
