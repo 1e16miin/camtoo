@@ -115,7 +115,7 @@ const UserService = async (id = null) => {
       status: status,
       promiseRefusalMode: promiseRefusalMode === 1 ? true : false,
       publicProfileMode: publicProfileMode === 1 ? true : false,
-      statusMessage: statusMessage ? statusMessage : "",
+      statusMessage: statusMessage,
       imageUrl: profileImageName,
       timeTableClasses: schedules,
       coordinate: {
@@ -205,14 +205,7 @@ const UserService = async (id = null) => {
           imageUrl,
           ...remainder
         } = updateUserDto
-        if(updateUserDto.imageUrl === null){
-          const defaultProfileImageIndex = Math.floor(Math.random() * 6)
         
-          updateUser = {
-            profileImageName: `${S3.defaultImageDirectoryUrl}/${defaultProfileImageIndex}.png`,
-            ...remainder
-          }
-        }else{
           if(imageUrl.startsWith("https://")){
             updateUser = {
               profileImageName: imageUrl,
@@ -225,7 +218,7 @@ const UserService = async (id = null) => {
             }
           }
          
-        }
+        
       }
       await user.update(updateUser, {
         where: {
