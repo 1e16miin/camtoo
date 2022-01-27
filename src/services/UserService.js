@@ -116,7 +116,7 @@ const UserService = async (id = null) => {
       status: status,
       promiseRefusalMode: promiseRefusalMode === 1 ? true : false,
       publicProfileMode: publicProfileMode === 1 ? true : false,
-      statusMessage: statusMessage,
+      statusMessage: statusMessage ? statusMessage : "",
       imageUrl: profileImageName,
       timeTableClasses: schedules,
       coordinate: {
