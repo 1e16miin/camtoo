@@ -159,12 +159,13 @@ const FriendService = (userId = null) => {
 					const userDto = await userInstance.getUserData(userInstance.userId);
 					console.log(userDto);
 					const result = {
-						userDto,
+						user:userDto,
 						friendStatus: 0,
 					};
 					return result;
 				})
 		);
+    console.log(result)
     return result
   }
 
