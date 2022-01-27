@@ -154,7 +154,7 @@ const FriendService = (userId = null) => {
 			).map(async(userData) => {
 					const userInstance = await UserService(userData.id);
 
-					const userDto = userInstance.getUserData(userInstance.userId);
+					const userDto = await userInstance.getUserData(userInstance.userId);
 					const result = {
 						user:userDto,
 						friendStatus: 0,
