@@ -150,11 +150,14 @@ const FriendService = (userId = null) => {
   const findUserInPhoneBook = async (idList) =>{
 		console.log(idList)
 		const result = await Promise.all(
-			(await user.findAll({ raw: true, where: { id: idList } }))
-				.filter(Boolean)
+			(
+				await user.findAll({ raw: true, where: { id: idList } })
+			)
+				.filter((user) => user.id !== undefined)
 				.map(async (userData) => {
-					const userInstance = await UserService(userData.id);
 					console.log(userData);
+					const userInstance = await UserService(userData.id);
+
 					const userDto = await userInstance.getUserData();
 					console.log(userDto);
 					const result = {
