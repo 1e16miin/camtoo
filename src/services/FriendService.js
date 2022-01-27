@@ -151,8 +151,8 @@ const FriendService = (userId = null) => {
 		const result = await Promise.all(
 			(
 				await user.findAll({ raw: true, where: { id: idList } })
-			).map((userData) => {
-					const userInstance = UserService(userData.id);
+			).map(async(userData) => {
+					const userInstance = await UserService(userData.id);
 
 					const userDto = userInstance.getUserData(userInstance.userId);
 					const result = {
