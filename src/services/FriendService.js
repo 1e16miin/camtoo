@@ -158,7 +158,7 @@ const FriendService = (userId = null) => {
 					console.log(userData);
 					const userInstance = await UserService(userData.id);
 
-					const userDto = await userInstance.getUserData();
+					const userDto = await userInstance.getUserData(userInstance.userId);
 					console.log(userDto);
 					const result = {
 						...userDto,
