@@ -162,7 +162,7 @@ const FriendService = (userId = null) => {
 					return result;
 				})
 		);
-    console.log(result)
+
     return result
   }
 
