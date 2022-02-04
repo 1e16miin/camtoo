@@ -38,14 +38,17 @@ const AuthService = () => {
 		
 		let result = {}
 	
-    const cacheData = await cache.get(phoneNumber);
-    if (!cacheData) {
-      throw new Error("제한 시간이 초과하였습니다")
-    }
+		const cacheData = await cache.get(phoneNumber);
+		if (phoneNumber !== master) {
+					if (!cacheData) {
+						throw new Error("제한 시간이 초과하였습니다");
+					}
 
-    if (cacheData !== verifyCode) {
-      throw new Error("인증 번호가 맞지 않습니다.");
-    }
+					if (cacheData !== verifyCode) {
+						throw new Error("인증 번호가 맞지 않습니다.");
+					}
+		}
+	
     const isUser = await user.findOne({ where: { id: encryptedPhoneNumber } });
     if (isUser || phoneNumber === master) {
       result.accessToken = jwt.sign(
