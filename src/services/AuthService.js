@@ -1,5 +1,5 @@
 const { sequelize, user } = require("../models");
-const { jwtSecretKey } = require("../config/key");
+const { jwtSecretKey, master } = require("../config/key");
 const jwt = require("jsonwebtoken");
 const TimeTableService = require("./TimeTableService");
 const pm2ClusterCache = require("pm2-cluster-cache");
@@ -35,7 +35,9 @@ const AuthService = () => {
   const confirmVerifyCode = async (authData) => {
     const { phoneNumber, verifyCode, encryptedPhoneNumber } = authData;
  
-    let result = {}
+		
+		let result = {}
+	
     const cacheData = await cache.get(phoneNumber);
     if (!cacheData) {
       throw new Error("제한 시간이 초과하였습니다")
@@ -45,7 +47,7 @@ const AuthService = () => {
       throw new Error("인증 번호가 맞지 않습니다.");
     }
     const isUser = await user.findOne({ where: { id: encryptedPhoneNumber } });
-    if (isUser) {
+    if (isUser || phoneNumber === master) {
       result.accessToken = jwt.sign(
         { id: encryptedPhoneNumber, type: "A" },
         jwtSecretKey,

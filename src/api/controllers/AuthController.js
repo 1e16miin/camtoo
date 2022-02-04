@@ -49,16 +49,6 @@ router.get("/issue/access-token", checkRefreshTokens, async (req, res) => {
 router.post("/", async (req, res) => {
 	try {
 		const phoneNumber = req.body.phoneNumber
-		if (phoneNumber === master) {
-			const newAccessToken = jwt.sign(
-				{ id: phoneNumber, type: "A" },
-				jwtSecretKey,
-				{
-					expiresIn: 60 * 60 * 24 * 2,
-				}
-			);
-			return res.status(200).send({ accessToken: newAccessToken });
-		}
     const authInstance = AuthService()
     const result = await authInstance.sendVerifyCode(phoneNumber);
     return res.status(200).send(result)
@@ -83,7 +73,7 @@ router.post("/confirm", async (req, res) => {
 
 router.delete("/withdrawal", checkAccessTokens, async (req, res)=>{
   try{
-    const id =req.id
+    const id = req.id
     const authInstance = AuthService();
     await authInstance.deleteUser(id)
     return res.status(200).send("success")
