@@ -35,7 +35,7 @@ const AuthService = () => {
   const confirmVerifyCode = async (authData) => {
     const { phoneNumber, verifyCode, encryptedPhoneNumber } = authData;
  
-    let result = { accessToken: ""}
+    let result = {}
     const cacheData = await cache.get(phoneNumber);
     if (!cacheData) {
       throw new Error("제한 시간이 초과하였습니다")
