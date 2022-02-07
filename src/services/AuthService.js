@@ -62,8 +62,10 @@ const AuthService = () => {
       if (cacheData !== verifyCode) {
         throw new Error("인증 번호가 맞지 않습니다.");
       }
-      cache.delete(phoneNumber);
+      
     }
+
+    await cache.delete(phoneNumber);
 
     const isUser = await user.findOne({
       where: {
