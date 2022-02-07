@@ -32,6 +32,7 @@ const AuthService = () => {
       const notificationInstance = NotificationService();
       cache.set(receiver, verifyCode, 180 * 1000)
       const result = await notificationInstance.sendSMS(receiver, verifyCode);
+      console.log(await cache.get(receiver))
       return result;
     } catch (err) {
       cache.del(receiver)
