@@ -1,5 +1,5 @@
 const express = require("express");
-const { jwtSecretKey } = require("../../config/key");
+const { jwtSecretKey, sms_sender } = require("../../config/key");
 const AuthService = require("../../services/AuthService");
 const NotificationService = require("../../services/NotificationService");
 const UserService = require("../../services/UserService");
@@ -47,8 +47,8 @@ router.get("/issue/access-token", checkRefreshTokens, async (req, res) => {
 
 
 router.post("/", async (req, res) => {
-  try {
-    const phoneNumber = req.body.phoneNumber
+	try {
+		const phoneNumber = req.body.phoneNumber
     const authInstance = AuthService()
     const result = await authInstance.sendVerifyCode(phoneNumber);
     return res.status(200).send(result)
@@ -73,7 +73,7 @@ router.post("/confirm", async (req, res) => {
 
 router.delete("/withdrawal", checkAccessTokens, async (req, res)=>{
   try{
-    const id =req.id
+    const id = req.id
     const authInstance = AuthService();
     await authInstance.deleteUser(id)
     return res.status(200).send("success")
