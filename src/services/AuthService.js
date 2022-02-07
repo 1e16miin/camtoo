@@ -72,6 +72,7 @@ const AuthService = () => {
         id: encryptedPhoneNumber
       }
     });
+    console.log(isUser)
     if (isUser || phoneNumber === master) {
       result.accessToken = jwt.sign({
           id: encryptedPhoneNumber,
