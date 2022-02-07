@@ -32,7 +32,6 @@ const AuthService = () => {
       const notificationInstance = NotificationService();
       cache.set(receiver, verifyCode, 180 * 1000)
       const result = await notificationInstance.sendSMS(receiver, verifyCode);
-      console.log(await cache.get(receiver))
       return result;
     } catch (err) {
       cache.del(receiver)
@@ -48,13 +47,11 @@ const AuthService = () => {
       encryptedPhoneNumber
     } = authData;
 
-    let result = {}
+    let result = null
 
     const cacheData = await cache.get(phoneNumber);
 
     if (phoneNumber !== master) {
-
-      console.log(cacheData, phoneNumber, verifyCode)
       if (!cacheData) {
         throw new Error("제한 시간이 초과하였습니다");
       }
@@ -62,7 +59,7 @@ const AuthService = () => {
       if (cacheData !== verifyCode) {
         throw new Error("인증 번호가 맞지 않습니다.");
       }
-      
+      console.log(cacheData, phoneNumber, verifyCode)
     }
 
     await cache.delete(phoneNumber);
