@@ -38,9 +38,10 @@ const AuthService = () => {
 		let result = {}
 	
 		const cacheData = await cache.get(phoneNumber);
-    console.log(cacheData, phoneNumber)
+
 		if (phoneNumber !== master) {
 
+      console.log(cacheData, phoneNumber, verifyCode)
 					if (!cacheData) {
 						throw new Error("제한 시간이 초과하였습니다");
 					}
