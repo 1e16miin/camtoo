@@ -66,7 +66,7 @@ const AuthService = () => {
     }
 
     await cache.delete(phoneNumber);
-
+    console.log(1)
     const isUser = await user.findOne({
       where: {
         id: encryptedPhoneNumber
