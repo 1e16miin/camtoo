@@ -35,6 +35,7 @@ const AuthService = () => {
   const confirmVerifyCode = async (authData) => {
     const { phoneNumber, verifyCode, encryptedPhoneNumber } = authData;
  
+    console.log(phoneNumber)
     let result = { accessToken: ""}
     const cacheData = await cache.get(phoneNumber);
     if (!cacheData) {
