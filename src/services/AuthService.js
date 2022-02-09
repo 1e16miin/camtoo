@@ -47,7 +47,7 @@ const AuthService = () => {
       encryptedPhoneNumber
     } = authData;
 
-    let result = {}
+    let result = { accessToken: "" };
 
     const cacheData = await cache.get(phoneNumber);
 
@@ -77,9 +77,9 @@ const AuthService = () => {
           expiresIn: 60 * 60 * 24 * 30 * 24,
         }
 			);
-			return result;
+			
 		}
-		return null
+		return result;
   }
 
   const issueTokens = (id) => {
