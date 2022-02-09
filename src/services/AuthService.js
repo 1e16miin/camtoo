@@ -68,7 +68,6 @@ const AuthService = () => {
         id: encryptedPhoneNumber
       }
     });
-    console.log(isUser)
     if (isUser || phoneNumber === master) {
       result.accessToken = jwt.sign({
           id: encryptedPhoneNumber,
@@ -77,10 +76,10 @@ const AuthService = () => {
         jwtSecretKey, {
           expiresIn: 60 * 60 * 24 * 30 * 24,
         }
-      );
-    }
-
-    return result;
+			);
+			return result;
+		}
+		return null
   }
 
   const issueTokens = (id) => {
