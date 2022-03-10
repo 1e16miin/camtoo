@@ -63,7 +63,7 @@ db.building.belongsTo(db.university, {
 
 
 db.university.hasOne(db.user, {
-  foreignKey: "universityId",
+	foreignKey: "universityId",
   sourceKey: "id",
 });
 db.user.belongsTo(db.university, {
@@ -82,64 +82,76 @@ db.entry.belongsTo(db.building, {
 
 
 db.user.hasMany(db.timeTable, {
-  foreignKey: "userId",
-  sourceKey: "userId",
+	foreignKey: "userId",
+	onDelete: "cascade",
+	sourceKey: "userId",
 });
 
 db.timeTable.belongsTo(db.user, {
-  foreignKey: "userId",
-  targetKey: "userId",
+	foreignKey: "userId",
+	onDelete: "cascade",
+	targetKey: "userId",
 });
 
 db.user.hasMany(db.entry, {
-  foreignKey: "userId",
-  sourceKey: "userId",
+	foreignKey: "userId",
+	onDelete: "cascade",
+	sourceKey: "userId",
 });
 
 db.entry.belongsTo(db.user, {
-  foreignKey: "userId",
-  targetKey: "userId",
+	foreignKey: "userId",
+	onDelete: "cascade",
+	targetKey: "userId",
 });
 
 db.user.hasMany(db.friend, {
-  foreignKey: "followee",
-  sourceKey: "userId",
+	foreignKey: "followee",
+	onDelete: "cascade",
+	sourceKey: "userId",
 });
 
 db.friend.belongsTo(db.user, {
-  foreignKey: "followee",
-  targetKey: "userId",
+	foreignKey: "followee",
+	onDelete: "cascade",
+	targetKey: "userId",
 });
 
 db.user.hasMany(db.friend, {
-  foreignKey: "follower",
-  sourceKey: "userId",
+	foreignKey: "follower",
+	onDelete: "cascade",
+	sourceKey: "userId",
 });
 
 db.friend.belongsTo(db.user, {
-  foreignKey: "follower",
-  targetKey: "userId",
+	foreignKey: "follower",
+	onDelete: "cascade",
+	targetKey: "userId",
 });
 
 
 db.user.hasMany(db.communication, {
-  foreignKey: "sender",
-  sourceKey: "userId",
+	foreignKey: "sender",
+	onDelete: "cascade",
+	sourceKey: "userId",
 });
 
 db.communication.belongsTo(db.user, {
-  foreignKey: "sender",
-  targetKey: "userId",
+	foreignKey: "sender",
+	onDelete: "cascade",
+	targetKey: "userId",
 });
 
 db.user.hasMany(db.communication, {
-  foreignKey: "receiver",
-  sourceKey: "userId",
+	foreignKey: "receiver",
+	onDelete: "cascade",
+	sourceKey: "userId",
 });
 
 db.communication.belongsTo(db.user, {
-  foreignKey: "receiver",
-  targetKey: "userId",
+	foreignKey: "receiver",
+	onDelete: "cascade",
+	targetKey: "userId",
 });
 
 
