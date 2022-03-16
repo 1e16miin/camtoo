@@ -133,6 +133,7 @@ const UserService = async (id = null) => {
 
   const updateLocation = async (coordinate) => {
 
+    console.log(coordinate, userId)
     const transaction = await sequelize.transaction();
     try {
       const userData = await getUserData(userId)
