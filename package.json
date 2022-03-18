@@ -4,6 +4,7 @@
   "description": "camtoo 안드로이드 앱 서버개발",
   "main": "src/app.js",
   "dependencies": {
+    "@js-joda/core": "^5.2.0",
     "aws-cloudfront-sign": "^2.2.0",
     "aws-sdk": "^2.1058.0",
     "axios": "^0.21.4",
