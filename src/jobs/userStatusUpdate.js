@@ -1,9 +1,9 @@
 const schedule = require("node-schedule");
 
-const moment = require("moment");
+const moment = require("moment-timezone");
 const { sequelize, user, timeTable } = require("../models");
 const { Op } = require("sequelize");
-require("moment-timezone");
+
 moment().tz("Asia/Seoul");
 
 let rule = new schedule.RecurrenceRule();
