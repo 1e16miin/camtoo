@@ -141,9 +141,9 @@ const FriendService = (userId = null) => {
   };
 
   const getFriendList = async (friendIdList) => {
-    const result = (await Promise.all(
+    const result = await Promise.all(
       friendIdList.map(async (friendData) => getFriendDto(friendData))
-    )).filter(Boolean);
+    )
     return result;
   };
 
